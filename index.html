@@ -218,17 +218,19 @@
             return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full z-0 opacity-20 pointer-events-none" />;
         };
 
-        // --- COMPONENT: ZENBOT (INTERACTIVE MASCOT) ---
+        // --- COMPONENT: ZENBOT (CLEAN MOVEMENT) ---
         const ZenBot = ({ theme, initialX, initialY, colorOverride, role, id }) => {
-            const [position, setPosition] = useState({ x: initialX || 100, y: initialY || 100 });
-            const [state, setState] = useState('patrol'); // patrol, hover, dizzy, flee, spin
+            // Patrol Center is dynamic to allow fleeing to new spots
+            const [patrolCenter, setPatrolCenter] = useState({ x: initialX, y: initialY });
+            const [position, setPosition] = useState({ x: initialX, y: initialY });
+            const [state, setState] = useState('patrol'); // patrol, alert, flee, spin
             const [showInfo, setShowInfo] = useState(false);
             const [speech, setSpeech] = useState(null);
+            
             const speechTimeout = useRef(null);
             const timeRef = useRef(Math.random() * 100);
             const animationRef = useRef(null);
             
-            // Personalities
             const botIdentity = {
                 1: { name: "Zen-1", job: "Hardware Expert", desc: "Dokter Gadget! Spesialis bedah mesin & recovery data.", catchphrase: "Sini aku cek HP-nya!" },
                 2: { name: "Zen-2", job: "Network Guardian", desc: "Penjaga Sinyal! Mikrotik & CCTV adalah mainanku.", catchphrase: "Aman terkendali!" },
@@ -240,31 +242,53 @@
             useEffect(() => {
                 const reactions = ["Woaaah!", "Dunia berubah!", "Ganti skin!", "Portal terbuka!"];
                 setSpeech(reactions[Math.floor(Math.random() * reactions.length)]);
-                setState('spin'); 
+                setState('alert'); 
                 setTimeout(() => {
                     setState('patrol');
                     setSpeech(null);
-                }, 2000);
+                }, 1500);
             }, [theme]);
 
-            // Animation Loop (FULL SCREEN PATROL)
+            // Animation Loop (SEPARATED PATHS)
             useEffect(() => {
                 const animate = () => {
                     if (state === 'patrol' && !showInfo) {
-                        timeRef.current += 0.003; // Smooth slow speed
+                        timeRef.current += 0.005; // Base speed
                         
                         const w = window.innerWidth;
                         const h = window.innerHeight;
+                        const centerX = w / 2;
+                        const centerY = h / 2;
                         
-                        // Lissajous curve for organic wide movement
-                        // Different math for each ID so they don't sync
-                        const rangeX = (w / 2) - 60; // Keep 60px padding
-                        const rangeY = (h / 2) - 60;
-                        
-                        const patrolX = (w / 2) + Math.cos(timeRef.current + id) * rangeX;
-                        const patrolY = (h / 2) + Math.sin(timeRef.current * 1.5 + id * 2) * rangeY;
+                        let px, py;
 
-                        setPosition({ x: patrolX, y: patrolY });
+                        // UNIQUE PATH LOGIC PER BOT ID
+                        if (id === 1) {
+                            // Figure 8 Wide Horizontal
+                            const rangeX = (w / 2.2);
+                            const rangeY = (h / 3);
+                            px = centerX + Math.cos(timeRef.current * 0.5) * rangeX;
+                            py = centerY + Math.sin(timeRef.current) * rangeY;
+                        } else if (id === 2) {
+                            // Circular Counter-Clockwise
+                            const radius = Math.min(w, h) / 2.5;
+                            px = centerX + Math.sin(timeRef.current * 0.4 + 2) * radius * 1.2;
+                            py = centerY + Math.cos(timeRef.current * 0.4 + 2) * radius;
+                        } else {
+                            // Diagonal/Lissajous Irregular
+                            const rangeX = (w / 2.5);
+                            const rangeY = (h / 2.5);
+                            px = centerX + Math.cos(timeRef.current * 0.3 + 4) * rangeX;
+                            py = centerY + Math.sin(timeRef.current * 0.6 + 1) * rangeY;
+                        }
+
+                        // Combine with fleeing offset if any (patrolCenter logic modified for global roam)
+                        // If just fled, we might want to offset, but global roam usually overrides.
+                        // Let's keep it simple: Global Roam overrides patrolCenter unless we want local patrol.
+                        // For "patroli pisah pisah", global roam logic above is best.
+                        
+                        // Apply position
+                        setPosition({ x: px, y: py });
                     }
                     animationRef.current = requestAnimationFrame(animate);
                 };
@@ -272,49 +296,33 @@
                 return () => cancelAnimationFrame(animationRef.current);
             }, [state, showInfo, id]);
 
-            // Mouse Interaction Logic
-            const dizzyTimer = useRef(null);
             const fleeTimer = useRef(null);
 
             const handleMouseEnter = () => {
                 if (showInfo || state === 'flee' || state === 'spin') return;
                 
-                // 1. Comfortable Phase
-                setState('hover');
-                setSpeech("Halo Kak! Klik aku dong ^^");
+                setState('alert');
+                const alerts = ["Eits! Zona Merah!", "Jangan pegang!", "System Alert!", "Panas nih!", "Waduh!"];
+                setSpeech(alerts[Math.floor(Math.random() * alerts.length)]);
 
-                // 2. Start Dizzy Countdown (2s)
-                dizzyTimer.current = setTimeout(() => {
-                    setState('dizzy');
-                    setSpeech("Aduh.. pusing..");
+                fleeTimer.current = setTimeout(() => {
+                    setState('flee');
+                    setSpeech("Wuzzz! Kabur!");
                     
-                    // 3. Start Flee Countdown (another 2s)
-                    fleeTimer.current = setTimeout(() => {
-                        setState('flee');
-                        setSpeech("Waaa! Kabur!");
-                        
-                        // Move away logic
-                        const randomAngle = Math.random() * Math.PI * 2;
-                        const moveX = Math.cos(randomAngle) * 300;
-                        const moveY = Math.sin(randomAngle) * 300;
-                        setPosition(prev => ({ x: prev.x + moveX, y: prev.y + moveY }));
+                    // Flee doesn't need to update math loop, just visual jump
+                    // But to make it "real", we can offset timeRef to jump phase
+                    timeRef.current += 10; 
 
-                        // Reset after fleeing
-                        setTimeout(() => {
-                            setState('patrol');
-                            setSpeech(null);
-                        }, 2000);
-                    }, 2000); 
+                    setTimeout(() => {
+                        setState('patrol');
+                        setSpeech(null);
+                    }, 800); 
                 }, 2000); 
             };
 
             const handleMouseLeave = () => {
-                if (state === 'flee' || state === 'spin') return;
-                
-                clearTimeout(dizzyTimer.current);
+                if (state === 'flee') return;
                 clearTimeout(fleeTimer.current);
-                
-                // If popup is closed, return to patrol
                 if (!showInfo) {
                     setState('patrol');
                     setSpeech(null);
@@ -327,131 +335,143 @@
                 else if (theme === 'dark') botColor = '#a78bfa'; 
                 else botColor = '#3b82f6';
             }
-            const glowColor = `0 0 10px ${botColor}`;
+            
+            const isAlert = state === 'alert' || state === 'flee';
+            const displayColor = isAlert ? '#ef4444' : botColor; 
+            const glowColor = `0 0 ${isAlert ? '20px' : '10px'} ${displayColor}`;
+
+            // --- ANIMATION CONFIG (CLEAN) ---
+            const getBodyAnim = () => {
+                if (state === 'alert') {
+                     // Simple Shake
+                     return { rotate: [0, -5, 5, -5, 5, 0], scale: 1 };
+                }
+                if (state === 'flee') {
+                    // Just rotate towards "run" direction, NO SQUASH/STRETCH
+                    return { rotate: [0, 15, -15, 0], scale: 1 };
+                }
+                // Patrol/Idle: Clean Bobbing
+                return { y: [0, -5, 0], scale: 1, rotate: 0 }; 
+            };
+            
+            const getBodyTransition = () => {
+                if (state === 'alert') return { duration: 0.1, repeat: Infinity }; 
+                if (state === 'flee') return { type: "spring", stiffness: 200, damping: 20 };
+                return { duration: 2, repeat: Infinity, ease: "easeInOut" }; // Bobbing speed
+            };
+
+            // Smooth movement for patrol, snappy for flee
+            const parentTransition = state === 'flee' 
+                ? { type: "spring", stiffness: 50, damping: 10 } 
+                : (state === 'patrol' ? { duration: 0.05, ease: "linear" } : { type: "spring", stiffness: 150 });
 
             return (
                 <div className="fixed z-50">
                     <motion.div 
-                        className="cursor-pointer pointer-events-auto absolute"
-                        style={{ top: 0, left: 0 }}
-                        onClick={() => {
-                            setShowInfo(!showInfo);
-                            clearTimeout(dizzyTimer.current);
-                            clearTimeout(fleeTimer.current);
-                            setState('hover'); // Stay calm when clicked
-                        }}
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                        animate={{ 
-                            x: position.x - 20, 
-                            y: position.y - 20,
-                            rotate: state === 'spin' ? 720 : (state === 'dizzy' ? [0, -5, 5, -5, 5, 0] : (state === 'flee' ? [0, 20, -20, 0] : 0)),
-                            scale: state === 'flee' ? 0.8 : 1
-                        }}
-                        transition={{ 
-                            x: { type: "spring", stiffness: state === 'flee' ? 100 : 50 }, 
-                            y: { type: "spring", stiffness: state === 'flee' ? 100 : 50 },
-                            rotate: { duration: state === 'spin' ? 1 : 0.2, repeat: state === 'dizzy' ? Infinity : 0 }
-                        }}
+                        className="fixed z-50"
+                        style={{ left: position.x - 20, top: position.y - 20 }}
+                        animate={{ x: 0, y: 0 }}
+                        transition={parentTransition}
                     >
-                        {/* INFO POPUP CARD - ATTACHED TO ROBOT (BUBBLE STYLE) */}
-                        <AnimatePresence>
-                            {showInfo && (
-                                <motion.div 
-                                    initial={{ opacity: 0, scale: 0.5, y: 10 }}
-                                    animate={{ opacity: 1, scale: 1, y: -140 }} // Muncul di atas robot
-                                    exit={{ opacity: 0, scale: 0.5, y: 10 }}
-                                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                                    className={`absolute left-1/2 -translate-x-1/2 w-56 p-4 rounded-2xl shadow-2xl border-2 backdrop-blur-xl z-[60] cursor-default
-                                        ${theme === 'matrix' ? 'bg-black/90 border-green-500 text-green-400 shadow-green-500/20' : 
-                                          (theme === 'dark' ? 'bg-slate-900/95 border-purple-500 text-purple-100 shadow-purple-500/20' : 
-                                          'bg-white/95 border-blue-200 text-slate-800 shadow-blue-500/10')}`}
-                                    onClick={(e) => e.stopPropagation()} 
-                                >
-                                    {/* Header with Avatar */}
-                                    <div className="flex items-center gap-3 mb-3 border-b pb-2 border-current/10">
-                                        <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-xs shadow-inner" style={{ backgroundColor: botColor }}>
-                                            {id}
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <h4 className="font-bold text-sm truncate">{myId.name}</h4>
-                                            <p className="text-[10px] uppercase font-bold opacity-60 tracking-wider truncate">{myId.job}</p>
-                                        </div>
-                                        <button 
-                                            onClick={(e) => { e.stopPropagation(); setShowInfo(false); }} 
-                                            className={`p-1 rounded-full hover:bg-black/10 transition-colors`}
-                                        >
-                                            <i data-lucide="x" width="14"></i>
-                                        </button>
-                                    </div>
-                                    
-                                    {/* Body */}
-                                    <p className="text-xs leading-relaxed mb-3 opacity-90">{myId.desc}</p>
-                                    
-                                    {/* Footer Quote */}
-                                    <div className={`p-2 rounded-lg text-[10px] italic text-center font-medium border ${theme === 'matrix' ? 'bg-green-900/20 border-green-900/50' : (theme === 'dark' ? 'bg-purple-900/20 border-purple-900/50' : 'bg-blue-50 border-blue-100')}`}>
-                                        "{myId.catchphrase}"
-                                    </div>
-
-                                    {/* Triangle Pointer */}
-                                    <div className={`absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-5 h-5 rotate-45 border-b-2 border-r-2 ${theme === 'matrix' ? 'bg-black border-green-500' : (theme === 'dark' ? 'bg-slate-900 border-purple-500' : 'bg-white border-blue-200')}`}></div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-
-                        <div className="relative w-10 h-10 md:w-12 md:h-12 flex justify-center items-center">
-                            {/* Antenna */}
-                            <motion.div 
-                                animate={{ rotate: state === 'dizzy' ? [0, 10, -10, 0] : [0, 5, -5, 0] }}
-                                transition={{ duration: 0.2, repeat: Infinity }}
-                                className="absolute -top-2 w-0.5 h-3 bg-gray-500 origin-bottom"
-                            >
-                                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: botColor }}></div>
-                            </motion.div>
-
-                            {/* Body */}
-                            <div 
-                                className="w-8 h-7 md:w-10 md:h-8 bg-gray-900 rounded-lg border flex items-center justify-center relative shadow-md z-10 transition-colors duration-300"
-                                style={{ borderColor: state === 'dizzy' ? '#ef4444' : botColor, boxShadow: state === 'dizzy' ? '0 0 10px #ef4444' : glowColor }}
-                            >
-                                {/* Face/Eyes - DUMB CUTE LOOK (FIXED) */}
-                                <div className="flex gap-1.5 items-center justify-center">
-                                    {/* Left Eye */}
+                        <div 
+                            className="relative cursor-pointer pointer-events-auto"
+                            onClick={() => {
+                                setShowInfo(!showInfo);
+                                clearTimeout(fleeTimer.current);
+                                setState('patrol'); 
+                            }}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            <AnimatePresence>
+                                {showInfo && (
                                     <motion.div 
-                                        animate={state === 'dizzy' ? { y: [0, -1, 1, 0], x: [0, 1, -1, 0] } : { scaleY: [1, 0.2, 1] }} 
-                                        transition={state === 'dizzy' ? { duration: 0.1, repeat: Infinity } : { duration: 3, repeat: Infinity, delay: Math.random() }}
-                                        className="w-1 h-1 rounded-full bg-white shadow-[0_0_2px_white]"
-                                    ></motion.div>
-                                    {/* Right Eye */}
+                                        initial={{ opacity: 0, scale: 0.5, y: 10 }}
+                                        animate={{ opacity: 1, scale: 1, y: -140 }} 
+                                        exit={{ opacity: 0, scale: 0.5, y: 10 }}
+                                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                        className={`absolute left-1/2 -translate-x-1/2 w-56 p-4 rounded-2xl shadow-2xl border-2 backdrop-blur-xl z-[60] cursor-default
+                                            ${theme === 'matrix' ? 'bg-black/90 border-green-500 text-green-400 shadow-green-500/20' : 
+                                            (theme === 'dark' ? 'bg-slate-900/95 border-purple-500 text-purple-100 shadow-purple-500/20' : 
+                                            'bg-white/95 border-blue-200 text-slate-800 shadow-blue-500/10')}`}
+                                        onClick={(e) => e.stopPropagation()} 
+                                    >
+                                        <div className="flex items-center gap-3 mb-3 border-b pb-2 border-current/10">
+                                            <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-xs shadow-inner" style={{ backgroundColor: displayColor }}>
+                                                {id}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <h4 className="font-bold text-sm truncate">{myId.name}</h4>
+                                                <p className="text-[10px] uppercase font-bold opacity-60 tracking-wider truncate">{myId.job}</p>
+                                            </div>
+                                            <button 
+                                                onClick={(e) => { e.stopPropagation(); setShowInfo(false); }} 
+                                                className={`p-1 rounded-full hover:bg-black/10 transition-colors`}
+                                            >
+                                                <i data-lucide="x" width="14"></i>
+                                            </button>
+                                        </div>
+                                        <p className="text-xs leading-relaxed mb-3 opacity-90">{myId.desc}</p>
+                                        <div className={`p-2 rounded-lg text-[10px] italic text-center font-medium border ${theme === 'matrix' ? 'bg-green-900/20 border-green-900/50' : (theme === 'dark' ? 'bg-purple-900/20 border-purple-900/50' : 'bg-blue-50 border-blue-100')}`}>
+                                            "{myId.catchphrase}"
+                                        </div>
+                                        <div className={`absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-5 h-5 rotate-45 border-b-2 border-r-2 ${theme === 'matrix' ? 'bg-black border-green-500' : (theme === 'dark' ? 'bg-slate-900 border-purple-500' : 'bg-white border-blue-200')}`}></div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                            
+                            <AnimatePresence>
+                                {speech && !showInfo && (
                                     <motion.div 
-                                        animate={state === 'dizzy' ? { y: [0, 1, -1, 0], x: [0, -1, 1, 0] } : { scaleY: [1, 0.2, 1] }} 
-                                        transition={state === 'dizzy' ? { duration: 0.1, repeat: Infinity } : { duration: 3, repeat: Infinity, delay: Math.random() }}
-                                        className="w-1 h-1 rounded-full bg-white shadow-[0_0_2px_white]"
-                                    ></motion.div>
+                                        initial={{ opacity: 0, scale: 0, y: 5 }} 
+                                        animate={{ opacity: 1, scale: 1, y: 0 }} 
+                                        exit={{ opacity: 0, scale: 0.8 }}
+                                        className={`absolute top-[-35px] left-1/2 transform -translate-x-1/2 px-2 py-1 rounded-lg shadow-md whitespace-nowrap z-50 font-bold text-[10px] border ${isAlert ? 'bg-red-500 text-white border-red-600' : (theme === 'matrix' ? 'bg-green-500 text-black border-green-400' : 'bg-white text-slate-800 border-gray-200')}`}
+                                    >
+                                        {speech}
+                                        <div className={`absolute bottom-[-3px] left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rotate-45 border-b border-r ${isAlert ? 'bg-red-500 border-red-600' : (theme === 'matrix' ? 'bg-green-500 border-green-400' : 'bg-white border-gray-200')}`}></div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
+                            <motion.div
+                                animate={getBodyAnim()}
+                                transition={getBodyTransition()}
+                            >
+                                <div className="relative w-10 h-10 md:w-12 md:h-12 flex justify-center items-center">
+                                    <motion.div 
+                                        animate={{ rotate: state === 'alert' ? [0, 20, -20, 0] : [0, 5, -5, 0] }}
+                                        transition={{ duration: 0.2, repeat: Infinity }}
+                                        className="absolute -top-2 w-0.5 h-3 bg-gray-500 origin-bottom"
+                                    >
+                                        <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: displayColor }}></div>
+                                    </motion.div>
+
+                                    <div 
+                                        className="w-8 h-7 md:w-10 md:h-8 bg-gray-900 rounded-lg border flex items-center justify-center relative shadow-md z-10 transition-colors duration-300"
+                                        style={{ borderColor: displayColor, boxShadow: glowColor }}
+                                    >
+                                        <div className="flex gap-1.5 items-center justify-center">
+                                            <motion.div 
+                                                animate={state === 'alert' ? { y: [0, -1, 1, 0], x: [0, 1, -1, 0] } : { scaleY: [1, 0.2, 1] }} 
+                                                transition={state === 'alert' ? { duration: 0.1, repeat: Infinity } : { duration: 3, repeat: Infinity, delay: Math.random() }}
+                                                className="w-1 h-1 rounded-full bg-white shadow-[0_0_2px_white]"
+                                            ></motion.div>
+                                            <motion.div 
+                                                animate={state === 'alert' ? { y: [0, 1, -1, 0], x: [0, -1, 1, 0] } : { scaleY: [1, 0.2, 1] }} 
+                                                transition={state === 'alert' ? { duration: 0.1, repeat: Infinity } : { duration: 3, repeat: Infinity, delay: Math.random() }}
+                                                className="w-1 h-1 rounded-full bg-white shadow-[0_0_2px_white]"
+                                            ></motion.div>
+                                        </div>
+                                    </div>
+
+                                    <div className="absolute -bottom-2 flex gap-1.5">
+                                        <motion.div animate={{ height: state === 'flee' ? [20, 40, 20] : (state === 'alert' ? [6, 12, 6] : [3, 6, 3]) }} className={`w-1 rounded-full blur-[1px] ${state === 'flee' || state === 'alert' ? 'bg-red-500' : 'bg-blue-400'}`}></motion.div>
+                                        <motion.div animate={{ height: state === 'flee' ? [20, 40, 20] : (state === 'alert' ? [6, 12, 6] : [3, 6, 3]) }} transition={{ delay: 0.1 }} className={`w-1 rounded-full blur-[1px] ${state === 'flee' || state === 'alert' ? 'bg-red-500' : 'bg-blue-400'}`}></motion.div>
+                                    </div>
                                 </div>
-                            </div>
-
-                            {/* Jetpack */}
-                            <div className="absolute -bottom-2 flex gap-1.5">
-                                <motion.div animate={{ height: state === 'flee' ? [10, 20, 10] : [3, 6, 3] }} className={`w-1 rounded-full blur-[1px] ${state === 'flee' ? 'bg-red-500' : 'bg-blue-400'}`}></motion.div>
-                                <motion.div animate={{ height: state === 'flee' ? [10, 20, 10] : [3, 6, 3] }} transition={{ delay: 0.1 }} className={`w-1 rounded-full blur-[1px] ${state === 'flee' ? 'bg-red-500' : 'bg-blue-400'}`}></motion.div>
-                            </div>
+                            </motion.div>
                         </div>
-                        
-                        {/* Speech Bubble (Mini) */}
-                        <AnimatePresence>
-                            {speech && !showInfo && (
-                                <motion.div 
-                                    initial={{ opacity: 0, scale: 0, y: 5 }} 
-                                    animate={{ opacity: 1, scale: 1, y: 0 }} 
-                                    exit={{ opacity: 0, scale: 0.8 }}
-                                    className={`absolute top-[-35px] left-1/2 transform -translate-x-1/2 px-2 py-1 rounded-lg shadow-md whitespace-nowrap z-50 font-bold text-[10px] border ${theme === 'matrix' ? 'bg-green-500 text-black border-green-400' : 'bg-white text-slate-800 border-gray-200'}`}
-                                >
-                                    {speech}
-                                    <div className={`absolute bottom-[-3px] left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rotate-45 border-b border-r ${theme === 'matrix' ? 'bg-green-500 border-green-400' : 'bg-white border-gray-200'}`}></div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
                     </motion.div>
                 </div>
             );
