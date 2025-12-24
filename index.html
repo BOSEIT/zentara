@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zentara Systems - AI & Hardware Solutions</title>
+    <title>Zentara Systems - Beyond Digital</title>
     
     <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     
-    <!-- Babel for JSX -->
+    <!-- Babel -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
-    <!-- Tailwind CSS -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Framer Motion -->
@@ -21,55 +21,140 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Google Fonts -->
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
-
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #020202; 
+            color: #e5e5e5; 
+            overflow-x: hidden; 
+        }
+        
+        .font-display { font-family: 'Outfit', sans-serif; }
+        
         /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #3b82f6; 
-            border-radius: 4px;
-        }
-        
-        .tech-font { font-family: 'Space Grotesk', monospace; }
-        .pro-font { font-family: 'Outfit', sans-serif; }
-        .serif-font { font-family: 'Playfair Display', serif; }
-        .inter-font { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #020202; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
 
-        /* Drone Propeller Animation */
-        .spin-fast {
-            animation: spin 0.1s linear infinite;
-        }
-        @keyframes spin {
-            from { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
-            to { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
-        }
-
-        /* Hexagon Shape */
-        .hex-shape {
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-        }
-
-        /* Marquee Animation */
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-            animation: marquee 30s linear infinite;
-        }
-        
-        /* Modal Backdrop Blur */
+        /* Glass Utilities */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* TRUE HONEYCOMB GRID SYSTEM */
+        .hex-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hex-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: -32px; 
+        }
+
+        .hex {
+            position: relative;
+            width: 110px; 
+            height: 126px; 
+            margin: 0 1px; 
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            background: #0a0a0a;
+            /* Snappy transition for robotic feel */
+            transition: filter 0.1s step-end, transform 0.1s ease-out; 
+            overflow: hidden;
+        }
+
+        /* ULTIMATE MECHA ANIMATION */
+        @keyframes mech-idle {
+            0%, 70% { transform: translate(0, 0) scale(1); filter: brightness(1) grayscale(100%); }
+            
+            /* Drett (Twitch 1) */
+            71% { transform: translate(1px, -1px) scale(1.02); filter: brightness(1.2) grayscale(80%); }
+            73% { transform: translate(-1px, 1px) scale(1.02); filter: brightness(1) grayscale(100%); }
+            75% { transform: translate(0, 0) scale(1); }
+
+            /* Pause */
+            85% { transform: translate(0, 0) scale(1); }
+
+            /* Dreet (Rotate Adjust) */
+            86% { transform: rotate(1deg) scale(0.98); }
+            88% { transform: rotate(-0.5deg) scale(0.98); }
+            90% { transform: rotate(0deg) scale(1); }
+
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        @keyframes scan-line {
+            0% { top: -100%; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 200%; opacity: 0; }
+        }
+
+        .animate-hex-mech {
+            animation: mech-idle 8s linear infinite; /* Long duration for unpredictable feel */
+        }
+        
+        .hex-scan::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.4), transparent);
+            animation: scan-line 3s linear infinite;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* Tech Overlay Lines */
+        .hex-tech-border {
+            position: absolute;
+            inset: 0;
+            background: 
+                linear-gradient(to bottom, transparent 48%, rgba(59, 130, 246, 0.5) 50%, transparent 52%);
+            opacity: 0;
+            background-size: 100% 200%;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        @media (min-width: 768px) {
+            .hex { width: 140px; height: 160px; }
+            .hex-row { margin-bottom: -40px; }
+        }
+
+        /* MASONRY GALLERY */
+        .masonry-grid {
+            column-count: 2;
+            column-gap: 1rem;
+        }
+        @media (min-width: 768px) {
+            .masonry-grid { column-count: 4; }
+        }
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1rem;
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
         }
     </style>
 </head>
@@ -78,1531 +163,502 @@
 
     <script type="text/babel">
         const { useState, useEffect, useRef, useMemo } = React;
-        const { motion, AnimatePresence, useScroll, useSpring } = window.Motion;
+        const { motion, AnimatePresence } = window.Motion;
 
-        // --- DATA ZENTARA ---
-        const modalContent = {
-            smartphone: {
-                title: "Hardware Clinic",
-                subtitle: "Smartphone & Laptop Specialist",
-                desc: "Didukung pengalaman 15 tahun menangani ribuan device. Kami memperbaiki apa yang orang lain tidak bisa.",
-                details: [
-                    "Expert Analisis Kerusakan Mesin",
-                    "Ganti LCD/Touchscreen Presisi",
-                    "Recovery Data Mati Total",
-                    "Upgrade Performance Laptop"
-                ],
-                price: "Estimasi Gratis",
-                icon: "Smartphone",
-                color: "blue"
+        // --- DATA ---
+
+        const statsData = [
+            { val: "500+", label: "Projects Done", icon: "Layers", color: "text-blue-500", sub: "Since 2010" },
+            { val: "98%", label: "Satisfaction", icon: "Smile", color: "text-green-500", sub: "Rate" },
+            { val: "15th", label: "Years Experience", icon: "Trophy", color: "text-yellow-500", sub: "Building Legacy" },
+            { val: "24/7", label: "Active Support", icon: "Headphones", color: "text-purple-500", sub: "Online Now" }
+        ];
+
+        const expertiseData = [
+            { id: "dev", title: "Development", desc: "Membangun sistem web & mobile yang scalable.", icon: "Code2", color: "from-blue-500 to-cyan-500" },
+            { id: "ai", title: "AI Integration", desc: "Implementasi kecerdasan buatan dalam bisnis.", icon: "Brain", color: "from-purple-500 to-pink-500" },
+            { id: "iot", title: "IoT & Hardware", desc: "Konektivitas cerdas antara fisik & digital.", icon: "Cpu", color: "from-emerald-500 to-green-500" },
+            { id: "sec", title: "Cyber Security", desc: "Proteksi aset digital tingkat enterprise.", icon: "ShieldCheck", color: "from-orange-500 to-red-500" }
+        ];
+
+        const projects = [
+            { 
+                id: "xpos", title: "XPOS Prime", category: "Enterprise POS", image: "assets/xpos_1.png", year: "2024",
+                desc: "Sistem kasir modern dengan manajemen stok multi-gudang dan integrasi AI.",
+                tech: ["React Native", "Firebase", "NodeJS"], gallery: ["assets/xpos_1.png", "assets/xpos_2.png", "assets/xpos_3.png"], link: "#"
             },
-            webdev: {
-                title: "AI-Powered Web Systems",
-                subtitle: "Next Gen Development",
-                desc: "Kami mengintegrasikan AI Assistant dalam proses coding dan manajemen sistem, menghasilkan website yang lebih cerdas, cepat, dan efisien.",
-                details: [
-                    "AI-Enhanced Code Architecture",
-                    "Web Apps & SaaS Custom",
-                    "E-Commerce Automation",
-                    "Smart Dashboard System"
-                ],
-                price: "Mulai Rp 1.5jt++",
-                icon: "Bot",
-                color: "purple"
+            { 
+                id: "career", title: "Career Connect", category: "Job Platform", image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80&w=1000", year: "2023",
+                desc: "Platform pencarian kerja dengan algoritma matching.", tech: ["Next.js", "PostgreSQL", "Tailwind"], gallery: ["https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80&w=1000"], link: "https://career-connect-lime.vercel.app/"
             },
-            network: {
-                title: "Network Intelligence",
-                subtitle: "Infrastructure & Security",
-                desc: "Koneksi internet stabil dan keamanan aset digital terjamin. Tim kami ahli dalam manajemen jaringan Mikrotik dan instalasi CCTV pintar.",
-                details: [
-                    "Manajemen Bandwidth Mikrotik",
-                    "Instalasi Server & NAS Local",
-                    "Security System (CCTV AI)",
-                    "Topologi Jaringan Kantor"
-                ],
-                price: "Survey Lokasi",
-                icon: "Wifi",
-                color: "orange"
+            { 
+                id: "asset", title: "Asset Guard", category: "IoT System", image: "assets/asset_12.png", year: "2024",
+                desc: "Dashboard monitoring aset real-time & maintenance otomatis.", tech: ["Python", "IoT Sensors", "Google Maps"], gallery: ["assets/asset_12.png", "assets/asset_1.png"], link: "https://management-asset-green.firebaseapp.com/"
+            },
+            { 
+                id: "dash", title: "Exec Dashboard", category: "Big Data", image: "assets/dashboard_1.png", year: "2023",
+                desc: "Visualisasi data eksekutif untuk pengambilan keputusan.", tech: ["Streamlit", "Pandas", "D3.js"], gallery: ["assets/dashboard_1.png", "assets/dashboard_2.png"], link: "https://dashboard-resto-3yua5kxz3du42jk7gmspcj.streamlit.app/", note: "Login: Hendri"
             }
-        };
-
-        const quickActions = [
-            { id: 'web', title: "Buat Website", subtitle: "Company Profile / Landing Page", icon: "Layout", btnText: "Mulai Build", color: "text-blue-500", type: "wizard" },
-            { id: 'system', title: "Buat System", subtitle: "Aplikasi / Dashboard Bisnis", icon: "Cpu", btnText: "Konsultasi", color: "text-purple-500", type: "wizard" },
-            { id: 'hp', title: "Service HP", subtitle: "Mati Total / Ganti LCD", icon: "Smartphone", btnText: "Booking", color: "text-green-500", type: "wizard" },
-            { id: 'laptop', title: "Service Laptop", subtitle: "Install Ulang / Hardware", icon: "Laptop", btnText: "Booking", color: "text-orange-500", type: "wizard" },
-            { id: 'cctv', title: "Installasi CCTV", subtitle: "Pantau Aset 24 Jam", icon: "Video", btnText: "Cek Harga", color: "text-red-500", type: "wizard" },
-            { id: 'wifi', title: "Improve Jaringan", subtitle: "WiFi Kantor / Mikrotik", icon: "Wifi", btnText: "Audit Network", color: "text-cyan-500", type: "wizard" },
         ];
 
-        const pricingCategories = {
-            software: [
-                { name: "Starter Web", price: 1500000, displayPrice: "Rp 1.500.000", features: ["Landing Page 1 Halaman", "AI-Optimized Content", "Desain Responsif", "Tombol WhatsApp", "Revisi 2x"] },
-                { name: "Business Pro", price: 3500000, displayPrice: "Rp 3.500.000", features: ["Multi-Page (5+)", "CMS Admin Panel", "SEO Basic with AI", "Email Bisnis", "Maintenance 3 Bulan"], isPopular: true },
-                { name: "Custom AI App", price: 0, displayPrice: "Diskusi", features: ["Integrasi AI Assistant", "Sistem Database Kompleks", "Automasi Bisnis", "Server Setup", "Priority Support"] }
-            ]
-        };
-
-        const domainPackages = [
-            { tld: ".com", name: "Global Biz", desc: "Bangun kepercayaan internasional.", price: "Rp 1.247.000", oldPrice: "Rp 1.747.000", badge: "Terlaris" },
-            { tld: ".co.id", name: "Corporate ID", desc: "Legalitas resmi perusahaan Indonesia.", price: "Rp 1.477.000", oldPrice: "Rp 1.977.000", badge: "Resmi" },
-            { tld: ".id", name: "Indo Pride", desc: "Identitas lokal, akses cepat & aman.", price: "Rp 1.466.000", oldPrice: "Rp 1.966.000", badge: "Lokal" }
-        ];
-
-        // --- UPDATE DATA PORTOFOLIO (PATH ASSETS DIPERBAIKI) ---
-        const portfolioTemplates = [
-            { 
-                id: "xpos", 
-                title: "XPOS Point of Sale", 
-                category: "Resto System", 
-                image: "assets/xpos_1.png", 
-                desc: "Aplikasi Kasir Modern dengan antarmuka intuitif, manajemen stok multi-gudang, dan laporan keuangan real-time. Dirancang untuk efisiensi operasional retail.",
-                isCaseStudy: true,
-                techStack: ["React Native", "Firebase", "Thermal Printer", "Android / iOS"],
-                gallery: [
-                    { img: "assets/xpos_1.png", caption: "Login Page & Secure Auth" },
-                    { img: "assets/xpos_2.png", caption: "Dashboard Utama & Ringkasan Shift" },
-                    { img: "assets/xpos_3.png", caption: "Katalog Menu & Manajemen Kategori" },
-                    { img: "assets/xpos_4.png", caption: "Keranjang Belanja & Kalkulasi Otomatis" },
-                    { img: "assets/xpos_5.png", caption: "Manajemen Data Pelanggan & Member" },
-                    { img: "assets/xpos_6.png", caption: "Metode Pembayaran (Cash/QRIS/Debit)" },
-                    { img: "assets/xpos_7.png", caption: "Bukti Transaksi & Struk Digital" },
-                    { img: "assets/xpos_8.png", caption: "Laporan Riwayat Transaksi Harian" }
-                ],
-                features: [
-                    "Fast Checkout Process (< 3 detik)",
-                    "Offline-First (Tetap jalan tanpa internet)",
-                    "Integrasi Printer Thermal Bluetooth/USB",
-                    "Manajemen Stok Real-time",
-                    "Laporan Shift Kasir Otomatis"
-                ]
-            },
-            { 
-                id: "asset", 
-                title: "Asset Management System", 
-                category: "Enterprise Resource Planning", 
-                image: "assets/asset_12.png", 
-                desc: "Solusi manajemen aset terpadu berbasis mobile yang dirancang untuk memonitor siklus hidup aset, manajemen tagihan (bills), serta penyimpanan kredensial akun secara terpusat dan aman.",
-                isCaseStudy: true,
-                techStack: ["React Native", "Firebase", "Thermal Printer", "Android / iOS"],
-                gallery: [
-                    { img: "assets/asset_12.png", caption: "Secure Authentication & User Login" },
-                    { img: "assets/asset_13.png", caption: "Dashboard Analitik & Ringkasan Aset" },
-                    { img: "assets/asset_1.png", caption: "Manajemen Inventaris Terpusat" },
-                    { img: "assets/asset_2.png", caption: "Pelacakan Status & Jadwal Maintenance" },
-                    { img: "assets/asset_3.png", caption: "Form Registrasi Perangkat Detail" },
-                    { img: "assets/asset_4.png", caption: "Sistem Pengajuan (Request) Pengadaan" },
-                    { img: "assets/asset_5.png", caption: "Monitoring Tagihan & Jatuh Tempo" },
-                    { img: "assets/asset_6.png", caption: "Audit Log & Riwayat Perubahan Data" },
-                    { img: "assets/asset_7.png", caption: "Riwayat Perbaikan & Servis Aset" },
-                    { img: "assets/asset_8.png", caption: "Manajemen Pelepasan & Lelang Aset" },
-                    { img: "assets/asset_9.png", caption: "Manajemen Hak Akses Pengguna" },
-                    { img: "assets/asset_10.png", caption: "Penyimpanan Kredensial Akun (Credential Vault)" }
-                ],
-                features: [
-                    "High Performance Asset Checkout (< 3 detik)",
-                    "Offline-First Architecture (Sinkronisasi Otomatis)",
-                    "Integrasi Cetak Label via Thermal Printer",
-                    "Pelacakan Lokasi & Status Aset Real-time",
-                    "Laporan Audit Komprehensif & Keuangan"
-                ]
-            },
-            { 
-                id: "dashboard", 
-                title: "Executive Dashboard", 
-                category: "Data Analytics", 
-                image: "assets/dashboard_1.png", 
-                desc: "Platform Business Intelligence komprehensif untuk memantau Resto POS. Visualisasi data penjualan, Dashboard grafik, dan performa cabang dalam satu layar.",
-                isCaseStudy: true,
-                techStack: ["Python Streamlit", "Pandas", "Plotly", "Firebase Analytics"],
-                gallery: [
-                    { img: "assets/dashboard_1.png", caption: "Executive Overview & KPI Utama" },
-                    { img: "assets/dashboard_2.png", caption: "Analisa Tren Penjualan Harian & Mingguan" },
-                    { img: "assets/dashboard_3.png", caption: "Performa Produk Terlaris (Top Items)" },
-                    { img: "assets/dashboard_4.png", caption: "Laporan Keuangan & Export Data Excel" }
-                ],
-                features: [
-                    "Visualisasi Data Interaktif (Drill-down capable)",
-                    "Real-time Data Syncing",
-                    "Automated Reporting Generator (PDF/Excel)",
-                    "Analisa Peak Hour & Customer Behavior",
-                    "Secure Access Level Management"
-                ]
-            },
-            { 
-                id: "hris", 
-                title: "Recruitment Super App", 
-                category: "SaaS / HR System", 
-                image: "assets/hris_1.png", 
-                desc: "Ekosistem rekrutmen digital lengkap. Menggantikan proses manual dengan sistem pelacakan pelamar (ATS), psikotes online, hingga video interview dalam satu aplikasi.",
-                isCaseStudy: true,
-                techStack: ["React.js", "Firebase Auth & Firestore", "Tailwind CSS", "Jitsi Meet SDK", "PWA (Mobile Ready)"],
-                gallery: [
-                    { img: "assets/hris_1.png", caption: "Landing Page & Career Portal" },
-                    { img: "assets/hris_2.png", caption: "Sistem Login & Register Pelamar" },
-                    { img: "assets/hris_3.png", caption: "Dashboard HRD - Overview Kandidat" },
-                    { img: "assets/hris_4.png", caption: "Kanban Board - Drag & Drop Process" },
-                    { img: "assets/hris_5.png", caption: "Manajemen Jadwal Interview" },
-                    { img: "assets/hris_6.png", caption: "Detail Pelamar & AI Scoring" },
-                    { img: "assets/hris_7.png", caption: "Realtime Chat Room (HRD - Pelamar)" },
-                    { img: "assets/hris_8.png", caption: "Integrated Video Call (Jitsi Meet)" },
-                    { img: "assets/hris_9.png", caption: "Dashboard Pelamar (Mobile View)" },
-                    { img: "assets/hris_10.png", caption: "Sistem Notifikasi Realtime" },
-                    { img: "assets/hris_11.png", caption: "Multi-Company Management System" }
-                ],
-                features: [
-                    "Smart ATS (Applicant Tracking System) dengan Kanban Board",
-                    "Integrated Video Interview (Tanpa aplikasi pihak ke-3)",
-                    "Realtime Chat System untuk komunikasi HR & Kandidat",
-                    "Multi-Tenant Support (Satu sistem untuk banyak PT)",
-                    "PWA Support (Dapat diinstall di Android/iOS)",
-                    "AI Resume Screening Simulation"
-                ]
-            },
-            { id: "kopi", title: "Kopi Senja", category: "F&B / Cafe", image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&q=80&w=600", desc: "Template aesthetic untuk coffee shop." },
-            { id: "tech", title: "Tech Startup", category: "Corporate", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600", desc: "Desain clean untuk perusahaan teknologi." },
-            { id: "fashion", title: "Fashion Store", category: "E-Commerce", image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=600", desc: "Toko online modern dengan cart system." },
-            { id: "legal", title: "Legal Pro", category: "Professional", image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=600", desc: "Website untuk kantor pengacara/notaris." }
+        const galleryItems = [
+            { type: "image", src: "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=600", height: "h-64" },
+            { type: "video", src: "https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-circuit-board-99-large.mp4", height: "h-40" },
+            { type: "image", src: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=600", height: "h-80" },
+            { type: "image", src: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600", height: "h-48" },
+            { type: "video", src: "https://assets.mixkit.co/videos/preview/mixkit-server-room-with-many-blinking-lights-2070-large.mp4", height: "h-64" },
+            { type: "image", src: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=600", height: "h-40" },
+            { type: "image", src: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600", height: "h-64" },
+            { type: "image", src: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=600", height: "h-48" }
         ];
 
         const testimonials = [
-            { name: "Andi Wijaya", role: "CEO KopiSenja", text: "Zentara mengubah cara kami memantau stok. Aplikasi kasirnya sangat membantu operasional harian.", rating: 5 },
-            { name: "Sarah L.", role: "Content Creator", text: "Laptop editing saya mati total, di tempat lain nyerah. Di sini bisa nyala lagi. Magic!", rating: 5 },
-            { name: "PT. Global Tech", role: "Partner Bisnis", text: "Setup server dan jaringan kantor kami dikerjakan sangat rapi. After sales-nya juara.", rating: 5 }
+            { name: "Sarah J.", role: "CTO, FinTech Co.", text: "Transformasi sistem yang luar biasa. Efisiensi naik 200% dalam sebulan." },
+            { name: "Budi Santoso", role: "Owner, Retail Chain", text: "Dashboard yang dibuat sangat membantu pengambilan keputusan strategis." }
         ];
 
-        const techStackIcons = [
-            { icon: "Bot", label: "OpenAI", color: "text-green-600" },
-            { icon: "Code2", label: "React", color: "text-blue-400" },
-            { icon: "Box", label: "NodeJS", color: "text-green-500" },
-            { icon: "Layers", label: "NextJS", color: "text-gray-500" },
-            { icon: "Database", label: "SQL", color: "text-cyan-600" },
-            { icon: "Server", label: "Laravel", color: "text-red-500" },
-            { icon: "Wifi", label: "Mikrotik", color: "text-orange-600" },
-            { icon: "Smartphone", label: "Flutter", color: "text-sky-400" },
-        ];
+        // --- COMPONENTS ---
 
-        // --- WIZARD CONFIGURATION ---
-        const wizardConfig = {
-            web: {
-                title: "Buat Website",
-                steps: [
-                    { title: "Cek Domain", desc: "Cek ketersediaan nama brand Anda." },
-                    { title: "Pilih Paket", desc: "Tentukan fitur yang Anda butuhkan." }
-                ],
-                inputType: ["domain_check", "package_select"]
-            },
-            system: {
-                title: "Buat System",
-                steps: [
-                    { title: "Jenis Sistem", desc: "Apa yang ingin Anda bangun?" },
-                    { title: "Estimasi Budget", desc: "Rentang investasi Anda." }
-                ],
-                inputType: ["options", "options"],
-                options1: ["Aplikasi Kasir (POS)", "Sistem Gudang (ERP)", "Company Profile App", "Custom Web App", "Android/iOS App"],
-                options2: ["< 5 Juta", "5 - 15 Juta", "15 - 30 Juta", "> 30 Juta", "Belum Tau"]
-            },
-            hp: {
-                title: "Service HP",
-                steps: [
-                    { title: "Data Device", desc: "Merk & Tipe Smartphone Anda." },
-                    { title: "Keluhan Utama", desc: "Apa masalahnya?" }
-                ],
-                inputType: ["text", "options"],
-                placeholder1: "Contoh: Samsung S23 Ultra, iPhone 14 Pro...",
-                options2: ["LCD Pecah/Retak", "Baterai Cepat Habis", "Mati Total", "Tidak Ada Sinyal", "Lupa Pola/Sandi", "Lainnya"]
-            },
-            laptop: {
-                title: "Service Laptop",
-                steps: [
-                    { title: "Data Laptop", desc: "Merk & Model Laptop Anda." },
-                    { title: "Jenis Kerusakan", desc: "Detail masalah pada laptop." }
-                ],
-                inputType: ["text", "options"],
-                placeholder1: "Contoh: ASUS TUF Gaming, Macbook Air M1...",
-                options2: ["Install Ulang Windows", "Mati Total", "Keyboard Error", "Upgrade SSD/RAM", "Engsel Patah", "Lainnya"]
-            },
-            cctv: {
-                title: "Installasi CCTV",
-                steps: [
-                    { title: "Jumlah Titik", desc: "Berapa kamera yang dibutuhkan?" },
-                    { title: "Lokasi Pasang", desc: "Dimana CCTV akan dipasang?" }
-                ],
-                inputType: ["options", "options"],
-                options1: ["Paket 2 Kamera", "Paket 4 Kamera", "Paket 8 Kamera", "16 Kamera", "Hanya Service/Setting"],
-                options2: ["Rumah Tinggal", "Toko / Ruko", "Kantor / Gudang", "Pabrik", "Sekolah"]
-            },
-            wifi: {
-                title: "Improve Jaringan",
-                steps: [
-                    { title: "Kendala Saat Ini", desc: "Masalah koneksi yang dialami." },
-                    { title: "Tipe Lokasi", desc: "Skala area jaringan." }
-                ],
-                inputType: ["options", "options"],
-                options1: ["Lemot / Buffering", "Sinyal Tidak Merata", "Sering Putus", "Pasang Baru (Mikrotik)", "Tarik Kabel LAN"],
-                options2: ["Rumah Pribadi", "Kantor Kecil (<10 user)", "Kantor Besar (>10 user)", "Cafe / Resto", "Sekolah / Kampus"]
-            }
+        const Navbar = () => (
+            <motion.nav initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.8 }} className="fixed top-4 w-full z-50 px-4">
+                <div className="max-w-4xl mx-auto glass-pill rounded-full px-6 py-3 flex justify-between items-center bg-black/40 backdrop-blur-xl border border-white/10">
+                    <div className="flex items-center gap-2 font-display font-bold text-lg tracking-tight text-white">ZENTARA.</div>
+                    <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+                        <a href="#expertise" className="hover:text-white transition">Expertise</a>
+                        <a href="#work" className="hover:text-white transition">Works</a>
+                        <a href="#network" className="hover:text-white transition">Network</a>
+                        <a href="#contact" className="hover:text-white transition">Contact</a>
+                    </div>
+                    <a href="https://wa.me/6285157362339" className="bg-white text-black px-5 py-2 rounded-full text-sm font-bold hover:bg-gray-200 transition flex items-center gap-2">
+                        <i data-lucide="message-circle" width="16"></i> Chat
+                    </a>
+                </div>
+            </motion.nav>
+        );
+
+        const Hero = () => (
+            <section className="relative min-h-screen flex items-center justify-center px-6 pt-20 overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-black to-black"></div>
+                <div className="relative z-10 max-w-5xl mx-auto text-center">
+                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 mb-8">
+                            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                            <span className="text-[10px] uppercase tracking-widest font-bold text-gray-400">System Online v2.0</span>
+                        </div>
+                        <h1 className="font-display text-6xl md:text-8xl lg:text-9xl font-bold leading-[0.9] tracking-tighter mb-8">
+                            DIGITAL <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-white">EVOLUTION.</span>
+                        </h1>
+                        <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed mb-12">
+                            Transformasi ide menjadi ekosistem digital yang hidup. Menggabungkan estetika seni dengan ketajaman kecerdasan buatan.
+                        </p>
+                    </motion.div>
+                </div>
+            </section>
+        );
+
+        const Stats = () => (
+            <section className="py-10 px-6">
+                <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {statsData.map((s, i) => (
+                        <motion.div key={i} whileHover={{ y: -5 }} className="glass-panel p-6 rounded-3xl relative overflow-hidden">
+                            <div className={`absolute top-4 right-4 opacity-20 ${s.color}`}><i data-lucide={s.icon} width="24"></i></div>
+                            <h3 className="text-4xl font-bold mb-1 font-display">{s.val}</h3>
+                            <p className="text-sm font-bold text-gray-300">{s.label}</p>
+                            <p className="text-[10px] text-gray-500 mt-2 uppercase tracking-wider">{s.sub}</p>
+                        </motion.div>
+                    ))}
+                </div>
+            </section>
+        );
+
+        const Expertise = () => {
+            const [active, setActive] = useState(0);
+            return (
+                <section id="expertise" className="py-32 px-6 bg-[#020202]">
+                    <div className="max-w-7xl mx-auto">
+                        <h2 className="font-display text-4xl font-bold mb-12">Our Expertise</h2>
+                        <div className="flex flex-col md:flex-row gap-4 h-[600px] md:h-[400px]">
+                            {expertiseData.map((item, idx) => (
+                                <motion.div 
+                                    key={idx}
+                                    onHoverStart={() => setActive(idx)}
+                                    onClick={() => setActive(idx)}
+                                    className={`relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 ease-out ${active === idx ? 'flex-[3]' : 'flex-[1]'}`}
+                                >
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-20 group-hover:opacity-40`}></div>
+                                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+                                    <div className="absolute inset-0 p-8 flex flex-col justify-between">
+                                        <div className={`w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white mb-4 ${active === idx ? 'scale-100' : 'scale-75 opacity-50'}`}>
+                                            <i data-lucide={item.icon}></i>
+                                        </div>
+                                        <div>
+                                            <h3 className={`font-display font-bold text-2xl mb-2 ${active === idx ? 'text-white' : 'text-gray-500 rotate-0 md:-rotate-90 md:origin-bottom-left md:translate-x-8'}`}>{item.title}</h3>
+                                            <AnimatePresence>
+                                                {active === idx && (
+                                                    <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="text-gray-300 text-sm leading-relaxed max-w-md">{item.desc}</motion.p>
+                                                )}
+                                            </AnimatePresence>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
         };
 
-        // --- FULL MOCK TEMPLATES ---
-        const DemoKopi = () => (
-            <div className="bg-[#fdfbf7] text-[#4a3b32] font-serif h-full overflow-y-auto">
-                <div className="px-6 py-4 flex justify-between items-center border-b border-[#e5dcd3] sticky top-0 bg-[#fdfbf7]/90 backdrop-blur z-20">
-                    <span className="text-xl font-bold italic">Kopi Senja.</span>
-                    <ul className="hidden md:flex gap-6 text-sm uppercase tracking-widest font-sans text-[#7c6a5a]">
-                        <li>Menu</li><li>Lokasi</li><li>Tentang Kami</li>
-                    </ul>
-                    <button className="px-4 py-2 bg-[#4a3b32] text-[#fdfbf7] text-xs font-sans uppercase tracking-widest rounded-full">Order Online</button>
-                </div>
-                <div className="relative h-[80vh] bg-[url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80')] bg-cover bg-center bg-fixed">
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-center px-4">
-                        <div className="max-w-3xl">
-                            <span className="text-[#fdfbf7] font-sans uppercase tracking-[0.3em] text-sm mb-4 block">Est. 2024</span>
-                            <h1 className="text-6xl md:text-8xl font-bold text-[#fdfbf7] mb-6 leading-tight">Rasa yang <br/>Selalu Pulang.</h1>
-                            <p className="text-white/80 font-sans max-w-lg mx-auto mb-8 leading-relaxed">Sebuah ruang untuk jeda di tengah hiruk pikuk kota. Nikmati biji kopi pilihan nusantara.</p>
-                            <button className="px-10 py-4 bg-[#c2a386] text-white rounded-full font-sans text-sm tracking-widest uppercase hover:bg-[#a88b6f] transition transform hover:scale-105">Lihat Menu</button>
-                        </div>
-                    </div>
-                </div>
-                <div className="py-24 px-6 max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&q=80&w=600" className="rounded-t-full h-96 w-full object-cover shadow-2xl" />
-                    </div>
-                    <div>
-                        <h2 className="text-4xl italic mb-6">Filosofi Seduh</h2>
-                        <p className="font-sans text-[#7c6a5a] leading-loose mb-6">Setiap tetes kopi menceritakan perjalanan petani, proses sangrai, hingga ke tangan barista kami. Kami percaya bahwa kopi bukan sekadar minuman, melainkan sebuah ritual ketenangan.</p>
-                        <ul className="font-sans text-sm space-y-4 border-t border-[#e5dcd3] pt-6">
-                            <li className="flex justify-between"><span>Arabica Gayo</span> <span className="text-[#c2a386]">Light Roast</span></li>
-                            <li className="flex justify-between"><span>Robusta Lampung</span> <span className="text-[#c2a386]">Medium Dark</span></li>
-                            <li className="flex justify-between"><span>House Blend</span> <span className="text-[#c2a386]">Secret Recipe</span></li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="bg-white py-24 px-6">
-                    <div className="text-center max-w-2xl mx-auto mb-16">
-                        <span className="font-sans uppercase tracking-widest text-[#c2a386] text-xs font-bold">Menu Pilihan</span>
-                        <h2 className="text-4xl italic mt-2">Signature Kami</h2>
-                    </div>
-                    <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 font-sans">
-                        {[{name: "Es Kopi Susu Senja", price: "28k", img: "https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&q=80&w=400"},{name: "V60 Manual Brew", price: "35k", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=400"},{name: "Matcha Latte", price: "32k", img: "https://images.unsplash.com/photo-1515825838458-f2a94b20105a?auto=format&fit=crop&q=80&w=400"}].map((item, i) => (
-                            <div key={i} className="group cursor-pointer">
-                                <div className="h-80 overflow-hidden mb-4 relative">
-                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition duration-500"></div>
-                                    <img src={item.img} className="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
-                                </div>
-                                <div className="flex justify-between items-end border-b border-[#e5dcd3] pb-2">
-                                    <h3 className="text-lg font-bold">{item.name}</h3>
-                                    <span className="text-[#c2a386] font-bold">{item.price}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                <div className="bg-[#2c241b] text-[#fdfbf7] py-16 px-6 text-center">
-                    <h2 className="text-3xl italic mb-6">Kopi Senja.</h2>
-                    <p className="font-sans text-white/50 text-sm max-w-md mx-auto mb-8">Jl. Damai Sejahtera No. 88, Jakarta Selatan.<br/>Buka Setiap Hari: 08.00 - 22.00</p>
-                    <div className="flex justify-center gap-4 text-xs font-sans uppercase tracking-widest text-[#c2a386]">
-                        <a href="#">Instagram</a><span>•</span><a href="#">Maps</a>
-                    </div>
-                </div>
-            </div>
-        );
-
-        const DemoTech = () => (
-            <div className="bg-slate-50 text-slate-900 font-sans h-full overflow-y-auto">
-                <div className="px-8 py-5 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-10 border-b border-slate-100">
-                    <div className="flex items-center gap-2 font-bold text-blue-600 text-xl tracking-tighter"><div className="w-6 h-6 bg-blue-600 rounded-lg"></div>NEXUS</div>
-                    <div className="hidden md:flex gap-8 text-sm font-medium text-slate-600"><span>Product</span><span>Solutions</span><span>Pricing</span><span>Docs</span></div>
-                    <button className="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-semibold shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition">Get Started</button>
-                </div>
-                <div className="pt-24 pb-20 px-6 text-center bg-white border-b border-slate-100">
-                    <div className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-bold mb-6 border border-blue-100">v2.0 is Live 🚀</div>
-                    <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 text-slate-900 leading-tight">Scale your business <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">without limits.</span></h1>
-                    <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">The all-in-one platform to manage your team, projects, and finance with AI-driven insights.</p>
-                    <div className="flex justify-center gap-4">
-                        <button className="bg-slate-900 text-white px-8 py-4 rounded-xl font-bold hover:bg-slate-800 transition">Start Free Trial</button>
-                        <button className="bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-xl font-bold hover:bg-slate-50 transition">Watch Demo</button>
-                    </div>
-                    <div className="mt-16 max-w-5xl mx-auto rounded-xl shadow-2xl border border-slate-200 overflow-hidden bg-slate-100 p-2">
-                         <img src="https://cdn.dribbble.com/users/1615584/screenshots/15710288/media/6c7a7751767b45d2d09eb0502a5e977f.jpg?resize=1200x900&vertical=center" alt="Dashboard" className="w-full rounded-lg" />
-                    </div>
-                </div>
-                <div className="py-10 bg-slate-50 border-b border-slate-200">
-                    <div className="max-w-6xl mx-auto px-6 text-center">
-                        <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Trusted by market leaders</p>
-                        <div className="flex flex-wrap justify-center gap-12 opacity-50 grayscale">
-                             <span className="text-xl font-black">ACME Corp</span><span className="text-xl font-black">GlobalBank</span><span className="text-xl font-black">StarkInd</span><span className="text-xl font-black">WayneEnt</span><span className="text-xl font-black">Umbrella</span>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-white py-24 px-6">
-                    <div className="max-w-6xl mx-auto">
-                        <div className="grid md:grid-cols-3 gap-12">
-                            {[{title: 'Real-time Analytics', desc: 'Monitor your data as it happens with our lightning fast engine.', icon: 'bg-blue-100'},{title: 'Automated Workflows', desc: 'Set it and forget it. Save hours of manual work every week.', icon: 'bg-purple-100'},{title: 'Bank-grade Security', desc: 'Your data is encrypted and protected by enterprise standards.', icon: 'bg-green-100'},].map((f, i) => (
-                                <div key={i} className="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-xl transition duration-300">
-                                    <div className={`w-12 h-12 ${f.icon} rounded-xl mb-6`}></div>
-                                    <h3 className="font-bold text-xl mb-3">{f.title}</h3>
-                                    <p className="text-slate-500 leading-relaxed">{f.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-slate-900 text-slate-400 py-16 px-6 border-t border-slate-800">
-                    <div className="max-w-6xl mx-auto grid md:grid-cols-4 gap-8 mb-12">
-                        <div><div className="text-white font-bold text-xl mb-4">NEXUS</div><p className="text-sm">Building the future of work.</p></div>
-                        <div><h4 className="text-white font-bold mb-4">Product</h4><ul className="space-y-2 text-sm"><li>Features</li><li>Integrations</li><li>Pricing</li></ul></div>
-                        <div><h4 className="text-white font-bold mb-4">Company</h4><ul className="space-y-2 text-sm"><li>About</li><li>Careers</li><li>Blog</li></ul></div>
-                        <div><h4 className="text-white font-bold mb-4">Legal</h4><ul className="space-y-2 text-sm"><li>Privacy</li><li>Terms</li><li>Security</li></ul></div>
-                    </div>
-                    <div className="text-center text-xs opacity-50 border-t border-slate-800 pt-8">© 2024 Nexus Inc. All rights reserved.</div>
-                </div>
-            </div>
-        );
-
-        const DemoFashion = () => (
-            <div className="bg-white text-black font-sans h-full overflow-y-auto">
-                <div className="px-8 py-6 flex justify-between items-center uppercase tracking-widest text-xs border-b border-gray-100 sticky top-0 bg-white/95 backdrop-blur z-20">
-                    <div className="flex gap-4"><span>Shop</span><span>Collections</span></div>
-                    <span className="text-2xl font-serif font-bold tracking-normal">AURA.</span>
-                    <div className="flex gap-4"><span>Search</span><span>Cart (0)</span></div>
-                </div>
-                <div className="grid md:grid-cols-2 h-[80vh]">
-                    <div className="bg-[#f3f3f3] flex items-center justify-center p-12 order-2 md:order-1">
-                        <div className="max-w-md">
-                            <span className="text-xs uppercase tracking-widest text-gray-500 mb-2 block">New Season</span>
-                            <h2 className="text-5xl md:text-6xl font-serif mb-6 leading-tight">Summer <br/>Essential '25</h2>
-                            <p className="mb-8 text-gray-500 text-sm leading-relaxed">Discover the new aesthetics of minimalism. Crafted with sustainable organic cotton.</p>
-                            <button className="bg-black text-white px-8 py-4 text-xs uppercase tracking-widest hover:bg-gray-800 transition">Shop Collection</button>
-                        </div>
-                    </div>
-                    <div className="bg-[url('https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80')] bg-cover bg-center order-1 md:order-2 h-full"></div>
-                </div>
-                <div className="py-20 px-8">
-                    <div className="flex justify-between items-end mb-10">
-                        <h3 className="text-2xl font-serif">Shop by Category</h3>
-                        <a href="#" className="text-xs uppercase underline">View All</a>
-                    </div>
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {['Dresses', 'Outerwear', 'Accessories'].map((cat, i) => (
-                            <div key={i} className="relative h-96 group cursor-pointer overflow-hidden bg-gray-100">
-                                <img src={`https://source.unsplash.com/random/400x600?fashion,${cat}`} alt={cat} className="w-full h-full object-cover transition duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" />
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="bg-white px-6 py-3 text-sm uppercase tracking-widest font-bold group-hover:bg-black group-hover:text-white transition">{cat}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                <div className="p-8 border-t border-gray-100">
-                    <h3 className="text-center text-2xl font-serif mb-12">Just Arrived</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
-                        {[1,2,3,4].map(i => (
-                            <div key={i} className="group cursor-pointer">
-                                <div className="h-[400px] bg-gray-100 mb-4 relative overflow-hidden">
-                                    <div className="absolute top-2 left-2 bg-black text-white text-[10px] px-2 py-1 uppercase font-bold z-10">New</div>
-                                    <img src={`https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=300&h=400&random=${i}`} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                                    <button className="absolute bottom-0 left-0 w-full bg-white py-3 text-xs uppercase font-bold translate-y-full group-hover:translate-y-0 transition duration-300">Add to Cart</button>
-                                </div>
-                                <div className="text-xs uppercase tracking-wide font-bold mb-1">Linen Midi Dress</div>
-                                <div className="text-xs text-gray-500">$89.00</div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                <div className="bg-black text-white py-20 px-6 text-center">
-                    <h3 className="text-2xl font-serif mb-4">Join the Club</h3>
-                    <p className="text-gray-400 text-sm mb-6">Get 10% off your first order and exclusive access to sales.</p>
-                    <div className="flex max-w-md mx-auto border-b border-gray-700 pb-2">
-                        <input type="email" placeholder="Your email address" className="bg-transparent w-full outline-none text-sm placeholder-gray-600" />
-                        <button className="text-xs uppercase font-bold hover:text-gray-300">Subscribe</button>
-                    </div>
-                </div>
-            </div>
-        );
-
-        const DemoLegal = () => (
-            <div className="bg-white text-[#1a202c] font-serif h-full overflow-y-auto">
-                <div className="bg-[#1a365d] text-white py-3 px-6 text-xs text-center font-sans tracking-wide">Free Consultation: +62 21 555 0199 | Available 24/7</div>
-                <div className="px-8 py-6 flex justify-between items-center border-b border-gray-100 sticky top-0 bg-white z-20 shadow-sm">
-                    <div className="text-2xl font-bold tracking-tighter text-[#1a365d]">HARRIS & PARTNERS</div>
-                    <div className="hidden md:flex gap-8 font-sans text-sm font-medium text-gray-600 items-center">
-                        <span>Practice Areas</span><span>Attorneys</span><span>Case Results</span>
-                        <button className="bg-[#c53030] text-white px-6 py-2 rounded-sm text-xs font-bold uppercase tracking-wider hover:bg-[#9b2c2c] transition">Contact Us</button>
-                    </div>
-                </div>
-                <div className="relative py-32 px-8 bg-[#f7fafc]">
-                    <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-                        <div>
-                            <div className="w-20 h-1 bg-[#c53030] mb-8"></div>
-                            <h1 className="text-5xl md:text-6xl font-bold text-[#1a365d] mb-6 leading-tight">Justice for those who need it most.</h1>
-                            <p className="font-sans text-gray-600 mb-10 leading-relaxed text-lg">We provide top-tier legal representation with a focus on integrity, tenacity, and results. Your case is our priority, and your victory is our mission.</p>
-                            <div className="flex gap-4">
-                                <button className="bg-[#1a365d] text-white px-8 py-4 font-sans text-sm uppercase tracking-wider hover:bg-[#2c5282] transition shadow-lg">Request Consultation</button>
-                                <button className="border border-[#1a365d] text-[#1a365d] px-8 py-4 font-sans text-sm uppercase tracking-wider hover:bg-[#ebf8ff] transition">Our Team</button>
-                            </div>
-                        </div>
-                        <div className="relative">
-                            <div className="absolute -top-4 -right-4 w-full h-full border-4 border-[#1a365d]/10 z-0"></div>
-                            <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80" className="w-full h-[500px] object-cover shadow-2xl relative z-10" />
-                            <div className="absolute bottom-8 -left-8 bg-white p-6 shadow-xl z-20 max-w-xs border-l-4 border-[#c53030]">
-                                <div className="text-4xl font-bold text-[#1a365d] mb-1">98%</div>
-                                <div className="text-sm font-sans text-gray-500 uppercase tracking-wide">Success Rate in Litigation</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="py-24 px-8 bg-white">
-                    <div className="max-w-6xl mx-auto">
-                        <div className="text-center mb-16">
-                            <h2 className="text-3xl font-bold text-[#1a365d] mb-4">Practice Areas</h2>
-                            <div className="w-16 h-1 bg-[#c53030] mx-auto"></div>
-                        </div>
-                        <div className="grid md:grid-cols-3 gap-8">
-                            {['Corporate Law', 'Real Estate', 'Litigation', 'Family Law', 'Intellectual Property', 'Criminal Defense'].map(area => (
-                                <div key={area} className="p-10 border border-gray-100 hover:border-[#1a365d] hover:shadow-xl transition duration-300 group bg-gray-50">
-                                    <h3 className="text-xl font-bold text-[#1a365d] mb-4 group-hover:text-[#c53030] transition">{area}</h3>
-                                    <p className="font-sans text-sm text-gray-500 leading-relaxed mb-6">Providing expert legal counsel and aggressive representation to protect your rights and interests.</p>
-                                    <span className="text-[#c53030] font-sans text-xs font-bold uppercase tracking-wider flex items-center gap-2">Learn More <span>&rarr;</span></span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-[#1a365d] text-white py-24 px-6">
-                    <div className="max-w-4xl mx-auto text-center">
-                        <h2 className="text-3xl font-bold mb-8">Free Case Evaluation</h2>
-                        <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto font-sans">
-                            <input type="text" placeholder="Full Name" className="p-4 bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white" />
-                            <input type="email" placeholder="Email Address" className="p-4 bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white" />
-                            <textarea rows="4" placeholder="Brief details about your case..." className="md:col-span-2 p-4 bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white"></textarea>
-                            <button className="md:col-span-2 bg-[#c53030] py-4 uppercase font-bold tracking-wider hover:bg-[#e53e3e] transition">Submit Request</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-
-        // --- VISUAL EFFECTS ---
-        const MatrixRain = () => {
+        const NeuroCore = () => {
             const canvasRef = useRef(null);
+            
             useEffect(() => {
                 const canvas = canvasRef.current;
                 const ctx = canvas.getContext('2d');
-                const resizeCanvas = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-                resizeCanvas();
-                const chars = '01ZENTARAxyz';
-                const fontSize = 14;
-                let columns = Math.floor(canvas.width / fontSize);
-                const drops = [];
-                for (let x = 0; x < columns; x++) drops[x] = 1;
-                const draw = () => {
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = '#0F0';
-                    ctx.font = fontSize + 'px monospace';
-                    for (let i = 0; i < drops.length; i++) {
-                        const text = chars.charAt(Math.floor(Math.random() * chars.length));
-                        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                        drops[i]++;
-                    }
-                };
-                const interval = setInterval(draw, 30);
-                window.addEventListener('resize', resizeCanvas);
-                return () => { clearInterval(interval); window.removeEventListener('resize', resizeCanvas); };
-            }, []);
-            return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full z-0 opacity-20 pointer-events-none" />;
-        };
-
-        const ZenBot = ({ theme, initialX, initialY, colorOverride, role, id }) => {
-            const [position, setPosition] = useState({ x: initialX, y: initialY });
-            const [state, setState] = useState('patrol'); 
-            const [showInfo, setShowInfo] = useState(false);
-            const [speech, setSpeech] = useState(null);
-            const [bubbleAlign, setBubbleAlign] = useState('center'); 
-            const speechTimeout = useRef(null);
-            const timeRef = useRef(Math.random() * 100);
-            const animationRef = useRef(null);
-            const botIdentity = {
-                1: { name: "Zen-1", job: "Hardware Expert", desc: "Dokter Gadget! Spesialis bedah mesin & recovery data.", catchphrase: "Sini aku cek HP-nya!" },
-                2: { name: "Zen-2", job: "Network Guardian", desc: "Penjaga Sinyal! Mikrotik & CCTV adalah mainanku.", catchphrase: "Aman terkendali!" },
-                3: { name: "Zen-3", job: "AI Architect", desc: "Otak Digital! Coding web & integrasi AI itu hobiku.", catchphrase: "Hello World!" }
-            };
-            const myId = botIdentity[id] || botIdentity[1];
-
-            useEffect(() => {
-                if (showInfo) {
-                    const w = window.innerWidth;
-                    if (position.x > w - 160) setBubbleAlign('right');
-                    else if (position.x < 160) setBubbleAlign('left');
-                    else setBubbleAlign('center');
+                let width = canvas.width = canvas.offsetWidth;
+                let height = canvas.height = canvas.offsetHeight;
+                
+                const particles = [];
+                const particleCount = 60;
+                
+                for(let i=0; i<particleCount; i++) {
+                    particles.push({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        vx: (Math.random() - 0.5) * 1.5,
+                        vy: (Math.random() - 0.5) * 1.5,
+                        size: Math.random() * 2 + 1
+                    });
                 }
-            }, [showInfo, position.x]);
 
-            useEffect(() => {
-                const reactions = ["Woaaah!", "Dunia berubah!", "Ganti skin!", "Portal terbuka!"];
-                setSpeech(reactions[Math.floor(Math.random() * reactions.length)]);
-                setState('alert'); 
-                setTimeout(() => {
-                    setState('patrol');
-                    setSpeech(null);
-                }, 1500);
-            }, [theme]);
-
-            useEffect(() => {
                 const animate = () => {
-                    if (state === 'patrol' && !showInfo) {
-                        timeRef.current += 0.005;
-                        const w = window.innerWidth;
-                        const h = window.innerHeight;
-                        const centerX = w / 2;
-                        const centerY = h / 2;
-                        let px, py;
+                    ctx.clearRect(0, 0, width, height);
+                    ctx.fillStyle = '#3b82f6';
+                    ctx.strokeStyle = 'rgba(59, 130, 246, 0.15)'; 
 
-                        if (id === 1) {
-                            const rangeX = (w / 2.2);
-                            const rangeY = (h / 3);
-                            px = centerX + Math.cos(timeRef.current * 0.5) * rangeX;
-                            py = centerY + Math.sin(timeRef.current) * rangeY;
-                        } else if (id === 2) {
-                            const radius = Math.min(w, h) / 2.5;
-                            px = centerX + Math.sin(timeRef.current * 0.4 + 2) * radius * 1.2;
-                            py = centerY + Math.cos(timeRef.current * 0.4 + 2) * radius;
-                        } else {
-                            const rangeX = (w / 2.5);
-                            const rangeY = (h / 2.5);
-                            px = centerX + Math.cos(timeRef.current * 0.3 + 4) * rangeX;
-                            py = centerY + Math.sin(timeRef.current * 0.6 + 1) * rangeY;
+                    particles.forEach((p, i) => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+
+                        if(p.x < 0 || p.x > width) p.vx *= -1;
+                        if(p.y < 0 || p.y > height) p.vy *= -1;
+
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        for(let j=i+1; j<particles.length; j++) {
+                            const p2 = particles[j];
+                            const dx = p.x - p2.x;
+                            const dy = p.y - p2.y;
+                            const dist = Math.sqrt(dx*dx + dy*dy);
+                            
+                            if(dist < 120) {
+                                ctx.beginPath();
+                                ctx.lineWidth = 1 - (dist/120);
+                                ctx.moveTo(p.x, p.y);
+                                ctx.lineTo(p2.x, p2.y);
+                                ctx.stroke();
+                            }
                         }
-                        setPosition({ x: px, y: py });
-                    }
-                    animationRef.current = requestAnimationFrame(animate);
+                    });
+                    requestAnimationFrame(animate);
                 };
-                animationRef.current = requestAnimationFrame(animate);
-                return () => cancelAnimationFrame(animationRef.current);
-            }, [state, showInfo, id]);
-
-            const fleeTimer = useRef(null);
-
-            const handleMouseEnter = () => {
-                if (showInfo || state === 'flee' || state === 'spin') return;
-                setState('alert');
-                const alerts = ["Eits! Zona Merah!", "Jangan pegang!", "System Alert!", "Panas nih!", "Waduh!"];
-                setSpeech(alerts[Math.floor(Math.random() * alerts.length)]);
-
-                fleeTimer.current = setTimeout(() => {
-                    setState('flee');
-                    setSpeech("Wuzzz! Kabur!");
-                    timeRef.current += 10; 
-                    setTimeout(() => {
-                        setState('patrol');
-                        setSpeech(null);
-                    }, 800); 
-                }, 2000); 
-            };
-
-            const handleMouseLeave = () => {
-                if (state === 'flee') return;
-                clearTimeout(fleeTimer.current);
-                if (!showInfo) {
-                    setState('patrol');
-                    setSpeech(null);
-                }
-            };
-
-            let botColor = colorOverride;
-            if (!botColor) {
-                if (theme === 'matrix') botColor = '#4ade80';
-                else if (theme === 'dark') botColor = '#a78bfa'; 
-                else botColor = '#3b82f6';
-            }
-            
-            const isAlert = state === 'alert' || state === 'flee';
-            const displayColor = isAlert ? '#ef4444' : botColor; 
-            const glowColor = `0 0 ${isAlert ? '20px' : '10px'} ${displayColor}`;
-            const getBodyAnim = () => {
-                if (state === 'alert') return { rotate: [0, -5, 5, -5, 5, 0], scale: 1 };
-                if (state === 'flee') return { rotate: [0, 15, -15, 0], scale: 1 };
-                return { y: [0, -5, 0], scale: 1, rotate: 0 }; 
-            };
-            const getBodyTransition = () => {
-                if (state === 'alert') return { duration: 0.1, repeat: Infinity }; 
-                if (state === 'flee') return { type: "spring", stiffness: 200, damping: 20 };
-                return { duration: 2, repeat: Infinity, ease: "easeInOut" }; 
-            };
-            const parentTransition = state === 'flee' 
-                ? { type: "spring", stiffness: 50, damping: 10 } 
-                : (state === 'patrol' ? { duration: 0.05, ease: "linear" } : { type: "spring", stiffness: 150 });
-
-            let bubbleClass = "left-1/2 -translate-x-1/2 origin-bottom"; 
-            let arrowClass = "left-1/2 -translate-x-1/2"; 
-            if (bubbleAlign === 'right') { bubbleClass = "right-[-10px] origin-bottom-right"; arrowClass = "right-6 translate-x-1/2"; } 
-            else if (bubbleAlign === 'left') { bubbleClass = "left-[-10px] origin-bottom-left"; arrowClass = "left-6 -translate-x-1/2"; }
+                
+                animate();
+                const handleResize = () => { width = canvas.width = canvas.offsetWidth; height = canvas.height = canvas.offsetHeight; };
+                window.addEventListener('resize', handleResize);
+                return () => window.removeEventListener('resize', handleResize);
+            }, []);
 
             return (
-                <div className="fixed z-50">
-                    <motion.div className="fixed z-50" style={{ left: position.x - 20, top: position.y - 20 }} animate={{ x: 0, y: 0 }} transition={parentTransition}>
-                        <div className="relative cursor-pointer pointer-events-auto" onClick={() => { setShowInfo(!showInfo); clearTimeout(fleeTimer.current); setState('patrol'); }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                            <AnimatePresence>
-                                {showInfo && (
-                                    <motion.div initial={{ opacity: 0, scale: 0.5, y: 10 }} animate={{ opacity: 1, scale: 1, y: -140 }} exit={{ opacity: 0, scale: 0.5, y: 10 }} transition={{ type: "spring", stiffness: 300, damping: 20 }} className={`absolute w-56 p-4 rounded-2xl shadow-2xl border-2 backdrop-blur-xl z-[60] cursor-default ${bubbleClass} ${theme === 'matrix' ? 'bg-black/90 border-green-500 text-green-400 shadow-green-500/20' : (theme === 'dark' ? 'bg-slate-900/95 border-purple-500 text-purple-100 shadow-purple-500/20' : 'bg-white/95 border-blue-200 text-slate-800 shadow-blue-500/10')}`} onClick={(e) => e.stopPropagation()}>
-                                        <div className="flex items-center gap-3 mb-3 border-b pb-2 border-current/10">
-                                            <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-xs shadow-inner" style={{ backgroundColor: displayColor }}>{id}</div>
-                                            <div className="flex-1 min-w-0"><h4 className="font-bold text-sm truncate">{myId.name}</h4><p className="text-[10px] uppercase font-bold opacity-60 tracking-wider truncate">{myId.job}</p></div>
-                                            <button onClick={(e) => { e.stopPropagation(); setShowInfo(false); }} className={`p-1 rounded-full hover:bg-black/10 transition-colors`}><i data-lucide="x" width="14"></i></button>
-                                        </div>
-                                        <p className="text-xs leading-relaxed mb-3 opacity-90">{myId.desc}</p>
-                                        <div className={`p-2 rounded-lg text-[10px] italic text-center font-medium border ${theme === 'matrix' ? 'bg-green-900/20 border-green-900/50' : (theme === 'dark' ? 'bg-purple-900/20 border-purple-900/50' : 'bg-blue-50 border-blue-100')}`}>"{myId.catchphrase}"</div>
-                                        <div className={`absolute -bottom-2.5 w-5 h-5 rotate-45 border-b-2 border-r-2 ${arrowClass} ${theme === 'matrix' ? 'bg-black border-green-500' : (theme === 'dark' ? 'bg-slate-900 border-purple-500' : 'bg-white border-blue-200')}`}></div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                            <AnimatePresence>
-                                {speech && !showInfo && (
-                                    <motion.div initial={{ opacity: 0, scale: 0, y: 5 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.8 }} className={`absolute top-[-35px] left-1/2 transform -translate-x-1/2 px-2 py-1 rounded-lg shadow-md whitespace-nowrap z-50 font-bold text-[10px] border ${isAlert ? 'bg-red-500 text-white border-red-600' : (theme === 'matrix' ? 'bg-green-500 text-black border-green-400' : 'bg-white text-slate-800 border-gray-200')}`}>{speech}<div className={`absolute bottom-[-3px] left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 rotate-45 border-b border-r ${isAlert ? 'bg-red-500 border-red-600' : (theme === 'matrix' ? 'bg-green-500 border-green-400' : 'bg-white border-gray-200')}`}></div></motion.div>
-                                )}
-                            </AnimatePresence>
-                            <motion.div animate={getBodyAnim()} transition={getBodyTransition()}>
-                                <div className="relative w-10 h-10 md:w-12 md:h-12 flex justify-center items-center">
-                                    <motion.div animate={{ rotate: state === 'alert' ? [0, 20, -20, 0] : [0, 5, -5, 0] }} transition={{ duration: 0.2, repeat: Infinity }} className="absolute -top-2 w-0.5 h-3 bg-gray-500 origin-bottom"><div className="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: displayColor }}></div></motion.div>
-                                    <div className="w-8 h-7 md:w-10 md:h-8 bg-gray-900 rounded-lg border flex items-center justify-center relative shadow-md z-10 transition-colors duration-300" style={{ borderColor: displayColor, boxShadow: glowColor }}>
-                                        <div className="flex gap-1.5 items-center justify-center"><motion.div animate={state === 'alert' ? { y: [0, -1, 1, 0], x: [0, 1, -1, 0] } : { scaleY: [1, 0.2, 1] }} transition={state === 'alert' ? { duration: 0.1, repeat: Infinity } : { duration: 3, repeat: Infinity, delay: Math.random() }} className="w-1 h-1 rounded-full bg-white shadow-[0_0_2px_white]"></motion.div><motion.div animate={state === 'alert' ? { y: [0, 1, -1, 0], x: [0, -1, 1, 0] } : { scaleY: [1, 0.2, 1] }} transition={state === 'alert' ? { duration: 0.1, repeat: Infinity } : { duration: 3, repeat: Infinity, delay: Math.random() }} className="w-1 h-1 rounded-full bg-white shadow-[0_0_2px_white]"></motion.div></div>
-                                    </div>
-                                    <div className="absolute -bottom-2 flex gap-1.5"><motion.div animate={{ height: state === 'flee' ? [20, 40, 20] : (state === 'alert' ? [6, 12, 6] : [3, 6, 3]) }} className={`w-1 rounded-full blur-[1px] ${state === 'flee' || state === 'alert' ? 'bg-red-500' : 'bg-blue-400'}`}></motion.div><motion.div animate={{ height: state === 'flee' ? [20, 40, 20] : (state === 'alert' ? [6, 12, 6] : [3, 6, 3]) }} transition={{ delay: 0.1 }} className={`w-1 rounded-full blur-[1px] ${state === 'flee' || state === 'alert' ? 'bg-red-500' : 'bg-blue-400'}`}></motion.div></div>
-                                </div>
-                            </motion.div>
+                <section className="py-24 px-6 relative overflow-hidden bg-[#050505] border-y border-white/5">
+                    <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center relative z-10">
+                        <div>
+                            <div className="inline-block px-3 py-1 bg-blue-900/30 border border-blue-500/30 rounded-full text-blue-400 text-xs font-bold mb-6">LIVE NEURAL NETWORK</div>
+                            <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">Neural <span className="text-blue-500">Connectivity.</span></h2>
+                            <p className="text-gray-400 leading-relaxed mb-8">
+                                Simulasi jaringan data yang hidup. Setiap titik mewakili node dalam infrastruktur klien kami yang saling berkomunikasi secara real-time dengan latensi mendekati nol.
+                            </p>
                         </div>
-                    </motion.div>
-                </div>
+                        <div className="relative h-[400px] w-full glass-panel rounded-3xl overflow-hidden">
+                            <canvas ref={canvasRef} className="w-full h-full block"></canvas>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
+                            <div className="absolute bottom-6 left-6 text-xs font-mono text-blue-400">
+                                Status: <span className="text-green-400 animate-pulse">● ONLINE</span><br/>
+                                Nodes: 5.421 Active
+                            </div>
+                        </div>
+                    </div>
+                </section>
             );
         };
 
-        const ThemeFloater = ({ theme, setTheme }) => {
-            const [isOpen, setIsOpen] = useState(false);
-            const [wobble, setWobble] = useState(false);
-            useEffect(() => {
-                const interval = setInterval(() => { setWobble(true); setTimeout(() => setWobble(false), 1000); }, 5000);
-                return () => clearInterval(interval);
-            }, []);
-            const isMatrix = theme === 'matrix';
-            const isDark = theme === 'dark';
-            const btnColor = isMatrix ? 'bg-green-500 text-black border-green-400' : (isDark ? 'bg-purple-600 text-white border-purple-400' : 'bg-blue-600 text-white border-blue-400');
+        const SelectedWorks = () => {
+            const [selectedId, setSelectedId] = useState(null);
+            const [imgIndex, setImgIndex] = useState(0);
+            const selectedProject = projects.find(p => p.id === selectedId);
+
+            const nextImg = () => { if (selectedProject) setImgIndex((prev) => (prev + 1) % selectedProject.gallery.length); };
+            const prevImg = () => { if (selectedProject) setImgIndex((prev) => (prev - 1 + selectedProject.gallery.length) % selectedProject.gallery.length); };
+            useEffect(() => { setImgIndex(0); }, [selectedId]);
+
             return (
-                <div className="fixed bottom-6 right-6 z-[90] flex flex-col items-end">
+                <section id="work" className="py-32 px-6">
+                    <div className="max-w-7xl mx-auto">
+                        <h2 className="font-display text-5xl font-bold mb-16">Selected Works.</h2>
+                        <div className="space-y-32">
+                            {projects.map((project, idx) => (
+                                <div key={idx} className={`flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-10 items-center group`}>
+                                    <div className="w-full md:w-7/12 relative cursor-pointer" onClick={() => setSelectedId(project.id)}>
+                                        <div className="aspect-video overflow-hidden rounded-2xl relative">
+                                            <img src={project.image} onError={(e)=>{e.target.onerror=null; e.target.src='https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800'}} className="w-full h-full object-cover transition duration-700 group-hover:scale-105" />
+                                            <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition duration-500 flex items-center justify-center">
+                                                <div className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-full text-sm font-bold opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition">View Case Study</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="w-full md:w-5/12">
+                                        <div className="flex items-center gap-3 mb-4 text-xs font-mono text-blue-400">
+                                            <span>{project.year}</span><span className="w-1 h-1 bg-gray-500 rounded-full"></span><span>{project.category}</span>
+                                        </div>
+                                        <h3 className="text-4xl font-display font-bold mb-6">{project.title}</h3>
+                                        <p className="text-gray-400 mb-8 leading-relaxed">{project.desc}</p>
+                                        <button onClick={() => setSelectedId(project.id)} className="text-sm font-bold border-b border-white/20 pb-1 hover:border-white transition">Explore Project</button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="mt-24 text-center">
+                            <button className="px-8 py-4 glass-panel rounded-full hover:bg-white hover:text-black transition-all font-bold text-sm tracking-widest uppercase">
+                                Explore All Works <i className="inline-block ml-2" data-lucide="arrow-right" width="16"></i>
+                            </button>
+                        </div>
+                    </div>
+
                     <AnimatePresence>
-                        {isOpen && (
-                            <motion.div initial={{ opacity: 0, y: 20, scale: 0.8 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.8 }} className={`mb-4 p-4 rounded-2xl shadow-2xl border flex flex-col gap-2 min-w-[150px] ${isMatrix ? 'bg-black border-green-500' : 'bg-white border-gray-200'}`}>
-                                <h4 className={`text-xs font-bold uppercase mb-2 ${isMatrix ? 'text-green-500' : 'text-slate-500'}`}>Pilih Interface</h4>
-                                <button onClick={() => {setTheme('light'); setIsOpen(false)}} className={`flex items-center gap-3 p-2 rounded-lg text-sm font-bold transition-colors ${theme === 'light' ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-100 text-slate-600'}`}><div className="w-6 h-6 rounded-full bg-white border border-gray-200 flex items-center justify-center"><i data-lucide="sun" width="14"></i></div> Clean (Pro)</button>
-                                <button onClick={() => {setTheme('dark'); setIsOpen(false)}} className={`flex items-center gap-3 p-2 rounded-lg text-sm font-bold transition-colors ${theme === 'dark' ? 'bg-purple-100 text-purple-700' : 'hover:bg-gray-100 text-slate-600'}`}><div className="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-white"><i data-lucide="moon" width="14"></i></div> Midnight</button>
-                                <button onClick={() => {setTheme('matrix'); setIsOpen(false)}} className={`flex items-center gap-3 p-2 rounded-lg text-sm font-bold transition-colors ${theme === 'matrix' ? 'bg-green-900/30 text-green-500' : 'hover:bg-gray-100 text-slate-600'}`}><div className="w-6 h-6 rounded-full bg-black border border-green-500 flex items-center justify-center text-green-500"><i data-lucide="terminal" width="14"></i></div> Matrix</button>
+                        {selectedId && selectedProject && (
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4">
+                                <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} className="w-full max-w-7xl h-[85vh] bg-[#0a0a0a] rounded-3xl border border-white/10 overflow-hidden flex flex-col md:flex-row relative">
+                                    <button onClick={() => setSelectedId(null)} className="absolute top-4 right-4 z-50 bg-black/50 p-2 rounded-full border border-white/10 hover:bg-white/20"><i data-lucide="x"></i></button>
+                                    <div className="w-full md:w-1/3 p-8 border-r border-white/10 overflow-y-auto">
+                                        <span className="text-blue-500 text-xs font-bold uppercase tracking-widest">{selectedProject.category}</span>
+                                        <h2 className="text-4xl font-bold font-display mt-2 mb-6">{selectedProject.title}</h2>
+                                        <p className="text-gray-400 leading-relaxed mb-8 text-sm">{selectedProject.desc}</p>
+                                        {selectedProject.note && ( <div className="mb-6 p-4 bg-yellow-900/20 border border-yellow-500/20 rounded-xl"><div className="flex gap-2 text-yellow-500 mb-1 font-bold text-xs items-center"><i data-lucide="alert-circle" width="14"></i> Access Info</div><p className="text-xs text-yellow-200/80">{selectedProject.note}</p></div> )}
+                                        <div className="mb-8"><h4 className="text-xs uppercase text-gray-500 font-bold mb-3">Tech Stack</h4><div className="flex flex-wrap gap-2">{selectedProject.tech.map(t => <span key={t} className="px-2 py-1 bg-white/5 border border-white/10 rounded text-xs text-gray-300">{t}</span>)}</div></div>
+                                        {selectedProject.link && selectedProject.link !== "#" && (<a href={selectedProject.link} target="_blank" className="w-full py-3 bg-blue-600 hover:bg-blue-500 rounded-xl flex items-center justify-center gap-2 font-bold text-sm transition">Visit Live Site <i data-lucide="external-link" width="16"></i></a>)}
+                                    </div>
+                                    <div className="w-full md:w-2/3 bg-black relative flex items-center justify-center p-4">
+                                        <div className="relative w-full h-full max-h-[600px] flex items-center justify-center">
+                                            <AnimatePresence mode="wait"><motion.img key={imgIndex} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} src={selectedProject.gallery[imgIndex]} onError={(e)=>{e.target.onerror=null; e.target.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800'}} className="max-w-full max-h-full object-contain rounded-lg shadow-2xl" /></AnimatePresence>
+                                        </div>
+                                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-4"><button onClick={prevImg} className="p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md border border-white/10"><i data-lucide="chevron-left"></i></button><span className="px-4 py-3 bg-black/50 rounded-full text-xs font-mono border border-white/10 flex items-center">{imgIndex + 1} / {selectedProject.gallery.length}</span><button onClick={nextImg} className="p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md border border-white/10"><i data-lucide="chevron-right"></i></button></div>
+                                    </div>
+                                </motion.div>
                             </motion.div>
                         )}
                     </AnimatePresence>
-                    <div className="relative group">
-                        {!isOpen && (<motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className={`absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-xl shadow-lg whitespace-nowrap text-xs font-bold ${isMatrix ? 'bg-green-900 text-green-400' : 'bg-white text-slate-700'}`}>Ganti Tema?<div className={`absolute top-1/2 -right-1 -translate-y-1/2 w-2 h-2 rotate-45 ${isMatrix ? 'bg-green-900' : 'bg-white'}`}></div></motion.div>)}
-                        <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} animate={wobble ? { rotate: [0, -10, 10, -10, 10, 0] } : {}} onClick={() => setIsOpen(!isOpen)} className={`w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 ${btnColor}`}><i data-lucide={isOpen ? "x" : "palette"} width="24" height="24"></i></motion.button>
-                    </div>
-                </div>
-            )
-        }
-
-        const BackToTop = ({ isMatrix, theme }) => {
-            const [show, setShow] = useState(false);
-            useEffect(() => {
-                const check = () => setShow(window.scrollY > 500);
-                window.addEventListener('scroll', check);
-                return () => window.removeEventListener('scroll', check);
-            }, []);
-            const btnClass = theme === 'matrix' ? 'bg-gray-800 text-green-500 border-green-900' : 'bg-white text-slate-400 border-gray-200';
-            return (
-                <AnimatePresence>
-                    {show && (<motion.button initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0 }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className={`fixed bottom-24 right-8 p-2 rounded-full shadow-lg z-40 transition-all border opacity-80 hover:opacity-100 ${btnClass}`}><i data-lucide="arrow-up" width="18"></i></motion.button>)}
-                </AnimatePresence>
+                </section>
             );
         };
 
-        const ZentaraCore = ({ theme }) => {
-            let color = '#3b82f6';
-            if (theme === 'matrix') color = '#4ade80';
-            if (theme === 'dark') color = '#a78bfa';
-            return (
-                <div className="relative w-[300px] h-[300px] md:w-[450px] md:h-[450px] flex items-center justify-center">
-                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} className="absolute inset-0 border-[1px] border-dashed rounded-full opacity-30" style={{ borderColor: color }} />
-                    <motion.div animate={{ rotate: -360 }} transition={{ duration: 15, repeat: Infinity, ease: "linear" }} className="absolute w-[80%] h-[80%] border-[1px] rounded-full opacity-40" style={{ borderColor: color }}><div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full shadow-[0_0_10px_currentColor]" style={{ backgroundColor: color }}></div></motion.div>
-                    <motion.div animate={{ scale: [1, 1.05, 1] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} className="relative w-[50%] h-[50%] flex items-center justify-center"><div className="absolute inset-0 hex-shape opacity-20" style={{ backgroundColor: color }}></div><div className="absolute inset-2 hex-shape border-2" style={{ borderColor: color }}></div><div className="absolute inset-6 hex-shape border" style={{ borderColor: color }}></div><div className="z-10 text-4xl font-black tracking-widest" style={{ color: color }}>Z</div></motion.div>
-                    {[0, 120, 240].map((deg, i) => (<motion.div key={i} className="absolute w-full h-full" animate={{ rotate: [deg, deg + 360] }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }}><motion.div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-xl bg-white/10 backdrop-blur-md border shadow-lg" style={{ borderColor: color }} animate={{ rotate: [0, -360] }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }}><i data-lucide={i === 0 ? "smartphone" : i === 1 ? "globe" : "server"} width="20" style={{ color: color }}></i></motion.div></motion.div>))}
-                </div>
-            );
-        };
+        // --- NEW: HEXAGON GRID WITH MECHA ANIMATION ---
+        const HexagonHive = () => {
+            const containerRef = useRef(null);
+            const allImages = [
+                "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80",
+                "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=600&q=80",
+                "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
+                "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80",
+                "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=80",
+                "https://images.unsplash.com/photo-1555255707-c07966088b7b?w=600&q=80",
+                "https://images.unsplash.com/photo-1531297461136-82lw9b44d940?w=600&q=80",
+                "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&q=80",
+                "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=80",
+                "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
+                "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?w=600&q=80"
+            ];
+            
+            // Assign random delay for "Mechanical" breathing effect
+            const hexData = useMemo(() => allImages.map(src => ({
+                src,
+                delay: Math.random() * 5 + 's',
+                duration: Math.random() * 2 + 5 + 's' // Longer duration for randomness
+            })), []);
+            
+            const rows = [
+                hexData.slice(0, 4),
+                hexData.slice(4, 7),
+                hexData.slice(7, 11)
+            ];
 
-        const FloatingCard = ({ type, startX, startY, delay, theme, onClick }) => {
-            const data = modalContent[type];
-            const [isMobile, setIsMobile] = useState(false);
-            useEffect(() => {
-                const checkMobile = () => setIsMobile(window.innerWidth < 768);
-                checkMobile();
-                window.addEventListener('resize', checkMobile);
-                return () => window.removeEventListener('resize', checkMobile);
-            }, []);
-            const desktopVariants = { smartphone: { x: [0, 80, 40, -40, -80, 0], y: [0, -40, -80, -40, 0, 0] }, webdev: { x: [0, -60, -100, 60, 0], y: [0, 50, -50, -30, 0] }, network: { x: [0, 50, -50, 50, 0], y: [0, -60, 0, 60, 0] } };
-            const mobileVariants = { smartphone: { x: [0, 15, 5, -5, -15, 0], y: [0, -10, -15, -10, 0, 0] }, webdev: { x: [0, -10, -20, 10, 0], y: [0, 15, -10, -5, 0] }, network: { x: [0, 10, -10, 10, 0], y: [0, -10, 0, 10, 0] } };
-            let mobileStyle = {};
-            if (isMobile) { if (type === 'smartphone') mobileStyle = { left: "5%", top: "10%" }; if (type === 'webdev') mobileStyle = { right: "5%", left: "auto", top: "25%" }; if (type === 'network') mobileStyle = { left: "calc(50% - 72px)", top: "70%" }; }
-            const isMatrix = theme === 'matrix';
-            const isDark = theme === 'dark';
-            const cardClass = isMatrix ? 'bg-black/80 border-green-500' : (isDark ? 'bg-slate-800/80 border-purple-500/50' : 'bg-white/90 border-blue-200');
-            const iconBg = isMatrix ? 'bg-green-900/50 text-green-400' : (isDark ? 'bg-purple-900/50 text-purple-400' : 'bg-blue-100 text-blue-600');
-            const titleColor = isMatrix || isDark ? 'text-white' : 'text-slate-800';
-            const linkColor = isMatrix ? 'text-green-400' : (isDark ? 'text-purple-400' : 'text-blue-500');
-            const finalStyle = isMobile ? mobileStyle : { left: startX, top: startY };
-            return (
-                <motion.div className={`absolute p-3 md:p-5 rounded-2xl shadow-xl border cursor-pointer backdrop-blur-md group z-20 w-36 md:w-56 ${cardClass}`} style={finalStyle} animate={isMobile ? mobileVariants[type] : desktopVariants[type]} transition={{ duration: 25 + Math.random() * 5, repeat: Infinity, delay: delay, ease: "easeInOut" }} whileHover={{ scale: 1.1, zIndex: 100, transition: { duration: 0.2 } }} onClick={() => onClick(type)}>
-                    <div className="flex flex-col md:flex-row items-center md:items-start gap-2 md:gap-3 mb-1 md:mb-3 text-center md:text-left">
-                        <div className={`p-1.5 md:p-2 rounded-lg ${iconBg}`}><i data-lucide={data.icon} className="w-4 h-4 md:w-5 md:h-5"></i></div>
-                        <h3 className={`font-bold text-xs md:text-sm ${titleColor}`}>{data.title}</h3>
-                    </div>
-                    <div className={`mt-1 md:mt-3 text-[10px] md:text-xs font-bold flex items-center justify-center md:justify-start gap-1 ${linkColor}`}>Lihat <i data-lucide="arrow-right" className="w-3 h-3"></i></div>
-                </motion.div>
-            );
-        };
-
-        const TemplatePreviewModal = ({ templateId, onClose }) => {
-            const renderContent = () => {
-                switch(templateId) { case 'kopi': return <DemoKopi />; case 'tech': return <DemoTech />; case 'fashion': return <DemoFashion />; case 'legal': return <DemoLegal />; default: return <div className="p-10 text-center">Template tidak ditemukan.</div>; }
+            const handleMouseMove = (e) => {
+                if (containerRef.current) {
+                    const rect = containerRef.current.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    containerRef.current.style.setProperty('--mouse-x', `${x}px`);
+                    containerRef.current.style.setProperty('--mouse-y', `${y}px`);
+                }
             };
-            return (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-md">
-                    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="w-full h-full max-w-6xl bg-white rounded-3xl overflow-hidden shadow-2xl relative flex flex-col">
-                        <div className="h-12 bg-gray-100 border-b border-gray-200 flex items-center px-4 justify-between shrink-0">
-                            <div className="flex gap-2"><div className="w-3 h-3 rounded-full bg-red-400 cursor-pointer hover:bg-red-500 transition" onClick={onClose}></div><div className="w-3 h-3 rounded-full bg-yellow-400"></div><div className="w-3 h-3 rounded-full bg-green-400"></div></div>
-                            <div className="bg-white px-4 py-1 rounded-md text-xs text-gray-500 font-mono border border-gray-200 shadow-sm flex items-center gap-2"><i data-lucide="lock" width="10"></i> zentara-templates.com/preview/{templateId}</div>
-                            <div className="w-16 flex justify-end"><button onClick={onClose} className="text-gray-400 hover:text-gray-600"><i data-lucide="x" width="20"></i></button></div>
+
+            const GridLayer = ({ isColored = false }) => (
+                <div className="hex-container" style={isColored ? { 
+                    position: 'absolute', 
+                    inset: 0, 
+                    pointerEvents: 'none',
+                    zIndex: 10,
+                    // The Flashlight Mask Logic
+                    maskImage: `radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black, transparent)`,
+                    WebkitMaskImage: `radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black, transparent)`
+                } : {}}>
+                    {rows.map((row, rIndex) => (
+                        <div key={rIndex} className="hex-row">
+                            {row.map((item, i) => (
+                                <div key={i} className={`hex animate-hex-mech ${isColored ? 'hex-scan' : ''}`} style={{ animationDelay: item.delay, animationDuration: item.duration }}>
+                                    <img src={item.src} className={`w-full h-full object-cover transition duration-100 ${isColored ? 'opacity-100 brightness-110 saturate-150' : 'opacity-30 grayscale brightness-50'}`} />
+                                    {isColored && (
+                                        <>
+                                            <div className="absolute inset-0 border-[2px] border-blue-400/50 pointer-events-none" style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}></div>
+                                            {/* Tech Decals */}
+                                            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-8 h-[1px] bg-blue-400"></div>
+                                            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[8px] font-mono text-blue-400 tracking-widest">HEX-{rIndex}{i}</div>
+                                        </>
+                                    )}
+                                    {!isColored && <div className="absolute inset-0 border-[1px] border-white/5 pointer-events-none" style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}></div>}
+                                </div>
+                            ))}
                         </div>
-                        <div className="flex-1 overflow-hidden relative">{renderContent()}</div>
-                        <div className="h-16 bg-white border-t border-gray-100 flex items-center justify-between px-6 shrink-0">
-                            <span className="text-sm font-bold text-gray-600">Suka dengan desain ini?</span>
-                            <a href={`https://wa.me/6285157362339?text=Halo%20Zentara,%20saya%20tertarik%20dengan%20template%20${templateId}`} className="bg-black text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-gray-800 transition">Pilih Template Ini</a>
-                        </div>
-                    </motion.div>
+                    ))}
                 </div>
             );
-        };
-
-        const CaseStudyModal = ({ project, onClose, theme }) => {
-            const isMatrix = theme === 'matrix';
-            const isDark = theme === 'dark';
-            
-            // State untuk Carousel
-            const [currentSlide, setCurrentSlide] = useState(0);
-            
-            // Styling logic
-            const bgClass = isMatrix ? 'bg-gray-900 border-green-500 text-green-400' : (isDark ? 'bg-slate-900 border-purple-500 text-slate-100' : 'bg-white border-gray-200 text-slate-900');
-            const borderClass = isMatrix ? 'border-green-800' : 'border-gray-200/20';
-            
-            const nextSlide = () => setCurrentSlide(prev => (prev + 1) % project.gallery.length);
-            const prevSlide = () => setCurrentSlide(prev => (prev - 1 + project.gallery.length) % project.gallery.length);
-
-            // Add keyboard navigation
-            useEffect(() => {
-                const handleKeyDown = (e) => {
-                    if (e.key === 'ArrowRight') nextSlide();
-                    if (e.key === 'ArrowLeft') prevSlide();
-                    if (e.key === 'Escape') onClose();
-                };
-                window.addEventListener('keydown', handleKeyDown);
-                return () => window.removeEventListener('keydown', handleKeyDown);
-            }, [project.gallery.length]);
 
             return (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-black/90 backdrop-blur-md">
-                    <motion.div 
-                        initial={{ opacity: 0, y: 50 }} 
-                        animate={{ opacity: 1, y: 0 }} 
-                        exit={{ opacity: 0, y: 50 }} 
-                        className={`w-full max-w-6xl h-[90vh] rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row border ${bgClass}`}
-                    >
-                        {/* Kolom Kiri: Informasi Project */}
-                        <div className={`w-full md:w-1/3 p-8 overflow-y-auto border-r custom-scrollbar ${borderClass}`}>
-                            <button onClick={onClose} className="mb-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest opacity-60 hover:opacity-100">
-                                <i data-lucide="arrow-left" width="16"></i> Kembali
-                            </button>
-                            
-                            <h2 className="text-3xl font-black mb-2 leading-tight">{project.title}</h2>
-                            <div className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-6 bg-current/10 border border-current/20`}>
-                                {project.category}
-                            </div>
-                            
-                            <p className="text-sm leading-relaxed opacity-80 mb-8 font-medium">
-                                {project.desc}
+                <section id="network" className="py-24 bg-black overflow-hidden relative" onMouseMove={handleMouseMove} ref={containerRef}>
+                    <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 items-center px-6 relative z-10">
+                        <div className="w-full md:w-1/3">
+                            <div className="inline-block px-3 py-1 bg-purple-900/30 border border-purple-500/30 rounded-full text-purple-400 text-xs font-bold mb-6">LIVE HIVE MIND</div>
+                            <h2 className="font-display text-4xl font-bold mb-6">Hive <br/><span className="text-blue-500">Intelligence.</span></h2>
+                            <p className="text-gray-400 mb-8 leading-relaxed">
+                                Jaringan node yang "bernapas" dan hidup. Struktur hexagon yang saling mengunci menjamin keamanan tanpa celah, beradaptasi secara otonom terhadap ancaman.
                             </p>
-
-                            <div className="mb-8">
-                                <h4 className="text-xs font-bold uppercase tracking-wider mb-4 opacity-70 border-b border-current/10 pb-2">Tech Stack</h4>
-                                <div className="flex flex-wrap gap-2">
-                                    {project.techStack.map((tech, i) => (
-                                        <span key={i} className="px-3 py-1.5 rounded-md text-xs font-bold border border-current/20 bg-current/5">
-                                            {tech}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div>
-                                <h4 className="text-xs font-bold uppercase tracking-wider mb-4 opacity-70 border-b border-current/10 pb-2">Key Features</h4>
-                                <ul className="space-y-3">
-                                    {project.features.map((feat, i) => (
-                                        <li key={i} className="flex gap-3 text-sm opacity-90 items-start">
-                                            <i data-lucide="check-circle" width="16" className="shrink-0 mt-0.5 text-green-500"></i>
-                                            <span className="leading-snug">{feat}</span>
-                                        </li>
-                                    ))}
-                                </ul>
+                            <div className="flex gap-4">
+                                <div className="px-4 py-2 bg-white/5 rounded border border-white/10 text-xs font-bold flex items-center gap-2"><div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div> Autonomous</div>
+                                <div className="px-4 py-2 bg-white/5 rounded border border-white/10 text-xs font-bold">Proximity Response</div>
                             </div>
                         </div>
-
-                        {/* Kolom Kanan: Galeri Foto Interaktif (Carousel) */}
-                        <div className="w-full md:w-2/3 bg-black/95 relative flex flex-col">
-                            {/* Main Slide Area */}
-                            <div className="flex-1 relative overflow-hidden flex items-center justify-center p-4">
-                                <div className="relative w-full h-full flex items-center justify-center">
-                                    <img 
-                                        key={currentSlide} // Key change forces re-render without complex animations
-                                        src={project.gallery[currentSlide].img} 
-                                        alt={project.gallery[currentSlide].caption} 
-                                        className="max-h-full max-w-full object-contain rounded-lg shadow-2xl border border-white/10 animate-fade-in" 
-                                    />
-                                </div>
-                                
-                                {/* Caption Overlay */}
-                                <div className="absolute bottom-6 left-0 w-full text-center pointer-events-none px-4">
-                                    <span className="inline-block px-4 py-2 bg-black/60 backdrop-blur-md rounded-full text-white text-xs font-bold border border-white/10 shadow-lg">
-                                        {currentSlide + 1} / {project.gallery.length} • {project.gallery[currentSlide].caption}
-                                    </span>
-                                </div>
-                                
-                                {/* Navigation Buttons */}
-                                <button onClick={prevSlide} className="absolute left-4 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur transition border border-white/10 group">
-                                    <i data-lucide="chevron-left" className="group-active:scale-90 transition"></i>
-                                </button>
-                                <button onClick={nextSlide} className="absolute right-4 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur transition border border-white/10 group">
-                                    <i data-lucide="chevron-right" className="group-active:scale-90 transition"></i>
-                                </button>
-                            </div>
-
-                            {/* Thumbnails Strip */}
-                            <div className="h-20 bg-black/80 border-t border-white/10 p-2 flex gap-2 overflow-x-auto items-center justify-center shrink-0 custom-scrollbar">
-                                {project.gallery.map((item, i) => (
-                                    <div 
-                                        key={i} 
-                                        onClick={() => setCurrentSlide(i)}
-                                        className={`relative h-full aspect-video rounded-md overflow-hidden cursor-pointer border-2 transition-all shrink-0 ${currentSlide === i ? (isMatrix ? 'border-green-500 opacity-100 ring-2 ring-green-500/50' : 'border-white opacity-100 ring-2 ring-white/30') : 'border-transparent opacity-40 hover:opacity-80'}`}
-                                    >
-                                        <img src={item.img} className="w-full h-full object-cover" />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </motion.div>
-                </div>
-            );
-        };
-
-        const ServiceModal = ({ content, onClose, theme }) => {
-            if (!content) return null;
-            const isMatrix = theme === 'matrix';
-            const isDark = theme === 'dark';
-            const btnBg = isMatrix ? "bg-green-500 text-black hover:bg-green-400" : (isDark ? "bg-purple-600 text-white hover:bg-purple-500" : "bg-slate-900 text-white hover:bg-slate-800");
-            const modalBg = isMatrix ? 'bg-gray-900 border border-green-500/50' : (isDark ? 'bg-slate-900 border border-slate-700' : 'bg-white');
-            const textColor = isMatrix || isDark ? 'text-white' : 'text-slate-900';
-            const subColor = isMatrix ? 'text-green-500' : (isDark ? 'text-purple-400' : 'text-blue-500');
-            const descBg = isMatrix ? 'bg-black/30 border-green-900 text-gray-300' : (isDark ? 'bg-slate-800 border-slate-700 text-gray-300' : 'bg-slate-50 border-slate-100 text-slate-600');
-            const itemBg = isMatrix ? 'border-gray-800 bg-gray-800/50' : (isDark ? 'border-slate-700 bg-slate-800' : 'border-gray-100 bg-white shadow-sm');
-            let headerGradient = 'from-blue-600 via-blue-500 to-purple-600';
-            if (isMatrix) headerGradient = 'from-gray-900 via-green-900 to-gray-900';
-            if (isDark) headerGradient = 'from-slate-900 via-purple-900 to-slate-900';
-
-            return (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-                    <motion.div initial={{ scale: 0.9, opacity: 0, y: 30 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0, y: 30 }} className={`relative w-full max-w-xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] ${modalBg}`}>
-                        <div className={`h-32 bg-gradient-to-r relative overflow-hidden flex items-center justify-center ${headerGradient}`}>
-                            <div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-                            <div className="relative z-10 p-4 rounded-full bg-white/20 backdrop-blur-md shadow-lg border border-white/30"><i data-lucide={content.icon} width="40" height="40" className="text-white"></i></div>
-                            <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/20 hover:bg-black/40 rounded-full text-white transition-colors"><i data-lucide="x" width="20"></i></button>
-                        </div>
-                        <div className="p-8 overflow-y-auto custom-scrollbar">
-                            <div className="text-center mb-6"><h2 className={`text-2xl font-bold mb-1 ${textColor}`}>{content.title}</h2><p className={`text-sm font-medium tracking-wide uppercase ${subColor}`}>{content.subtitle}</p></div>
-                            <div className={`p-4 rounded-xl mb-6 text-sm leading-relaxed border ${descBg}`}>{content.desc}</div>
-                            <div className="mb-8"><h4 className={`text-xs font-bold uppercase tracking-wider mb-4 opacity-70 ${textColor}`}>Fitur & Layanan</h4><div className="grid grid-cols-1 md:grid-cols-2 gap-3">{content.details.map((item, idx) => (<div key={idx} className={`flex items-center gap-3 p-3 rounded-lg border ${itemBg}`}><div className={`p-1.5 rounded-full ${isMatrix ? 'bg-green-900/50 text-green-400' : (isDark ? 'bg-purple-900/50 text-purple-400' : 'bg-blue-100 text-blue-600')}`}><i data-lucide="check" width="14" height="14"></i></div><span className={`text-sm font-medium ${textColor}`}>{item}</span></div>))}</div></div>
-                            <div className={`flex items-center justify-between pt-6 border-t ${isMatrix || isDark ? 'border-gray-700' : 'border-gray-100'}`}><div><p className={`text-xs opacity-50 ${textColor}`}>Mulai dari</p><p className={`text-xl font-bold ${textColor}`}>{content.price}</p></div><a href={`https://wa.me/6285157362339?text=Halo%20Zentara,%20saya%20ingin%20konsultasi%20tentang%20${content.title}`} className={`px-8 py-3 rounded-xl font-bold shadow-lg transition-transform hover:scale-105 active:scale-95 ${btnBg}`}>Pesan Sekarang</a></div>
-                        </div>
-                    </motion.div>
-                </div>
-            );
-        };
-
-        const ProjectWizardModal = ({ type, onClose, theme }) => {
-            // Configuration for the current wizard type
-            const config = wizardConfig[type] || wizardConfig['web'];
-
-            const [step, setStep] = useState(1);
-            
-            // State for Web Wizard (Specific)
-            const [domain, setDomain] = useState("");
-            const [domainLoading, setDomainLoading] = useState(false);
-            const [domainResults, setDomainResults] = useState(null);
-            const [selectedDomain, setSelectedDomain] = useState(null);
-            
-            // Generic State for inputs
-            const [data1, setData1] = useState(""); // Result from Step 1
-            const [data2, setData2] = useState(""); // Result from Step 2
-
-            const isMatrix = theme === 'matrix';
-            const isDark = theme === 'dark';
-            
-            const modalBg = isMatrix ? 'bg-gray-900 border border-green-500' : (isDark ? 'bg-slate-900 border border-purple-500' : 'bg-white border border-gray-200');
-            const textMain = isMatrix || isDark ? 'text-white' : 'text-slate-900';
-            const textSub = isMatrix ? 'text-green-500' : (isDark ? 'text-purple-400' : 'text-blue-600');
-            const inputClass = isMatrix ? 'bg-black border-green-800 text-green-400 focus:border-green-500' : (isDark ? 'bg-slate-800 border-slate-700 text-white focus:border-purple-500' : 'bg-gray-50 border-gray-300 text-slate-800 focus:border-blue-500');
-            const optionClassActive = isMatrix ? 'border-green-500 bg-green-900/30' : (isDark ? 'border-purple-500 bg-purple-900/30' : 'border-blue-500 bg-blue-50');
-            const optionClassInactive = isMatrix ? 'border-gray-800 bg-black/40 hover:border-green-900' : (isDark ? 'border-slate-700 bg-slate-800 hover:border-slate-600' : 'border-gray-100 bg-white hover:border-gray-300');
-
-            const handleCheckDomain = () => {
-                if(!domain) return;
-                setDomainLoading(true);
-                setTimeout(() => {
-                    const baseName = domain.split('.')[0];
-                    setDomainResults([
-                        { name: `${baseName}.com`, price: "Rp 145.000", available: true },
-                        { name: `${baseName}.id`, price: "Rp 200.000", available: true },
-                        { name: `${baseName}.co.id`, price: "Rp 120.000", available: Math.random() > 0.3 },
-                        { name: `${baseName}.xyz`, price: "Rp 25.000", available: true },
-                    ]);
-                    setDomainLoading(false);
-                }, 1500);
-            };
-
-            const formatMessage = () => {
-                let msg = `Halo Zentara, saya ingin *${config.title}*.\n\n`;
-                
-                if (type === 'web') {
-                    msg += `🔹 Domain: ${selectedDomain ? selectedDomain.name : 'Belum pilih'}\n`;
-                    msg += `🔹 Paket: ${data2 ? data2.name : '-'}\n`;
-                } else {
-                    msg += `🔹 ${config.steps[0].title}: ${data1}\n`;
-                    msg += `🔹 ${config.steps[1].title}: ${data2}\n`;
-                }
-                
-                msg += `\nMohon info lebih lanjut.`;
-                return encodeURIComponent(msg);
-            };
-
-            const renderStep1 = () => {
-                const inputType = config.inputType[0];
-
-                if (inputType === 'domain_check') {
-                    return (
-                        <div className="space-y-6">
-                            <div className="flex gap-2">
-                                <input 
-                                    type="text" 
-                                    placeholder="Contoh: zentara" 
-                                    value={domain}
-                                    onChange={(e) => setDomain(e.target.value)}
-                                    className={`flex-1 p-4 rounded-xl outline-none border-2 font-bold text-lg transition-colors ${inputClass}`}
-                                    onKeyDown={(e) => e.key === 'Enter' && handleCheckDomain()}
-                                />
-                                <button 
-                                    onClick={handleCheckDomain}
-                                    disabled={domainLoading || !domain}
-                                    className={`px-6 rounded-xl font-bold flex items-center gap-2 ${domainLoading ? 'opacity-50 cursor-not-allowed' : ''} ${isMatrix ? 'bg-green-600 text-black hover:bg-green-500' : (isDark ? 'bg-purple-600 text-white hover:bg-purple-500' : 'bg-black text-white hover:bg-gray-800')}`}
-                                >
-                                    {domainLoading ? <i data-lucide="loader-2" className="animate-spin"></i> : <i data-lucide="search"></i>}
-                                    <span className="hidden sm:inline">Cek</span>
-                                </button>
-                            </div>
-                            {domainResults && (
-                                <div className="space-y-3 mt-4">
-                                    {domainResults.map((res, idx) => (
-                                        <motion.div 
-                                            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}
-                                            key={idx}
-                                            onClick={() => { if(res.available) { setSelectedDomain(res); setData1(res.name); } }}
-                                            className={`p-4 rounded-xl border flex justify-between items-center cursor-pointer transition-all ${selectedDomain?.name === res.name ? optionClassActive : optionClassInactive}`}
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <div className={`w-4 h-4 rounded-full ${res.available ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                                <div>
-                                                    <div className={`font-bold ${textMain}`}>{res.name}</div>
-                                                    <div className={`text-xs ${res.available ? 'text-green-500' : 'text-red-500'}`}>{res.available ? 'Tersedia' : 'Sudah Dipakai'}</div>
-                                                </div>
-                                            </div>
-                                            <div className="text-right">
-                                                <div className={`font-bold ${textMain}`}>{res.price}</div>
-                                                {selectedDomain?.name === res.name && <div className={`text-xs font-bold ${textSub}`}>Dipilih <i data-lucide="check" className="inline w-3 h-3"></i></div>}
-                                            </div>
-                                        </motion.div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    );
-                } else if (inputType === 'text') {
-                    return (
-                        <div>
-                            <input 
-                                type="text" 
-                                placeholder={config.placeholder1 || "Ketik disini..."}
-                                value={data1}
-                                onChange={(e) => setData1(e.target.value)}
-                                className={`w-full p-4 rounded-xl outline-none border-2 font-bold text-lg transition-colors ${inputClass}`}
-                            />
-                        </div>
-                    );
-                } else if (inputType === 'options') {
-                    return (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {config.options1.map((opt, idx) => (
-                                <button
-                                    key={idx}
-                                    onClick={() => setData1(opt)}
-                                    className={`p-4 rounded-xl border text-left font-bold transition-all ${data1 === opt ? optionClassActive : optionClassInactive} ${textMain}`}
-                                >
-                                    {opt}
-                                </button>
-                            ))}
-                        </div>
-                    );
-                }
-            };
-
-            const renderStep2 = () => {
-                const inputType = config.inputType[1];
-
-                if (inputType === 'package_select') {
-                    return (
-                        <div className="grid sm:grid-cols-3 gap-4">
-                            {pricingCategories.software.map((pkg, idx) => (
-                                <div 
-                                    key={idx}
-                                    onClick={() => setData2(pkg)}
-                                    className={`p-4 rounded-xl border cursor-pointer relative transition-all ${data2?.name === pkg.name ? optionClassActive : optionClassInactive}`}
-                                >
-                                    {pkg.isPopular && <div className="absolute top-0 right-0 px-2 py-0.5 text-[10px] font-bold bg-yellow-400 text-black rounded-bl-lg">POPULAR</div>}
-                                    <h5 className={`font-bold text-sm mb-2 ${textMain}`}>{pkg.name}</h5>
-                                    <div className={`text-lg font-black mb-3 ${textSub}`}>{pkg.displayPrice}</div>
-                                    <ul className="space-y-2 mb-4">
-                                        {pkg.features.slice(0, 3).map((f, i) => (
-                                            <li key={i} className={`text-xs flex gap-2 ${textMain} opacity-80`}><i data-lucide="check" width="12"></i> {f}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ))}
-                        </div>
-                    );
-                } else if (inputType === 'options') {
-                     return (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {config.options2.map((opt, idx) => (
-                                <button
-                                    key={idx}
-                                    onClick={() => setData2(opt)}
-                                    className={`p-4 rounded-xl border text-left font-bold transition-all ${data2 === opt ? optionClassActive : optionClassInactive} ${textMain}`}
-                                >
-                                    {opt}
-                                </button>
-                            ))}
-                        </div>
-                    );
-                }
-            };
-
-            const renderSummary = () => {
-                return (
-                     <div className="text-center">
-                        <div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6 ${isMatrix ? 'bg-green-500 text-black' : (isDark ? 'bg-purple-600 text-white' : 'bg-green-500 text-white')}`}>
-                            <i data-lucide="check-check" width="40"></i>
-                        </div>
-                        <h4 className={`text-2xl font-bold mb-2 ${textMain}`}>Siap Dieksekusi!</h4>
-                        <p className={`text-sm mb-8 ${textMain} opacity-70`}>Berikut ringkasan kebutuhan Anda:</p>
-                        
-                        <div className={`max-w-sm mx-auto p-6 rounded-xl text-left mb-8 ${isMatrix ? 'bg-gray-800 border border-green-900' : (isDark ? 'bg-slate-800 border border-slate-700' : 'bg-gray-50 border border-gray-200')}`}>
-                            <div className="flex justify-between mb-4 pb-4 border-b border-gray-500/20">
-                                <span className={`text-sm opacity-70 ${textMain}`}>{config.steps[0].title}</span>
-                                <span className={`font-bold ${textMain}`}>{type === 'web' ? (selectedDomain?.name || '-') : data1}</span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className={`text-sm opacity-70 ${textMain}`}>{config.steps[1].title}</span>
-                                <span className={`font-bold ${textMain}`}>{type === 'web' ? (data2?.name || '-') : data2}</span>
-                            </div>
+                        <div className="w-full md:w-2/3 flex justify-center scale-90 md:scale-100 relative min-h-[500px]">
+                            {/* Layer 1: Base (Idle/Dead) */}
+                            <GridLayer isColored={false} />
+                            
+                            {/* Layer 2: Color (Revealed by Proximity) */}
+                            <GridLayer isColored={true} />
                         </div>
                     </div>
-                );
-            };
-
-            return (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-                    <motion.div 
-                        initial={{ opacity: 0, scale: 0.9 }} 
-                        animate={{ opacity: 1, scale: 1 }} 
-                        className={`w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] ${modalBg}`}
-                    >
-                        <div className={`p-6 border-b flex justify-between items-center ${isMatrix ? 'border-green-900 bg-green-900/10' : (isDark ? 'border-slate-700 bg-slate-800' : 'border-gray-100 bg-gray-50')}`}>
-                            <div>
-                                <h3 className={`font-bold text-xl ${textMain}`}>{config.title}</h3>
-                                <p className={`text-xs opacity-70 ${textMain}`}>{step <= 2 ? `Langkah ${step} dari 2` : 'Konfirmasi'}</p>
-                            </div>
-                            <button onClick={onClose} className={`p-2 rounded-full hover:bg-black/10 transition ${textMain}`}><i data-lucide="x" width="20"></i></button>
-                        </div>
-
-                        <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
-                            {step === 1 && (
-                                <div>
-                                    <div className="text-center mb-6">
-                                        <h4 className={`text-lg font-bold mb-1 ${textMain}`}>{config.steps[0].title}</h4>
-                                        <p className={`text-sm opacity-60 ${textMain}`}>{config.steps[0].desc}</p>
-                                    </div>
-                                    {renderStep1()}
-                                </div>
-                            )}
-                            {step === 2 && (
-                                <div>
-                                    <div className="text-center mb-6">
-                                        <h4 className={`text-lg font-bold mb-1 ${textMain}`}>{config.steps[1].title}</h4>
-                                        <p className={`text-sm opacity-60 ${textMain}`}>{config.steps[1].desc}</p>
-                                    </div>
-                                    {renderStep2()}
-                                </div>
-                            )}
-                            {step === 3 && renderSummary()}
-                        </div>
-
-                        <div className={`p-6 border-t flex justify-between ${isMatrix ? 'border-green-900 bg-gray-900' : (isDark ? 'border-slate-700 bg-slate-800' : 'border-gray-100 bg-white')}`}>
-                            {step > 1 ? (
-                                <button onClick={() => setStep(step - 1)} className={`px-6 py-2 rounded-lg font-bold border transition ${isMatrix ? 'border-green-900 text-green-500 hover:bg-green-900/50' : (isDark ? 'border-slate-600 text-slate-300 hover:bg-slate-700' : 'border-gray-300 text-gray-600 hover:bg-gray-50')}`}>Kembali</button>
-                            ) : (<div></div>)}
-
-                            {step < 3 ? (
-                                <button 
-                                    onClick={() => {
-                                        if(step === 1 && !data1) return alert("Mohon isi/pilih dulu ya!");
-                                        if(step === 2 && !data2) return alert("Mohon isi/pilih dulu ya!");
-                                        setStep(step + 1);
-                                    }}
-                                    className={`px-8 py-2 rounded-lg font-bold transition shadow-lg flex items-center gap-2 ${isMatrix ? 'bg-green-600 text-black hover:bg-green-500' : (isDark ? 'bg-purple-600 text-white hover:bg-purple-500' : 'bg-blue-600 text-white hover:bg-blue-700')}`}
-                                >
-                                    Lanjut <i data-lucide="arrow-right" width="16"></i>
-                                </button>
-                            ) : (
-                                <a 
-                                    href={`https://wa.me/6285157362339?text=${formatMessage()}`}
-                                    target="_blank"
-                                    className={`px-8 py-2 rounded-lg font-bold transition shadow-lg flex items-center gap-2 ${isMatrix ? 'bg-green-600 text-black hover:bg-green-500' : 'bg-green-500 text-white hover:bg-green-600'}`}
-                                >
-                                    <i data-lucide="message-circle" width="18"></i> Kirim ke WhatsApp
-                                </a>
-                            )}
-                        </div>
-                    </motion.div>
-                </div>
+                </section>
             );
         };
+
+        const VisualArchive = () => (
+            <section id="gallery" className="py-24 px-6 bg-[#050505]">
+                <div className="max-w-7xl mx-auto">
+                    <div className="flex justify-between items-end mb-12">
+                        <div><h2 className="font-display text-4xl font-bold mb-2">Visual Archive</h2><p className="text-gray-400">Environment & Documentation.</p></div>
+                        <button className="hidden md:block text-sm font-bold border-b border-white/20 pb-1">View Full Gallery</button>
+                    </div>
+                    <div className="masonry-grid">
+                        {galleryItems.map((item, i) => (
+                            <div key={i} className={`masonry-item ${item.height} group relative bg-gray-900`}>
+                                {item.type === 'video' ? (
+                                    <video autoPlay muted loop playsInline className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-500">
+                                        <source src={item.src} type="video/mp4" />
+                                    </video>
+                                ) : (
+                                    <img src={item.src} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-500 group-hover:scale-110" />
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-4">
+                                    <div className="p-2 bg-white/10 backdrop-blur-md rounded-full"><i data-lucide={item.type === 'video' ? 'play' : 'image'} width="14"></i></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const ClientStories = () => (
+            <section className="py-24 px-6 border-t border-white/5">
+                <div className="max-w-6xl mx-auto">
+                    <h2 className="text-3xl font-display font-bold mb-12 text-center">Client Stories</h2>
+                    <div className="grid md:grid-cols-2 gap-8">
+                        {testimonials.map((t, i) => (
+                            <div key={i} className="glass-panel p-8 rounded-3xl relative">
+                                <i data-lucide="quote" className="text-blue-500 mb-4 opacity-50"></i>
+                                <p className="text-lg text-gray-300 italic mb-6 leading-relaxed">"{t.text}"</p>
+                                <div>
+                                    <h4 className="font-bold text-white">{t.name}</h4>
+                                    <span className="text-xs text-gray-500">{t.role}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const ScaleUp = () => (
+            <section className="py-24 px-6">
+                <div className="max-w-5xl mx-auto text-center glass-panel p-12 md:p-20 rounded-[3rem] relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
+                    <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">Ready to Scale Up?</h2>
+                    <p className="text-gray-400 mb-10 text-lg max-w-2xl mx-auto">
+                        Jangan biarkan kompetitor mendahului Anda. Bangun sistem digital premium Anda sekarang bersama tim ahli kami.
+                    </p>
+                    <div className="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/6285157362339" className="px-8 py-4 bg-white text-black rounded-full font-bold hover:scale-105 transition shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center justify-center gap-2">
+                            Start Project <i data-lucide="arrow-right" width="18"></i>
+                        </a>
+                        <a href="mailto:hello@zentara.com" className="px-8 py-4 glass-panel rounded-full font-bold hover:bg-white/10 transition flex items-center justify-center gap-2">
+                            Contact Sales
+                        </a>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Footer = () => (
+            <footer id="contact" className="py-20 px-6 bg-black border-t border-white/10">
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+                    <div>
+                        <div className="font-display font-bold text-2xl">ZENTARA.</div>
+                        <p className="text-gray-500 text-sm mt-2">Building the future, one node at a time.</p>
+                    </div>
+                    <div className="flex gap-6">
+                        {['Instagram', 'LinkedIn', 'Twitter'].map(s => <a key={s} href="#" className="text-gray-500 hover:text-white transition text-sm">{s}</a>)}
+                    </div>
+                </div>
+            </footer>
+        );
 
         const App = () => {
-            const [theme, setTheme] = useState('light'); 
-            const [modalData, setModalData] = useState(null);
-            const [previewTemplate, setPreviewTemplate] = useState(null);
-            const [wizardOpen, setWizardOpen] = useState(false);
-            const [wizardType, setWizardType] = useState('web');
-
-            useEffect(() => { window.lucide.createIcons(); }, []);
             useEffect(() => {
-                const interval = setInterval(() => window.lucide.createIcons(), 500);
+                const interval = setInterval(() => { if (window.lucide) window.lucide.createIcons(); }, 1000);
                 return () => clearInterval(interval);
-            }, [modalData, theme, previewTemplate, wizardOpen]);
-
-            const isMatrix = theme === 'matrix';
-            const isDark = theme === 'dark';
-            let bgClass = 'bg-slate-50 text-slate-900';
-            if (isMatrix) bgClass = 'bg-black text-green-50';
-            if (isDark) bgClass = 'bg-slate-900 text-slate-100';
-
-            const handleQuickAction = (action) => {
-                setWizardType(action.id);
-                setWizardOpen(true);
-            };
+            }, []);
 
             return (
-                <div className={`min-h-screen ${bgClass} transition-colors duration-500 ${isMatrix ? 'tech-font' : 'pro-font'} selection:${isMatrix ? 'bg-green-500 text-black' : (isDark ? 'bg-purple-500 text-white' : 'bg-blue-200 text-blue-900')}`}>
-                    
-                    {isMatrix && <MatrixRain />}
-                    {!isMatrix && (
-                        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-                            <div className={`absolute top-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full blur-[100px] ${isDark ? 'bg-purple-900/20' : 'bg-blue-200/20'}`}></div>
-                            <div className={`absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full blur-[100px] ${isDark ? 'bg-blue-900/20' : 'bg-purple-200/20'}`}></div>
-                        </div>
-                    )}
-
-                    <ZenBot theme={theme} id={1} initialX={window.innerWidth * 0.2} initialY={window.innerHeight * 0.3} colorOverride={isDark ? "#38bdf8" : "#3b82f6"} />
-                    <ZenBot theme={theme} id={2} initialX={window.innerWidth * 0.8} initialY={window.innerHeight * 0.6} colorOverride="#f59e0b" />
-                    <ZenBot theme={theme} id={3} initialX={window.innerWidth * 0.5} initialY={window.innerHeight * 0.8} colorOverride={isDark ? "#f472b6" : "#ec4899"} />
-                    
-                    <ThemeFloater theme={theme} setTheme={setTheme} />
-                    <BackToTop theme={theme} isMatrix={isMatrix} />
-
-                    <nav className={`fixed w-full z-40 top-0 left-0 transition-all duration-300 bg-transparent backdrop-blur-sm px-6 py-4`}>
-                        <div className="max-w-7xl mx-auto flex justify-between items-center">
-                            <div className="flex items-center gap-2 text-2xl font-bold tracking-tighter">
-                                <div className={`w-3 h-3 md:w-4 md:h-4 ${isMatrix ? 'bg-green-500 shadow-[0_0_10px_#4ade80]' : (isDark ? 'bg-purple-500' : 'bg-blue-600')} rounded-sm rotate-45`}></div>
-                                <span>ZENTARA</span>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <a href="https://wa.me/6285157362339" className={`px-5 py-2 rounded-full font-bold text-sm transition-all ${isMatrix ? 'bg-green-600 text-black hover:bg-green-500' : (isDark ? 'bg-purple-600 text-white hover:bg-purple-500' : 'bg-slate-900 text-white hover:bg-slate-800')}`}>Konsultasi</a>
-                            </div>
-                        </div>
-                    </nav>
-
-                    <section className="relative z-10 pt-32 pb-20 px-6 min-h-screen flex items-center overflow-hidden">
-                        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center relative w-full">
-                            <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="relative z-30">
-                                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-6 border ${isMatrix ? 'bg-green-900/30 border-green-500 text-green-400' : (isDark ? 'bg-purple-900/30 border-purple-500 text-purple-300' : 'bg-blue-50 border-blue-200 text-blue-600')}`}>
-                                    <span className="relative flex h-2 w-2"><span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isMatrix ? 'bg-green-400' : (isDark ? 'bg-purple-400' : 'bg-blue-400')}`}></span><span className={`relative inline-flex rounded-full h-2 w-2 ${isMatrix ? 'bg-green-500' : (isDark ? 'bg-purple-500' : 'bg-blue-500')}`}></span></span>
-                                    AI-Ready System
-                                </div>
-                                <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.1] mb-6">Sinergi Hardware <br/>& <span className={isMatrix ? 'text-green-500' : (isDark ? 'text-purple-400' : 'text-blue-600')}>Inteligensi</span> Digital.</h1>
-                                <p className={`text-lg md:text-xl mb-8 max-w-lg leading-relaxed ${isMatrix || isDark ? 'text-gray-400' : 'text-slate-600'}`}>Zentara menghadirkan solusi IT terpusat. Dari perbaikan device hingga pembangunan ekosistem software bisnis Anda.</p>
-                                <div className="flex flex-col md:flex-row gap-4">
-                                    <a href="#quick-actions" className={`px-8 py-4 rounded-xl font-bold text-center transition-all ${isMatrix ? 'bg-green-600 text-black hover:bg-green-500' : (isDark ? 'bg-purple-600 text-white hover:bg-purple-500' : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/30')}`}>Mulai Sekarang</a>
-                                </div>
-                            </motion.div>
-                            <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="flex justify-center">
-                                <ZentaraCore theme={theme} />
-                            </motion.div>
-                        </div>
-                    </section>
-
-                    <section id="quick-actions" className={`relative z-20 py-24 px-6 ${isMatrix ? 'bg-green-900/10' : (isDark ? 'bg-purple-900/10' : 'bg-slate-50')}`}>
-                        <div className="max-w-7xl mx-auto">
-                            <div className="text-center mb-12">
-                                <h2 className="text-3xl md:text-5xl font-bold mb-4">Mulai Project Anda</h2>
-                                <p className={`max-w-xl mx-auto ${isMatrix || isDark ? 'text-gray-400' : 'text-slate-600'}`}>Pilih layanan di bawah untuk memulai instan.</p>
-                            </div>
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
-                                {quickActions.map((action, idx) => (
-                                    <motion.div 
-                                        key={idx}
-                                        onClick={() => handleQuickAction(action)}
-                                        whileHover={{ y: -8, scale: 1.02 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className={`
-                                            relative flex flex-col justify-between p-4 md:p-5 h-[220px] rounded-2xl border cursor-pointer transition-all duration-300 group overflow-hidden
-                                            ${isMatrix ? 'bg-black border-green-800 hover:border-green-400 hover:shadow-[0_0_15px_rgba(34,197,94,0.3)]' : (isDark ? 'bg-slate-800 border-slate-700 hover:border-purple-400 hover:shadow-[0_0_15px_rgba(168,85,247,0.3)]' : 'bg-white border-slate-200 hover:border-blue-500 hover:shadow-xl')}
-                                        `}
-                                    >
-                                        <div className="flex justify-between items-start">
-                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isMatrix ? 'bg-green-900/30 text-green-400 group-hover:bg-green-500 group-hover:text-black' : (isDark ? 'bg-purple-900/30 text-purple-400 group-hover:bg-purple-500 group-hover:text-white' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white')}`}>
-                                                <i data-lucide={action.icon} width="20"></i>
-                                            </div>
-                                            <div className={`p-1 rounded-md text-[10px] font-bold uppercase ${isMatrix ? 'bg-green-900 text-green-400' : 'bg-blue-100 text-blue-600'}`}>WIZARD</div>
-                                        </div>
-                                        <div className="mt-4">
-                                            <h3 className={`font-bold text-sm md:text-base leading-tight mb-2 ${isMatrix || isDark ? 'text-white' : 'text-slate-900 group-hover:text-blue-600'}`}>{action.title}</h3>
-                                            <p className={`text-[10px] leading-snug line-clamp-2 ${isMatrix || isDark ? 'text-gray-400' : 'text-slate-500'}`}>{action.subtitle}</p>
-                                        </div>
-                                        <div className={`mt-auto pt-4 flex items-center text-[10px] font-bold uppercase tracking-wider ${isMatrix ? 'text-green-500' : (isDark ? 'text-purple-400' : 'text-blue-500')}`}>
-                                            {action.btnText} <i data-lucide="chevron-right" width="12" className="ml-auto transform group-hover:translate-x-1 transition-transform"></i>
-                                        </div>
-                                        <div className={`absolute -bottom-10 -right-10 w-24 h-24 rounded-full blur-2xl opacity-20 pointer-events-none group-hover:opacity-40 transition-opacity ${isMatrix ? 'bg-green-500' : (isDark ? 'bg-purple-500' : 'bg-blue-500')}`}></div>
-                                    </motion.div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
-                    <section id="floating-preview" className={`relative z-30 py-20 ${isMatrix ? 'bg-green-900/10' : (isDark ? 'bg-purple-900/10' : 'bg-blue-50/50')}`}>
-                        <div className="max-w-7xl mx-auto px-6 relative h-[600px] flex items-center justify-center">
-                            <div className="text-center relative z-10 max-w-xl">
-                                <h2 className="text-3xl md:text-4xl font-bold mb-4">Ekosistem Digital Terintegrasi</h2>
-                                <p className={`text-sm md:text-base ${isMatrix || isDark ? 'text-gray-400' : 'text-slate-500'}`}>
-                                    Satu pintu untuk semua kebutuhan teknologi Anda. Kami menghubungkan hardware, web, dan infrastruktur jaringan menjadi satu kesatuan yang solid.
-                                </p>
-                            </div>
-                            <FloatingCard type="smartphone" startX="10%" startY="15%" delay={0} theme={theme} onClick={setModalData} />
-                            <FloatingCard type="webdev" startX="75%" startY="25%" delay={1.5} theme={theme} onClick={setModalData} />
-                            <FloatingCard type="network" startX="40%" startY="75%" delay={2.8} theme={theme} onClick={setModalData} />
-                             <div className={`absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none ${isMatrix ? 'bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-green-500 to-transparent' : (isDark ? 'bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-500 to-transparent' : 'bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-400 to-transparent')}`}></div>
-                        </div>
-                    </section>
-
-                    <section id="services" className="relative z-20 py-24 px-6">
-                        <div className="max-w-7xl mx-auto">
-                            <div className="text-center mb-16">
-                                <h2 className="text-3xl md:text-5xl font-bold mb-4">Layanan Utama</h2>
-                                <p className={`max-w-2xl mx-auto ${isMatrix || isDark ? 'text-gray-400' : 'text-slate-600'}`}>Solusi end-to-end untuk kebutuhan digital.</p>
-                            </div>
-                            <div className="grid md:grid-cols-3 gap-8">
-                                {Object.keys(modalContent).map((key) => {
-                                    const item = modalContent[key];
-                                    return (
-                                        <motion.div 
-                                            key={key}
-                                            whileHover={{ y: -15, scale: 1.02 }}
-                                            onClick={() => setModalData(key)}
-                                            className={`p-8 rounded-3xl cursor-pointer group transition-all duration-300 ${isMatrix ? 'bg-gray-900/50 backdrop-blur border border-green-900' : (isDark ? 'bg-slate-800 border border-slate-700' : 'bg-white shadow-lg border border-gray-100')} hover:shadow-2xl`}
-                                        >
-                                            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-colors ${isMatrix ? 'bg-green-900/30 text-green-400 group-hover:bg-green-500 group-hover:text-black' : (isDark ? 'bg-purple-900/30 text-purple-400 group-hover:bg-purple-500 group-hover:text-white' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white')}`}>
-                                                <i data-lucide={item.icon} width="32"></i>
-                                            </div>
-                                            <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
-                                            <p className={`text-sm mb-6 ${isMatrix || isDark ? 'text-gray-400' : 'text-slate-500'}`}>{item.desc}</p>
-                                            <div className={`flex items-center gap-2 font-bold text-sm ${isMatrix ? 'text-green-500' : (isDark ? 'text-purple-400' : 'text-blue-600')}`}>
-                                                Lihat Detail <i data-lucide="arrow-right" width="16"></i>
-                                            </div>
-                                        </motion.div>
-                                    )
-                                })}
-                            </div>
-                        </div>
-                    </section>
-
-                    <section className={`relative z-20 py-16 px-6 ${isMatrix ? 'bg-green-900/5' : (isDark ? 'bg-purple-900/5' : 'bg-blue-50/50')}`}>
-                        <div className="max-w-7xl mx-auto">
-                            <div className="flex flex-col md:flex-row items-end justify-between mb-8 gap-4">
-                                <div>
-                                    <div className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-2 ${isMatrix ? 'bg-green-500 text-black' : (isDark ? 'bg-purple-500 text-white' : 'bg-blue-600 text-white')}`}>
-                                        PROMO: WEBSITEJUARA
-                                    </div>
-                                    <h2 className="text-3xl font-bold">Harga Pas, Website Kelas!</h2>
-                                    <p className={`mt-2 text-sm max-w-md ${isMatrix || isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                                        Membuat website profesional kini lebih murah. Dapatkan desain modern tanpa khawatir soal biaya.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="grid md:grid-cols-3 gap-6">
-                                {domainPackages.map((pkg, idx) => (
-                                    <motion.div key={idx} whileHover={{ y: -5 }} className={`p-6 rounded-2xl border relative overflow-hidden ${isMatrix ? 'bg-black border-green-800' : (isDark ? 'bg-slate-800 border-purple-900' : 'bg-white border-blue-100 shadow-md')}`}>
-                                        <div className={`absolute top-0 right-0 px-3 py-1 rounded-bl-xl text-[10px] font-bold uppercase tracking-wider ${isMatrix ? 'bg-green-900 text-green-400' : (isDark ? 'bg-purple-900 text-purple-300' : 'bg-blue-100 text-blue-700')}`}>{pkg.badge}</div>
-                                        <div className="text-4xl font-black mb-1 opacity-20 absolute -right-2 top-8 rotate-12">{pkg.tld}</div>
-                                        <h3 className={`text-xl font-bold mb-1 ${isMatrix ? 'text-green-400' : (isDark ? 'text-purple-400' : 'text-blue-600')}`}>{pkg.name}</h3>
-                                        <p className="text-xs opacity-60 mb-4 h-8">{pkg.desc}</p>
-                                        <div className="flex items-baseline gap-2 mb-1"><span className="text-2xl font-bold">{pkg.price}</span><span className="text-xs line-through opacity-40">{pkg.oldPrice}</span></div>
-                                        <div className="text-[10px] opacity-50 mb-4">/ tahun</div>
-                                        <a href={`https://wa.me/6285157362339?text=Saya%20mau%20promo%20domain%20${pkg.tld}`} className={`block w-full py-2 rounded-lg text-center font-bold text-sm transition-colors ${isMatrix ? 'bg-green-900/30 text-green-400 hover:bg-green-500 hover:text-black' : (isDark ? 'bg-purple-900/30 text-purple-300 hover:bg-purple-500 hover:text-white' : 'bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white')}`}>Ambil Promo</a>
-                                    </motion.div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
-                    <section className="relative z-20 py-24 px-6">
-                         <div className="max-w-7xl mx-auto">
-                            <div className="text-center mb-12">
-                                <h2 className="text-3xl md:text-5xl font-bold mb-4">Project Showcase</h2>
-                                <p className={`max-w-2xl mx-auto ${isMatrix || isDark ? 'text-gray-400' : 'text-slate-600'}`}>
-                                    Pilih desain yang cocok untuk bisnis Anda. Klik "Lihat Demo" untuk preview langsung.
-                                </p>
-                            </div>
-                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                {portfolioTemplates.map((tpl, idx) => (
-                                    <motion.div key={idx} whileHover={{ y: -10 }} className={`rounded-2xl overflow-hidden border group ${isMatrix ? 'border-green-900 bg-gray-900' : (isDark ? 'border-slate-700 bg-slate-800' : 'border-gray-200 bg-white shadow-lg')}`}>
-                                        <div className="h-48 overflow-hidden relative">
-                                            <div className={`absolute inset-0 bg-gradient-to-t z-10 opacity-60 ${isMatrix ? 'from-black to-transparent' : (isDark ? 'from-slate-900 to-transparent' : 'from-slate-900 to-transparent')}`}></div>
-                                            <img src={tpl.image} alt={tpl.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                                            <div className="absolute bottom-3 left-3 z-20"><span className={`text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider ${isMatrix ? 'bg-green-500 text-black' : 'bg-white text-black'}`}>{tpl.category}</span></div>
-                                        </div>
-                                        <div className="p-5">
-                                            <h3 className="font-bold text-lg mb-1">{tpl.title}</h3>
-                                            <p className={`text-xs mb-4 line-clamp-2 ${isMatrix || isDark ? 'text-gray-400' : 'text-gray-500'}`}>{tpl.desc}</p>
-                                            
-                                            {/* --- LOGIKA TOMBOL VIEW --- */}
-                                            <button 
-                                                onClick={() => setPreviewTemplate(tpl.id)} 
-                                                className={`w-full py-2 rounded-lg text-xs font-bold border transition-all flex items-center justify-center gap-2 ${isMatrix ? 'border-green-500 text-green-500 hover:bg-green-500 hover:text-black' : (isDark ? 'border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white' : 'border-slate-300 hover:border-blue-600 hover:bg-blue-600 hover:text-white')}`}
-                                            >
-                                                {tpl.isCaseStudy ? <i data-lucide="search" width="14"></i> : <i data-lucide="eye" width="14"></i>} 
-                                                {tpl.isCaseStudy ? "Lihat Detail Project" : "Lihat Demo Full Page"}
-                                            </button>
-
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </div>
-                         </div>
-                    </section>
-
-                    <div className={`py-10 border-y relative z-10 overflow-hidden ${isMatrix ? 'bg-black border-green-900' : (isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100')}`}>
-                        <div className="flex w-[200%] animate-marquee items-center">
-                            {[...techStackIcons, ...techStackIcons, ...techStackIcons].map((tech, i) => (
-                                <div key={i} className={`flex items-center gap-2 mx-8 opacity-90 ${tech.color}`}>
-                                    <i data-lucide={tech.icon} width="28" height="28"></i>
-                                    <span className={`font-bold text-lg uppercase tracking-wider ${isMatrix || isDark ? 'text-gray-300' : 'text-slate-600'}`}>{tech.label}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <section className="relative z-10 py-24 px-6">
-                        <div className="max-w-6xl mx-auto">
-                            <h2 className="text-3xl font-bold mb-12 text-center">Kata Mereka</h2>
-                            <div className="grid md:grid-cols-3 gap-6">
-                                {testimonials.map((t, i) => (
-                                    <div key={i} className={`p-6 rounded-2xl border ${isMatrix ? 'bg-gray-900 border-gray-800' : (isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100 shadow-sm')}`}>
-                                        <div className="flex gap-1 text-yellow-500 mb-4">{[...Array(t.rating)].map((_, r) => <i key={r} data-lucide="star" width="14" fill="currentColor"></i>)}</div>
-                                        <p className={`text-sm italic mb-6 leading-relaxed ${isMatrix || isDark ? 'text-gray-400' : 'text-slate-600'}`}>"{t.text}"</p>
-                                        <div className="flex items-center gap-3">
-                                            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${isMatrix ? 'bg-green-900 text-green-400' : (isDark ? 'bg-purple-900 text-purple-400' : 'bg-blue-100 text-blue-700')}`}>{t.name.charAt(0)}</div>
-                                            <div><div className="font-bold text-sm">{t.name}</div><div className="text-xs opacity-50">{t.role}</div></div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
-                    <AnimatePresence>{modalData && (<ServiceModal content={modalContent[modalData]} onClose={() => setModalData(null)} theme={theme} />)}</AnimatePresence>
-                    
-                    <AnimatePresence>
-                        {previewTemplate && (
-                            (() => {
-                                const selectedProject = portfolioTemplates.find(p => p.id === previewTemplate);
-                                if (selectedProject && selectedProject.isCaseStudy) {
-                                    return (
-                                        <CaseStudyModal 
-                                            project={selectedProject} 
-                                            onClose={() => setPreviewTemplate(null)} 
-                                            theme={theme} 
-                                        />
-                                    );
-                                }
-                                return (
-                                    <TemplatePreviewModal 
-                                        templateId={previewTemplate} 
-                                        onClose={() => setPreviewTemplate(null)} 
-                                    />
-                                );
-                            })()
-                        )}
-                    </AnimatePresence>
-
-                    <AnimatePresence>{wizardOpen && (<ProjectWizardModal type={wizardType} onClose={() => setWizardOpen(false)} theme={theme} />)}</AnimatePresence>
-
-                    <footer className={`py-12 border-t text-center relative z-10 ${isMatrix ? 'bg-black border-green-900' : (isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-gray-100')}`}>
-                        <div className="max-w-4xl mx-auto px-6 mb-12">
-                            <div className={`p-8 rounded-3xl text-left flex flex-col md:flex-row items-center justify-between gap-6 ${isMatrix ? 'bg-gray-900 border border-green-900' : (isDark ? 'bg-slate-900 border border-slate-700' : 'bg-blue-50 border border-blue-100')}`}>
-                                <div><h3 className="text-xl font-bold mb-2">Dapatkan Info Terbaru</h3><p className="text-sm opacity-70">Diskon service & tips teknologi mingguan.</p></div>
-                                <div className="flex w-full md:w-auto gap-2">
-                                    <input type="email" placeholder="Email Anda" className={`px-4 py-2 rounded-lg w-full md:w-64 outline-none ${isMatrix ? 'bg-black border border-green-900 text-green-500' : (isDark ? 'bg-slate-900 border border-slate-600 text-white' : 'bg-white border border-gray-200')}`} />
-                                    <button className={`px-6 py-2 rounded-lg font-bold ${isMatrix ? 'bg-green-600 text-black hover:bg-green-500' : (isDark ? 'bg-purple-600 text-white hover:bg-purple-500' : 'bg-blue-600 text-white hover:bg-blue-700')}`}>Join</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-center gap-2 mb-8 font-bold text-2xl tracking-tighter opacity-50"><div className={`w-3 h-3 rounded-sm rotate-45 ${isMatrix ? 'bg-green-500' : (isDark ? 'bg-purple-500' : 'bg-blue-600')}`}></div>ZENTARA</div>
-                        <p className={`text-sm mb-8 opacity-60 ${isMatrix || isDark ? 'text-gray-400' : 'text-slate-500'}`}>Solusi Teknologi Terintegrasi. Jakarta, Indonesia.</p>
-                        <div className="flex justify-center gap-6 text-xs font-bold tracking-widest opacity-40"><a href="#" className="hover:opacity-100">INSTAGRAM</a><a href="#" className="hover:opacity-100">LINKEDIN</a><a href="#" className="hover:opacity-100">EMAIL</a></div>
-                        <div className="mt-12 text-[10px] opacity-20">© 2025 ZENTARA SYSTEMS. ALL RIGHTS RESERVED.</div>
-                    </footer>
+                <div className="bg-[#020202] min-h-screen text-white">
+                    <Navbar />
+                    <Hero />
+                    <Stats />
+                    <Expertise />
+                    <NeuroCore />
+                    <SelectedWorks />
+                    <HexagonHive />
+                    <VisualArchive />
+                    <ClientStories />
+                    <ScaleUp />
+                    <Footer />
                 </div>
             );
         };
