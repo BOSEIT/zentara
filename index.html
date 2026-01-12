@@ -5,57 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zentara Systems - Beyond Digital</title>
     
-    <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
-    <!-- Babel -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Framer Motion -->
     <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-    
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        /* Base styles */
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #020202; 
-            color: #e5e5e5; 
             overflow-x: hidden; 
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
         
         .font-display { font-family: 'Outfit', sans-serif; }
         
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #020202; }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
 
-        /* Glass Utilities */
-        .glass-panel {
+        /* THEME VARIABLES (handled via CSS classes mostly, but helpers here) */
+        .glass-panel-dark {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-
-        .glass-pill {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        .glass-panel-light {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
         }
 
-        /* TRUE HONEYCOMB GRID SYSTEM */
+        .perspective-container { perspective: 1000px; }
+
+        /* HEXAGON STYLES */
         .hex-container {
             display: flex;
             flex-direction: column;
@@ -63,99 +53,44 @@
             justify-content: center;
             position: relative;
         }
-
-        .hex-row {
-            display: flex;
-            justify-content: center;
-            margin-bottom: -32px; 
-        }
-
+        .hex-row { display: flex; justify-content: center; margin-bottom: -28px; }
         .hex {
             position: relative;
-            width: 110px; 
-            height: 126px; 
-            margin: 0 1px; 
+            width: 90px; height: 104px; margin: 0 1px; 
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
             background: #0a0a0a;
-            /* Snappy transition for robotic feel */
             transition: filter 0.1s step-end, transform 0.1s ease-out; 
             overflow: hidden;
         }
-
-        /* ULTIMATE MECHA ANIMATION */
-        @keyframes mech-idle {
-            0%, 70% { transform: translate(0, 0) scale(1); filter: brightness(1) grayscale(100%); }
-            
-            /* Drett (Twitch 1) */
-            71% { transform: translate(1px, -1px) scale(1.02); filter: brightness(1.2) grayscale(80%); }
-            73% { transform: translate(-1px, 1px) scale(1.02); filter: brightness(1) grayscale(100%); }
-            75% { transform: translate(0, 0) scale(1); }
-
-            /* Pause */
-            85% { transform: translate(0, 0) scale(1); }
-
-            /* Dreet (Rotate Adjust) */
-            86% { transform: rotate(1deg) scale(0.98); }
-            88% { transform: rotate(-0.5deg) scale(0.98); }
-            90% { transform: rotate(0deg) scale(1); }
-
-            100% { transform: translate(0, 0) scale(1); }
-        }
-
-        @keyframes scan-line {
-            0% { top: -100%; opacity: 0; }
-            50% { opacity: 1; }
-            100% { top: 200%; opacity: 0; }
-        }
-
-        .animate-hex-mech {
-            animation: mech-idle 8s linear infinite; /* Long duration for unpredictable feel */
-        }
-        
-        .hex-scan::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.4), transparent);
-            animation: scan-line 3s linear infinite;
-            z-index: 10;
-            pointer-events: none;
-        }
-
-        /* Tech Overlay Lines */
-        .hex-tech-border {
-            position: absolute;
-            inset: 0;
-            background: 
-                linear-gradient(to bottom, transparent 48%, rgba(59, 130, 246, 0.5) 50%, transparent 52%);
-            opacity: 0;
-            background-size: 100% 200%;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-
         @media (min-width: 768px) {
             .hex { width: 140px; height: 160px; }
             .hex-row { margin-bottom: -40px; }
         }
 
-        /* MASONRY GALLERY */
-        .masonry-grid {
-            column-count: 2;
-            column-gap: 1rem;
+        /* Animations */
+        @keyframes mech-idle {
+            0%, 70% { transform: translate(0, 0) scale(1); filter: brightness(1) grayscale(100%); }
+            71% { transform: translate(1px, -1px) scale(1.02); filter: brightness(1.2) grayscale(80%); }
+            75% { transform: translate(0, 0) scale(1); }
+            86% { transform: rotate(1deg) scale(0.98); }
+            90% { transform: rotate(0deg) scale(1); }
+            100% { transform: translate(0, 0) scale(1); }
         }
-        @media (min-width: 768px) {
-            .masonry-grid { column-count: 4; }
+        @keyframes scan-line {
+            0% { top: -100%; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 200%; opacity: 0; }
         }
-        .masonry-item {
-            break-inside: avoid;
-            margin-bottom: 1rem;
-            border-radius: 1rem;
-            overflow: hidden;
-            position: relative;
+        .animate-hex-mech { animation: mech-idle 8s linear infinite; }
+        .hex-scan::before {
+            content: ''; position: absolute; left: 0; width: 100%; height: 50%;
+            background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.4), transparent);
+            animation: scan-line 3s linear infinite; z-index: 10; pointer-events: none;
         }
+
+        .masonry-grid { column-count: 2; column-gap: 1rem; }
+        @media (min-width: 768px) { .masonry-grid { column-count: 4; } }
+        .masonry-item { break-inside: avoid; margin-bottom: 1rem; border-radius: 1rem; overflow: hidden; position: relative; }
     </style>
 </head>
 <body>
@@ -165,138 +100,286 @@
         const { useState, useEffect, useRef, useMemo } = React;
         const { motion, AnimatePresence } = window.Motion;
 
+        // --- TRANSLATIONS & CONTENT ---
+        const translations = {
+            id: {
+                nav: { expertise: "Keahlian", works: "Karya", network: "Jaringan", contact: "Kontak", start: "Mulai Project" },
+                hero: {
+                    pill: "Sistem Online v2.0",
+                    title1: "EVOLUSI",
+                    title2: "DIGITAL.",
+                    desc: "Transformasi ide menjadi ekosistem digital yang hidup. Menggabungkan estetika seni dengan ketajaman kecerdasan buatan.",
+                },
+                stats: { projects: "Proyek", sat: "Kepuasan", exp: "Tahun Pengalaman", sup: "Dukungan" },
+                expertise: {
+                    title: "Keahlian Kami",
+                    items: [
+                        { title: "Development", desc: "Membangun sistem web & mobile yang scalable." },
+                        { title: "AI Integration", desc: "Implementasi kecerdasan buatan dalam bisnis." },
+                        { title: "IoT & Hardware", desc: "Konektivitas cerdas antara fisik & digital." },
+                        { title: "Cyber Security", desc: "Proteksi aset digital tingkat enterprise." }
+                    ]
+                },
+                neuro: {
+                    tag: "Jaringan Syaraf Langsung",
+                    title: "Konektivitas",
+                    hl: "Saraf.",
+                    desc: "Simulasi jaringan data yang hidup. Setiap titik mewakili node dalam infrastruktur klien kami yang saling berkomunikasi secara real-time.",
+                    status: "ONLINE"
+                },
+                works: {
+                    title: "Karya Pilihan.",
+                    subtitle: "Geser untuk melihat portfolio unggulan kami.",
+                    explore: "Lihat Semua Karya",
+                    tech: "Teknologi",
+                    visit: "Kunjungi Situs"
+                },
+                hive: {
+                    tag: "LIVE HIVE MIND",
+                    title: "Kecerdasan",
+                    hl: "Hive.",
+                    desc: "Jaringan node yang 'bernapas'. Struktur hexagon yang saling mengunci menjamin keamanan tanpa celah.",
+                    tags: ["Otonom", "Respon Jarak Dekat"]
+                },
+                scale: {
+                    title: "Siap Bertumbuh?",
+                    desc: "Jangan biarkan kompetitor mendahului Anda. Bangun sistem digital premium Anda sekarang.",
+                    btn1: "Mulai Project",
+                    btn2: "Hubungi Sales"
+                }
+            },
+            en: {
+                nav: { expertise: "Expertise", works: "Works", network: "Network", contact: "Contact", start: "Start Project" },
+                hero: {
+                    pill: "System Online v2.0",
+                    title1: "DIGITAL",
+                    title2: "EVOLUTION.",
+                    desc: "Transforming ideas into living digital ecosystems. Merging artistic aesthetics with the sharpness of artificial intelligence.",
+                },
+                stats: { projects: "Projects", sat: "Satisfaction", exp: "Years Exp", sup: "Support" },
+                expertise: {
+                    title: "Our Expertise",
+                    items: [
+                        { title: "Development", desc: "Building scalable web & mobile systems." },
+                        { title: "AI Integration", desc: "Implementing AI into business workflows." },
+                        { title: "IoT & Hardware", desc: "Smart connectivity between physical & digital." },
+                        { title: "Cyber Security", desc: "Enterprise-grade digital asset protection." }
+                    ]
+                },
+                neuro: {
+                    tag: "LIVE NEURAL NETWORK",
+                    title: "Neural",
+                    hl: "Connectivity.",
+                    desc: "A simulation of living data networks. Each point represents a node in our client infrastructure communicating in real-time.",
+                    status: "ONLINE"
+                },
+                works: {
+                    title: "Selected Works.",
+                    subtitle: "Swipe to explore our featured portfolio.",
+                    explore: "Explore All Works",
+                    tech: "Tech Stack",
+                    visit: "Visit Live Site"
+                },
+                hive: {
+                    tag: "LIVE HIVE MIND",
+                    title: "Hive",
+                    hl: "Intelligence.",
+                    desc: "A breathing network of nodes. Interlocking hexagon structures ensure gapless security, adapting autonomously.",
+                    tags: ["Autonomous", "Proximity Response"]
+                },
+                scale: {
+                    title: "Ready to Scale Up?",
+                    desc: "Don't let competitors get ahead. Build your premium digital system now with our expert team.",
+                    btn1: "Start Project",
+                    btn2: "Contact Sales"
+                }
+            }
+        };
+
         // --- DATA ---
-
-        const statsData = [
-            { val: "500+", label: "Projects Done", icon: "Layers", color: "text-blue-500", sub: "Since 2010" },
-            { val: "98%", label: "Satisfaction", icon: "Smile", color: "text-green-500", sub: "Rate" },
-            { val: "15th", label: "Years Experience", icon: "Trophy", color: "text-yellow-500", sub: "Building Legacy" },
-            { val: "24/7", label: "Active Support", icon: "Headphones", color: "text-purple-500", sub: "Online Now" }
-        ];
-
-        const expertiseData = [
-            { id: "dev", title: "Development", desc: "Membangun sistem web & mobile yang scalable.", icon: "Code2", color: "from-blue-500 to-cyan-500" },
-            { id: "ai", title: "AI Integration", desc: "Implementasi kecerdasan buatan dalam bisnis.", icon: "Brain", color: "from-purple-500 to-pink-500" },
-            { id: "iot", title: "IoT & Hardware", desc: "Konektivitas cerdas antara fisik & digital.", icon: "Cpu", color: "from-emerald-500 to-green-500" },
-            { id: "sec", title: "Cyber Security", desc: "Proteksi aset digital tingkat enterprise.", icon: "ShieldCheck", color: "from-orange-500 to-red-500" }
-        ];
-
-        const projects = [
+        // Generating more projects for the "View All" modal
+        const baseProjects = [
             { 
                 id: "xpos", title: "XPOS Prime", category: "Enterprise POS", image: "assets/xpos_1.png", year: "2024",
-                desc: "Sistem kasir modern dengan manajemen stok multi-gudang dan integrasi AI.",
-                tech: ["React Native", "Firebase", "NodeJS"], gallery: ["assets/xpos_1.png", "assets/xpos_2.png", "assets/xpos_3.png"], link: "#"
+                desc: "Modern cashier system with multi-warehouse stock management and AI integration.",
+                tech: ["React Native", "Firebase", "NodeJS"], gallery: ["https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&w=800"], link: "#"
             },
             { 
                 id: "career", title: "Career Connect", category: "Job Platform", image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80&w=1000", year: "2023",
-                desc: "Platform pencarian kerja dengan algoritma matching.", tech: ["Next.js", "PostgreSQL", "Tailwind"], gallery: ["https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80&w=1000"], link: "https://career-connect-lime.vercel.app/"
+                desc: "Job search platform with advanced matching algorithms.", tech: ["Next.js", "PostgreSQL", "Tailwind"], gallery: ["https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80&w=1000"], link: "https://career-connect-lime.vercel.app/"
             },
             { 
                 id: "asset", title: "Asset Guard", category: "IoT System", image: "assets/asset_12.png", year: "2024",
-                desc: "Dashboard monitoring aset real-time & maintenance otomatis.", tech: ["Python", "IoT Sensors", "Google Maps"], gallery: ["assets/asset_12.png", "assets/asset_1.png"], link: "https://management-asset-green.firebaseapp.com/"
+                desc: "Real-time asset monitoring dashboard & automated maintenance.", tech: ["Python", "IoT Sensors", "Google Maps"], gallery: ["https://images.unsplash.com/photo-1581092921461-eab62e97a782?auto=format&fit=crop&w=800"], link: "https://management-asset-green.firebaseapp.com/"
             },
             { 
                 id: "dash", title: "Exec Dashboard", category: "Big Data", image: "assets/dashboard_1.png", year: "2023",
-                desc: "Visualisasi data eksekutif untuk pengambilan keputusan.", tech: ["Streamlit", "Pandas", "D3.js"], gallery: ["assets/dashboard_1.png", "assets/dashboard_2.png"], link: "https://dashboard-resto-3yua5kxz3du42jk7gmspcj.streamlit.app/", note: "Login: Hendri"
+                desc: "Executive data visualization for strategic decision making.", tech: ["Streamlit", "Pandas", "D3.js"], gallery: ["https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800"], link: "https://dashboard-resto-3yua5kxz3du42jk7gmspcj.streamlit.app/", note: "Login: Hendri"
             }
         ];
 
-        const galleryItems = [
-            { type: "image", src: "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=600", height: "h-64" },
-            { type: "video", src: "https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-a-circuit-board-99-large.mp4", height: "h-40" },
-            { type: "image", src: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=600", height: "h-80" },
-            { type: "image", src: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600", height: "h-48" },
-            { type: "video", src: "https://assets.mixkit.co/videos/preview/mixkit-server-room-with-many-blinking-lights-2070-large.mp4", height: "h-64" },
-            { type: "image", src: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=600", height: "h-40" },
-            { type: "image", src: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600", height: "h-64" },
-            { type: "image", src: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=600", height: "h-48" }
-        ];
+        // Create 12 items for the grid by duplicating and modifying
+        const allProjects = [...baseProjects, ...baseProjects, ...baseProjects].map((p, i) => ({
+            ...p, id: p.id + i, title: `${p.title} ${i > 3 ? 'v'+i : ''}`
+        }));
 
-        const testimonials = [
-            { name: "Sarah J.", role: "CTO, FinTech Co.", text: "Transformasi sistem yang luar biasa. Efisiensi naik 200% dalam sebulan." },
-            { name: "Budi Santoso", role: "Owner, Retail Chain", text: "Dashboard yang dibuat sangat membantu pengambilan keputusan strategis." }
-        ];
+        const Icon = ({ name, size = 24, className = "" }) => {
+            const iconRef = useRef(null);
+            useEffect(() => {
+                if (iconRef.current && window.lucide) {
+                    const iconNode = window.lucide.icons[name];
+                    if(iconNode) {
+                        iconRef.current.innerHTML = ''; 
+                        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                        svg.setAttribute('width', size);
+                        svg.setAttribute('height', size);
+                        svg.setAttribute('viewBox', '0 0 24 24');
+                        svg.setAttribute('fill', 'none');
+                        svg.setAttribute('stroke', 'currentColor');
+                        svg.setAttribute('stroke-width', '2');
+                        svg.setAttribute('stroke-linecap', 'round');
+                        svg.setAttribute('stroke-linejoin', 'round');
+                        svg.classList.add(...className.split(' '));
+                        const [tag, attrs, children] = iconNode; 
+                        // Simplified manual creation for stability without build step
+                        // Actually, let's just use the i tag and lucide.createIcons
+                    }
+                }
+            }, [name]);
+            return <i data-lucide={name} className={className} width={size} height={size}></i>;
+        };
 
         // --- COMPONENTS ---
 
-        const Navbar = () => (
+        const Navbar = ({ theme, toggleTheme, lang, toggleLang, t }) => (
             <motion.nav initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.8 }} className="fixed top-4 w-full z-50 px-4">
-                <div className="max-w-4xl mx-auto glass-pill rounded-full px-6 py-3 flex justify-between items-center bg-black/40 backdrop-blur-xl border border-white/10">
-                    <div className="flex items-center gap-2 font-display font-bold text-lg tracking-tight text-white">ZENTARA.</div>
-                    <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
-                        <a href="#expertise" className="hover:text-white transition">Expertise</a>
-                        <a href="#work" className="hover:text-white transition">Works</a>
-                        <a href="#network" className="hover:text-white transition">Network</a>
-                        <a href="#contact" className="hover:text-white transition">Contact</a>
+                <div className={`max-w-5xl mx-auto rounded-full px-4 md:px-6 py-3 flex justify-between items-center transition-all duration-500
+                    ${theme === 'dark' ? 'bg-black/60 border-white/10 text-white' : 'bg-white/80 border-black/5 text-black shadow-lg'} backdrop-blur-xl border`}>
+                    
+                    <div className="flex items-center gap-2 font-display font-bold text-lg tracking-tight">ZENTARA.</div>
+                    
+                    <div className={`hidden md:flex items-center gap-8 text-sm font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                        <a href="#expertise" className={`transition ${theme === 'dark' ? 'hover:text-white' : 'hover:text-black'}`}>{t.nav.expertise}</a>
+                        <a href="#work" className={`transition ${theme === 'dark' ? 'hover:text-white' : 'hover:text-black'}`}>{t.nav.works}</a>
+                        <a href="#network" className={`transition ${theme === 'dark' ? 'hover:text-white' : 'hover:text-black'}`}>{t.nav.network}</a>
+                        <a href="#contact" className={`transition ${theme === 'dark' ? 'hover:text-white' : 'hover:text-black'}`}>{t.nav.contact}</a>
                     </div>
-                    <a href="https://wa.me/6285157362339" className="bg-white text-black px-5 py-2 rounded-full text-sm font-bold hover:bg-gray-200 transition flex items-center gap-2">
-                        <i data-lucide="message-circle" width="16"></i> Chat
-                    </a>
+
+                    <div className="flex items-center gap-3">
+                        {/* THEME TOGGLE */}
+                        <button onClick={toggleTheme} className={`p-2 rounded-full border transition ${theme === 'dark' ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-gray-100 border-gray-200 hover:bg-gray-200'}`}>
+                            <Icon name={theme === 'dark' ? "Sun" : "Moon"} size={16} />
+                        </button>
+                        
+                        {/* LANG TOGGLE */}
+                        <button onClick={toggleLang} className={`px-3 py-1.5 rounded-full text-xs font-bold border transition uppercase ${theme === 'dark' ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-gray-100 border-gray-200 hover:bg-gray-200'}`}>
+                            {lang}
+                        </button>
+
+                        <a href="https://wa.me/6285157362339" className={`px-4 py-2 rounded-full text-xs md:text-sm font-bold transition flex items-center gap-2
+                            ${theme === 'dark' ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:bg-gray-800'}`}>
+                            <Icon name="MessageCircle" size={14} /> <span className="hidden md:inline">{t.nav.start}</span>
+                        </a>
+                    </div>
                 </div>
             </motion.nav>
         );
 
-        const Hero = () => (
-            <section className="relative min-h-screen flex items-center justify-center px-6 pt-20 overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-black to-black"></div>
+        const Hero = ({ theme, t }) => (
+            <section className="relative min-h-screen flex items-center justify-center px-4 md:px-6 pt-20 overflow-hidden">
+                <div className={`absolute inset-0 transition-colors duration-700 ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
+                    {/* Gradient Background */}
+                    <div className={`absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] 
+                        ${theme === 'dark' ? 'from-blue-900/20 via-black to-black' : 'from-blue-100/50 via-white to-white'}`}></div>
+                </div>
+                
                 <div className="relative z-10 max-w-5xl mx-auto text-center">
                     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 mb-8">
+                        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border mb-6 md:mb-8 transition-colors duration-500
+                             ${theme === 'dark' ? 'border-white/10 bg-white/5' : 'border-black/10 bg-black/5'}`}>
                             <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                            <span className="text-[10px] uppercase tracking-widest font-bold text-gray-400">System Online v2.0</span>
+                            <span className={`text-[10px] uppercase tracking-widest font-bold ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{t.hero.pill}</span>
                         </div>
-                        <h1 className="font-display text-6xl md:text-8xl lg:text-9xl font-bold leading-[0.9] tracking-tighter mb-8">
-                            DIGITAL <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-white">EVOLUTION.</span>
+                        <h1 className={`font-display text-5xl md:text-8xl lg:text-9xl font-bold leading-[0.9] tracking-tighter mb-6 md:mb-8 transition-colors duration-500 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+                            {t.hero.title1} <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400">{t.hero.title2}</span>
                         </h1>
-                        <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed mb-12">
-                            Transformasi ide menjadi ekosistem digital yang hidup. Menggabungkan estetika seni dengan ketajaman kecerdasan buatan.
+                        <p className={`text-sm md:text-lg max-w-2xl mx-auto leading-relaxed mb-8 md:mb-12 px-4 transition-colors duration-500 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                            {t.hero.desc}
                         </p>
                     </motion.div>
                 </div>
             </section>
         );
 
-        const Stats = () => (
-            <section className="py-10 px-6">
-                <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {statsData.map((s, i) => (
-                        <motion.div key={i} whileHover={{ y: -5 }} className="glass-panel p-6 rounded-3xl relative overflow-hidden">
-                            <div className={`absolute top-4 right-4 opacity-20 ${s.color}`}><i data-lucide={s.icon} width="24"></i></div>
-                            <h3 className="text-4xl font-bold mb-1 font-display">{s.val}</h3>
-                            <p className="text-sm font-bold text-gray-300">{s.label}</p>
-                            <p className="text-[10px] text-gray-500 mt-2 uppercase tracking-wider">{s.sub}</p>
-                        </motion.div>
-                    ))}
-                </div>
-            </section>
-        );
+        const Stats = ({ theme, t }) => {
+            const statsData = [
+                { val: "500+", label: t.stats.projects, icon: "Layers", color: "text-blue-500", sub: "Since 2010" },
+                { val: "98%", label: t.stats.sat, icon: "Smile", color: "text-green-500", sub: "Rate" },
+                { val: "15th", label: t.stats.exp, icon: "Trophy", color: "text-yellow-500", sub: "Legacy" },
+                { val: "24/7", label: t.stats.sup, icon: "Headphones", color: "text-purple-500", sub: "Active" }
+            ];
 
-        const Expertise = () => {
-            const [active, setActive] = useState(0);
             return (
-                <section id="expertise" className="py-32 px-6 bg-[#020202]">
+                <section className="py-10 px-4 md:px-6">
+                    <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                        {statsData.map((s, i) => (
+                            <motion.div key={i} whileHover={{ y: -5 }} className={`p-4 md:p-6 rounded-2xl md:rounded-3xl relative overflow-hidden transition-all duration-500
+                                ${theme === 'dark' ? 'glass-panel-dark' : 'glass-panel-light'}`}>
+                                <div className={`absolute top-4 right-4 opacity-20 ${s.color}`}><Icon name={s.icon} size={24} /></div>
+                                <h3 className={`text-2xl md:text-4xl font-bold mb-1 font-display ${theme === 'dark' ? 'text-white' : 'text-black'}`}>{s.val}</h3>
+                                <p className={`text-xs md:text-sm font-bold ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{s.label}</p>
+                                <p className="text-[10px] text-gray-500 mt-2 uppercase tracking-wider">{s.sub}</p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </section>
+            );
+        };
+
+        const Expertise = ({ theme, t }) => {
+            const [active, setActive] = useState(0);
+            const data = [
+                { id: "dev", icon: "Code2", color: "from-blue-500 to-cyan-500", ...t.expertise.items[0] },
+                { id: "ai", icon: "Brain", color: "from-purple-500 to-pink-500", ...t.expertise.items[1] },
+                { id: "iot", icon: "Cpu", color: "from-emerald-500 to-green-500", ...t.expertise.items[2] },
+                { id: "sec", icon: "ShieldCheck", color: "from-orange-500 to-red-500", ...t.expertise.items[3] }
+            ];
+
+            return (
+                <section id="expertise" className={`py-24 md:py-32 px-4 md:px-6 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#020202]' : 'bg-gray-50'}`}>
                     <div className="max-w-7xl mx-auto">
-                        <h2 className="font-display text-4xl font-bold mb-12">Our Expertise</h2>
-                        <div className="flex flex-col md:flex-row gap-4 h-[600px] md:h-[400px]">
-                            {expertiseData.map((item, idx) => (
+                        <h2 className={`font-display text-3xl md:text-4xl font-bold mb-8 md:mb-12 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>{t.expertise.title}</h2>
+                        <div className="flex flex-col md:flex-row gap-4 h-auto md:h-[400px]">
+                            {data.map((item, idx) => (
                                 <motion.div 
                                     key={idx}
                                     onHoverStart={() => setActive(idx)}
                                     onClick={() => setActive(idx)}
-                                    className={`relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 ease-out ${active === idx ? 'flex-[3]' : 'flex-[1]'}`}
+                                    className={`relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 ease-out shadow-xl
+                                        ${active === idx ? 'h-[280px] md:h-auto md:flex-[3]' : 'h-[100px] md:h-auto md:flex-[1]'}`}
                                 >
                                     <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-20 group-hover:opacity-40`}></div>
-                                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-                                    <div className="absolute inset-0 p-8 flex flex-col justify-between">
-                                        <div className={`w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white mb-4 ${active === idx ? 'scale-100' : 'scale-75 opacity-50'}`}>
-                                            <i data-lucide={item.icon}></i>
+                                    <div className={`absolute inset-0 backdrop-blur-sm ${theme === 'dark' ? 'bg-black/60' : 'bg-white/40'}`}></div>
+                                    
+                                    <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between">
+                                        <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center mb-4 transition-all duration-300
+                                            ${active === idx ? 'scale-100' : 'scale-75 opacity-50'}
+                                            ${theme === 'dark' ? 'bg-white/10 text-white' : 'bg-black/10 text-black'}`}>
+                                            <Icon name={item.icon} size={20} />
                                         </div>
                                         <div>
-                                            <h3 className={`font-display font-bold text-2xl mb-2 ${active === idx ? 'text-white' : 'text-gray-500 rotate-0 md:-rotate-90 md:origin-bottom-left md:translate-x-8'}`}>{item.title}</h3>
+                                            <h3 className={`font-display font-bold text-lg md:text-2xl mb-2 transition-all duration-300 
+                                                ${active === idx ? (theme === 'dark' ? 'text-white' : 'text-black') : 'text-gray-500 md:-rotate-90 md:origin-bottom-left md:translate-x-8'}`}>
+                                                {item.title}
+                                            </h3>
                                             <AnimatePresence>
                                                 {active === idx && (
-                                                    <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="text-gray-300 text-sm leading-relaxed max-w-md">{item.desc}</motion.p>
+                                                    <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className={`text-xs md:text-sm leading-relaxed max-w-md hidden md:block ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                                                        {item.desc}
+                                                    </motion.p>
                                                 )}
+                                                {active === idx && <p className={`md:hidden text-xs mt-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>{item.desc}</p>}
                                             </AnimatePresence>
                                         </div>
                                     </div>
@@ -308,9 +391,8 @@
             );
         };
 
-        const NeuroCore = () => {
+        const NeuroCore = ({ theme, t }) => {
             const canvasRef = useRef(null);
-            
             useEffect(() => {
                 const canvas = canvasRef.current;
                 const ctx = canvas.getContext('2d');
@@ -318,73 +400,67 @@
                 let height = canvas.height = canvas.offsetHeight;
                 
                 const particles = [];
-                const particleCount = 60;
+                const particleCount = 40; 
                 
                 for(let i=0; i<particleCount; i++) {
                     particles.push({
-                        x: Math.random() * width,
-                        y: Math.random() * height,
-                        vx: (Math.random() - 0.5) * 1.5,
-                        vy: (Math.random() - 0.5) * 1.5,
+                        x: Math.random() * width, y: Math.random() * height,
+                        vx: (Math.random() - 0.5) * 1, vy: (Math.random() - 0.5) * 1,
                         size: Math.random() * 2 + 1
                     });
                 }
 
+                let animationFrameId;
                 const animate = () => {
                     ctx.clearRect(0, 0, width, height);
-                    ctx.fillStyle = '#3b82f6';
-                    ctx.strokeStyle = 'rgba(59, 130, 246, 0.15)'; 
+                    // Adjust node colors based on theme, handled inside JS for canvas
+                    const isDark = theme === 'dark';
+                    ctx.fillStyle = isDark ? '#3b82f6' : '#2563eb';
+                    ctx.strokeStyle = isDark ? 'rgba(59, 130, 246, 0.15)' : 'rgba(37, 99, 235, 0.15)';
 
                     particles.forEach((p, i) => {
-                        p.x += p.vx;
-                        p.y += p.vy;
-
+                        p.x += p.vx; p.y += p.vy;
                         if(p.x < 0 || p.x > width) p.vx *= -1;
                         if(p.y < 0 || p.y > height) p.vy *= -1;
-
+                        
                         ctx.beginPath();
                         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                         ctx.fill();
 
                         for(let j=i+1; j<particles.length; j++) {
                             const p2 = particles[j];
-                            const dx = p.x - p2.x;
-                            const dy = p.y - p2.y;
-                            const dist = Math.sqrt(dx*dx + dy*dy);
-                            
-                            if(dist < 120) {
+                            const dist = Math.sqrt((p.x-p2.x)**2 + (p.y-p2.y)**2);
+                            if(dist < 100) {
                                 ctx.beginPath();
-                                ctx.lineWidth = 1 - (dist/120);
-                                ctx.moveTo(p.x, p.y);
-                                ctx.lineTo(p2.x, p2.y);
+                                ctx.lineWidth = 1 - (dist/100);
+                                ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y);
                                 ctx.stroke();
                             }
                         }
                     });
-                    requestAnimationFrame(animate);
+                    animationFrameId = requestAnimationFrame(animate);
                 };
                 
                 animate();
                 const handleResize = () => { width = canvas.width = canvas.offsetWidth; height = canvas.height = canvas.offsetHeight; };
                 window.addEventListener('resize', handleResize);
-                return () => window.removeEventListener('resize', handleResize);
-            }, []);
+                return () => { window.removeEventListener('resize', handleResize); cancelAnimationFrame(animationFrameId); };
+            }, [theme]);
 
             return (
-                <section className="py-24 px-6 relative overflow-hidden bg-[#050505] border-y border-white/5">
-                    <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center relative z-10">
+                <section className={`py-16 md:py-24 px-4 md:px-6 relative overflow-hidden transition-colors duration-500 border-y ${theme === 'dark' ? 'bg-[#050505] border-white/5' : 'bg-white border-black/5'}`}>
+                    <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 md:gap-16 items-center relative z-10">
                         <div>
-                            <div className="inline-block px-3 py-1 bg-blue-900/30 border border-blue-500/30 rounded-full text-blue-400 text-xs font-bold mb-6">LIVE NEURAL NETWORK</div>
-                            <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">Neural <span className="text-blue-500">Connectivity.</span></h2>
-                            <p className="text-gray-400 leading-relaxed mb-8">
-                                Simulasi jaringan data yang hidup. Setiap titik mewakili node dalam infrastruktur klien kami yang saling berkomunikasi secara real-time dengan latensi mendekati nol.
+                            <div className="inline-block px-3 py-1 bg-blue-900/30 border border-blue-500/30 rounded-full text-blue-400 text-xs font-bold mb-6">{t.neuro.tag}</div>
+                            <h2 className={`font-display text-3xl md:text-5xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>{t.neuro.title} <span className="text-blue-500">{t.neuro.hl}</span></h2>
+                            <p className={`text-sm md:text-base leading-relaxed mb-8 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                                {t.neuro.desc}
                             </p>
                         </div>
-                        <div className="relative h-[400px] w-full glass-panel rounded-3xl overflow-hidden">
+                        <div className={`relative h-[300px] md:h-[400px] w-full rounded-3xl overflow-hidden ${theme === 'dark' ? 'glass-panel-dark' : 'glass-panel-light border-2 border-blue-50'}`}>
                             <canvas ref={canvasRef} className="w-full h-full block"></canvas>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
-                            <div className="absolute bottom-6 left-6 text-xs font-mono text-blue-400">
-                                Status: <span className="text-green-400 animate-pulse">● ONLINE</span><br/>
+                            <div className={`absolute bottom-6 left-6 text-xs font-mono ${theme === 'dark' ? 'text-blue-400' : 'text-blue-600'}`}>
+                                Status: <span className="text-green-500 animate-pulse">● {t.neuro.status}</span><br/>
                                 Nodes: 5.421 Active
                             </div>
                         </div>
@@ -393,68 +469,190 @@
             );
         };
 
-        const SelectedWorks = () => {
-            const [selectedId, setSelectedId] = useState(null);
+        const SelectedWorks = ({ theme, t }) => {
+            const [activeIndex, setActiveIndex] = useState(0);
+            const [selectedId, setSelectedId] = useState(null); 
             const [imgIndex, setImgIndex] = useState(0);
-            const selectedProject = projects.find(p => p.id === selectedId);
+            const [showAll, setShowAll] = useState(false); // New state for All Works modal
 
+            const displayProjects = baseProjects; // Only show top 4-5 in carousel
+            const selectedProject = displayProjects.find(p => p.id === selectedId);
+
+            // Carousel Logic
+            const nextSlide = () => setActiveIndex((prev) => (prev + 1) % displayProjects.length);
+            const prevSlide = () => setActiveIndex((prev) => (prev - 1 + displayProjects.length) % displayProjects.length);
+            
+            // Modal Logic
             const nextImg = () => { if (selectedProject) setImgIndex((prev) => (prev + 1) % selectedProject.gallery.length); };
             const prevImg = () => { if (selectedProject) setImgIndex((prev) => (prev - 1 + selectedProject.gallery.length) % selectedProject.gallery.length); };
             useEffect(() => { setImgIndex(0); }, [selectedId]);
 
             return (
-                <section id="work" className="py-32 px-6">
+                <section id="work" className={`py-24 md:py-32 px-4 md:px-6 overflow-hidden transition-colors duration-500 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-gray-50'}`}>
                     <div className="max-w-7xl mx-auto">
-                        <h2 className="font-display text-5xl font-bold mb-16">Selected Works.</h2>
-                        <div className="space-y-32">
-                            {projects.map((project, idx) => (
-                                <div key={idx} className={`flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-10 items-center group`}>
-                                    <div className="w-full md:w-7/12 relative cursor-pointer" onClick={() => setSelectedId(project.id)}>
-                                        <div className="aspect-video overflow-hidden rounded-2xl relative">
-                                            <img src={project.image} onError={(e)=>{e.target.onerror=null; e.target.src='https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800'}} className="w-full h-full object-cover transition duration-700 group-hover:scale-105" />
-                                            <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition duration-500 flex items-center justify-center">
-                                                <div className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-full text-sm font-bold opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition">View Case Study</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="w-full md:w-5/12">
-                                        <div className="flex items-center gap-3 mb-4 text-xs font-mono text-blue-400">
-                                            <span>{project.year}</span><span className="w-1 h-1 bg-gray-500 rounded-full"></span><span>{project.category}</span>
-                                        </div>
-                                        <h3 className="text-4xl font-display font-bold mb-6">{project.title}</h3>
-                                        <p className="text-gray-400 mb-8 leading-relaxed">{project.desc}</p>
-                                        <button onClick={() => setSelectedId(project.id)} className="text-sm font-bold border-b border-white/20 pb-1 hover:border-white transition">Explore Project</button>
-                                    </div>
-                                </div>
-                            ))}
+                        <div className="text-center mb-16">
+                            <h2 className={`font-display text-4xl md:text-5xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>{t.works.title}</h2>
+                            <p className={`${theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}`}>{t.works.subtitle}</p>
                         </div>
-                        <div className="mt-24 text-center">
-                            <button className="px-8 py-4 glass-panel rounded-full hover:bg-white hover:text-black transition-all font-bold text-sm tracking-widest uppercase">
-                                Explore All Works <i className="inline-block ml-2" data-lucide="arrow-right" width="16"></i>
+
+                        {/* 3D CAROUSEL */}
+                        <div className="relative h-[350px] md:h-[500px] flex justify-center items-center perspective-container mb-12">
+                            <AnimatePresence mode="popLayout">
+                                {displayProjects.map((project, index) => {
+                                    const len = displayProjects.length;
+                                    let dist = (index - activeIndex + len) % len;
+                                    if (dist > len / 2) dist -= len;
+                                    
+                                    const isActive = dist === 0;
+                                    const isVisible = Math.abs(dist) <= 1;
+
+                                    // Responsive sizing
+                                    const isMobile = window.innerWidth < 768;
+                                    const xOffset = dist * (isMobile ? 40 : 250);
+                                    const scale = isActive ? 1 : (isMobile ? 0.9 : 0.8);
+                                    
+                                    return (
+                                        <motion.div
+                                            key={project.id}
+                                            layout
+                                            initial={false}
+                                            animate={{
+                                                x: xOffset, scale: scale,
+                                                opacity: isVisible ? (isActive ? 1 : 0.5) : 0,
+                                                zIndex: isActive ? 20 : 10,
+                                                rotateY: isActive ? 0 : (dist > 0 ? -45 : 45),
+                                            }}
+                                            transition={{ type: "spring", stiffness: 150, damping: 20 }}
+                                            onClick={() => isActive ? setSelectedId(project.id) : setActiveIndex(index)}
+                                            className={`absolute w-[280px] md:w-[600px] rounded-2xl md:rounded-3xl border overflow-hidden cursor-pointer shadow-2xl
+                                                ${theme === 'dark' ? 'bg-[#111] border-white/10' : 'bg-white border-black/10'}`}
+                                            style={{ transformStyle: 'preserve-3d', height: 'fit-content' }}
+                                        >
+                                            <div className="aspect-video relative overflow-hidden group">
+                                                <img src={project.image} onError={(e)=>{e.target.onerror=null; e.target.src='https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800'}} className="w-full h-full object-cover" />
+                                                <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition duration-300 flex items-center justify-center">
+                                                    <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 text-white transform translate-y-4 group-hover:translate-y-0 transition">
+                                                        View Details
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className={`p-6 md:p-8 ${theme === 'dark' ? 'bg-gradient-to-b from-[#111] to-black' : 'bg-white'}`}>
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <span className="text-xs font-mono text-blue-500">{project.category}</span>
+                                                    <span className="text-xs text-gray-500">{project.year}</span>
+                                                </div>
+                                                <h3 className={`text-xl md:text-3xl font-display font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>{project.title}</h3>
+                                                <p className={`text-xs md:text-sm line-clamp-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{project.desc}</p>
+                                            </div>
+                                        </motion.div>
+                                    );
+                                })}
+                            </AnimatePresence>
+                        </div>
+
+                        {/* CONTROLS (Improved Visibility) */}
+                        <div className="flex justify-center gap-6 mt-8">
+                            <button onClick={prevSlide} className={`p-4 rounded-full border transition active:scale-95 shadow-lg
+                                ${theme === 'dark' ? 'bg-white/10 border-white/20 text-white hover:bg-white/20' : 'bg-white border-black/10 text-black hover:bg-gray-100'}`}>
+                                <Icon name="ArrowLeft" size={20} />
+                            </button>
+                            <button onClick={nextSlide} className={`p-4 rounded-full border transition active:scale-95 shadow-lg
+                                ${theme === 'dark' ? 'bg-white/10 border-white/20 text-white hover:bg-white/20' : 'bg-white border-black/10 text-black hover:bg-gray-100'}`}>
+                                <Icon name="ArrowRight" size={20} />
+                            </button>
+                        </div>
+
+                        <div className="mt-16 text-center">
+                            <button onClick={() => setShowAll(true)} className={`px-8 py-4 rounded-full font-bold text-xs md:text-sm tracking-widest uppercase flex items-center gap-2 mx-auto transition-all hover:scale-105 shadow-xl
+                                ${theme === 'dark' ? 'glass-panel-dark text-white hover:bg-white hover:text-black' : 'bg-black text-white hover:bg-gray-800'}`}>
+                                {t.works.explore} <Icon name="Grid" size={16} />
                             </button>
                         </div>
                     </div>
 
+                    {/* PROJECT DETAIL POPUP */}
                     <AnimatePresence>
                         {selectedId && selectedProject && (
                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4">
-                                <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} className="w-full max-w-7xl h-[85vh] bg-[#0a0a0a] rounded-3xl border border-white/10 overflow-hidden flex flex-col md:flex-row relative">
-                                    <button onClick={() => setSelectedId(null)} className="absolute top-4 right-4 z-50 bg-black/50 p-2 rounded-full border border-white/10 hover:bg-white/20"><i data-lucide="x"></i></button>
-                                    <div className="w-full md:w-1/3 p-8 border-r border-white/10 overflow-y-auto">
+                                <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }} className={`w-full max-w-7xl h-[85vh] rounded-3xl border overflow-hidden flex flex-col md:flex-row relative ${theme === 'dark' ? 'bg-[#0a0a0a] border-white/10' : 'bg-white border-gray-200'}`}>
+                                    <button onClick={() => setSelectedId(null)} className={`absolute top-4 right-4 z-50 p-2 rounded-full border hover:bg-opacity-80 transition ${theme === 'dark' ? 'bg-black/50 border-white/10 text-white' : 'bg-white/80 border-gray-200 text-black shadow-lg'}`}><Icon name="X" size={20} /></button>
+                                    
+                                    <div className={`w-full md:w-1/3 p-6 md:p-8 border-r overflow-y-auto ${theme === 'dark' ? 'border-white/10 bg-[#0a0a0a]' : 'border-gray-100 bg-gray-50'}`}>
                                         <span className="text-blue-500 text-xs font-bold uppercase tracking-widest">{selectedProject.category}</span>
-                                        <h2 className="text-4xl font-bold font-display mt-2 mb-6">{selectedProject.title}</h2>
-                                        <p className="text-gray-400 leading-relaxed mb-8 text-sm">{selectedProject.desc}</p>
-                                        {selectedProject.note && ( <div className="mb-6 p-4 bg-yellow-900/20 border border-yellow-500/20 rounded-xl"><div className="flex gap-2 text-yellow-500 mb-1 font-bold text-xs items-center"><i data-lucide="alert-circle" width="14"></i> Access Info</div><p className="text-xs text-yellow-200/80">{selectedProject.note}</p></div> )}
-                                        <div className="mb-8"><h4 className="text-xs uppercase text-gray-500 font-bold mb-3">Tech Stack</h4><div className="flex flex-wrap gap-2">{selectedProject.tech.map(t => <span key={t} className="px-2 py-1 bg-white/5 border border-white/10 rounded text-xs text-gray-300">{t}</span>)}</div></div>
-                                        {selectedProject.link && selectedProject.link !== "#" && (<a href={selectedProject.link} target="_blank" className="w-full py-3 bg-blue-600 hover:bg-blue-500 rounded-xl flex items-center justify-center gap-2 font-bold text-sm transition">Visit Live Site <i data-lucide="external-link" width="16"></i></a>)}
+                                        <h2 className={`text-3xl md:text-4xl font-bold font-display mt-2 mb-6 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>{selectedProject.title}</h2>
+                                        <p className={`leading-relaxed mb-8 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{selectedProject.desc}</p>
+                                        
+                                        <div className="mb-8">
+                                            <h4 className="text-xs uppercase text-gray-500 font-bold mb-3">{t.works.tech}</h4>
+                                            <div className="flex flex-wrap gap-2">
+                                                {selectedProject.tech.map(te => <span key={te} className={`px-2 py-1 border rounded text-xs ${theme === 'dark' ? 'bg-white/5 border-white/10 text-gray-300' : 'bg-white border-gray-200 text-gray-600'}`}>{te}</span>)}
+                                            </div>
+                                        </div>
+                                        
+                                        {selectedProject.link && selectedProject.link !== "#" && (
+                                            <a href={selectedProject.link} target="_blank" className="w-full py-3 bg-blue-600 hover:bg-blue-500 rounded-xl flex items-center justify-center gap-2 font-bold text-sm transition text-white">
+                                                {t.works.visit} <Icon name="ExternalLink" size={16} />
+                                            </a>
+                                        )}
                                     </div>
+                                    
                                     <div className="w-full md:w-2/3 bg-black relative flex items-center justify-center p-4">
                                         <div className="relative w-full h-full max-h-[600px] flex items-center justify-center">
-                                            <AnimatePresence mode="wait"><motion.img key={imgIndex} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} src={selectedProject.gallery[imgIndex]} onError={(e)=>{e.target.onerror=null; e.target.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800'}} className="max-w-full max-h-full object-contain rounded-lg shadow-2xl" /></AnimatePresence>
+                                            <AnimatePresence mode="wait">
+                                                <motion.img 
+                                                    key={imgIndex} 
+                                                    initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} 
+                                                    src={selectedProject.gallery[imgIndex]} onError={(e)=>{e.target.onerror=null; e.target.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800'}} 
+                                                    className="max-w-full max-h-full object-contain rounded-lg shadow-2xl" 
+                                                />
+                                            </AnimatePresence>
                                         </div>
-                                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-4"><button onClick={prevImg} className="p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md border border-white/10"><i data-lucide="chevron-left"></i></button><span className="px-4 py-3 bg-black/50 rounded-full text-xs font-mono border border-white/10 flex items-center">{imgIndex + 1} / {selectedProject.gallery.length}</span><button onClick={nextImg} className="p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md border border-white/10"><i data-lucide="chevron-right"></i></button></div>
+                                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-4">
+                                            <button onClick={prevImg} className="p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md border border-white/10 text-white"><Icon name="ChevronLeft" size={20} /></button>
+                                            <span className="px-4 py-3 bg-black/50 rounded-full text-xs font-mono border border-white/10 flex items-center text-white">{imgIndex + 1} / {selectedProject.gallery.length}</span>
+                                            <button onClick={nextImg} className="p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md border border-white/10 text-white"><Icon name="ChevronRight" size={20} /></button>
+                                        </div>
                                     </div>
                                 </motion.div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    {/* EXPLORE ALL MODAL */}
+                    <AnimatePresence>
+                        {showAll && (
+                            <motion.div initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 100 }} className={`fixed inset-0 z-[60] overflow-y-auto ${theme === 'dark' ? 'bg-[#050505]' : 'bg-gray-50'}`}>
+                                <div className="sticky top-0 z-10 p-4 md:p-6 flex justify-between items-center backdrop-blur-lg border-b border-white/5">
+                                    <h2 className={`text-2xl font-bold font-display ${theme === 'dark' ? 'text-white' : 'text-black'}`}>{t.works.explore}</h2>
+                                    <button onClick={() => setShowAll(false)} className={`p-3 rounded-full border transition ${theme === 'dark' ? 'bg-white/10 text-white border-white/10 hover:bg-white/20' : 'bg-white text-black border-gray-200 hover:bg-gray-100'}`}>
+                                        <Icon name="X" size={24} />
+                                    </button>
+                                </div>
+                                <div className="max-w-7xl mx-auto p-4 md:p-6 pb-20">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {allProjects.map((p, i) => (
+                                            <motion.div 
+                                                key={i} 
+                                                initial={{ opacity: 0, scale: 0.9 }} 
+                                                animate={{ opacity: 1, scale: 1 }} 
+                                                transition={{ delay: i * 0.05 }}
+                                                className={`rounded-2xl overflow-hidden border group cursor-pointer ${theme === 'dark' ? 'bg-[#111] border-white/10' : 'bg-white border-gray-200 shadow-md'}`}
+                                                onClick={() => { setShowAll(false); setSelectedId(p.id); }}
+                                            >
+                                                <div className="h-48 overflow-hidden relative">
+                                                    <img src={p.image} className="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+                                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                                                        <Icon name="Eye" className="text-white" />
+                                                    </div>
+                                                </div>
+                                                <div className="p-4">
+                                                    <div className="text-xs text-blue-500 font-bold mb-1 uppercase">{p.category}</div>
+                                                    <h3 className={`font-bold text-lg ${theme === 'dark' ? 'text-white' : 'text-black'}`}>{p.title}</h3>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -462,203 +660,125 @@
             );
         };
 
-        // --- NEW: HEXAGON GRID WITH MECHA ANIMATION ---
-        const HexagonHive = () => {
+        const HexagonHive = ({ theme, t }) => {
             const containerRef = useRef(null);
             const allImages = [
-                "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80",
-                "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=600&q=80",
-                "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
-                "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80",
-                "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=80",
-                "https://images.unsplash.com/photo-1555255707-c07966088b7b?w=600&q=80",
-                "https://images.unsplash.com/photo-1531297461136-82lw9b44d940?w=600&q=80",
-                "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&q=80",
-                "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=80",
-                "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80",
-                "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?w=600&q=80"
+                "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80", "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=600&q=80",
+                "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80", "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80",
+                "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=80", "https://images.unsplash.com/photo-1555255707-c07966088b7b?w=600&q=80",
+                "https://images.unsplash.com/photo-1531297461136-82lw9b44d940?w=600&q=80", "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&q=80"
             ];
             
-            // Assign random delay for "Mechanical" breathing effect
-            const hexData = useMemo(() => allImages.map(src => ({
-                src,
-                delay: Math.random() * 5 + 's',
-                duration: Math.random() * 2 + 5 + 's' // Longer duration for randomness
-            })), []);
-            
-            const rows = [
-                hexData.slice(0, 4),
-                hexData.slice(4, 7),
-                hexData.slice(7, 11)
-            ];
+            const hexData = useMemo(() => allImages.map(src => ({ src, delay: Math.random()*5+'s', duration: Math.random()*2+5+'s' })), []);
+            const rows = [hexData.slice(0, 3), hexData.slice(3, 5), hexData.slice(5, 8)];
 
             const handleMouseMove = (e) => {
                 if (containerRef.current) {
                     const rect = containerRef.current.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    containerRef.current.style.setProperty('--mouse-x', `${x}px`);
-                    containerRef.current.style.setProperty('--mouse-y', `${y}px`);
+                    containerRef.current.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                    containerRef.current.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
                 }
             };
 
-            const GridLayer = ({ isColored = false }) => (
-                <div className="hex-container" style={isColored ? { 
-                    position: 'absolute', 
-                    inset: 0, 
-                    pointerEvents: 'none',
-                    zIndex: 10,
-                    // The Flashlight Mask Logic
-                    maskImage: `radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black, transparent)`,
-                    WebkitMaskImage: `radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black, transparent)`
-                } : {}}>
-                    {rows.map((row, rIndex) => (
-                        <div key={rIndex} className="hex-row">
-                            {row.map((item, i) => (
-                                <div key={i} className={`hex animate-hex-mech ${isColored ? 'hex-scan' : ''}`} style={{ animationDelay: item.delay, animationDuration: item.duration }}>
-                                    <img src={item.src} className={`w-full h-full object-cover transition duration-100 ${isColored ? 'opacity-100 brightness-110 saturate-150' : 'opacity-30 grayscale brightness-50'}`} />
-                                    {isColored && (
-                                        <>
-                                            <div className="absolute inset-0 border-[2px] border-blue-400/50 pointer-events-none" style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}></div>
-                                            {/* Tech Decals */}
-                                            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-8 h-[1px] bg-blue-400"></div>
-                                            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[8px] font-mono text-blue-400 tracking-widest">HEX-{rIndex}{i}</div>
-                                        </>
-                                    )}
-                                    {!isColored && <div className="absolute inset-0 border-[1px] border-white/5 pointer-events-none" style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}></div>}
-                                </div>
-                            ))}
-                        </div>
-                    ))}
-                </div>
-            );
-
             return (
-                <section id="network" className="py-24 bg-black overflow-hidden relative" onMouseMove={handleMouseMove} ref={containerRef}>
-                    <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 items-center px-6 relative z-10">
-                        <div className="w-full md:w-1/3">
-                            <div className="inline-block px-3 py-1 bg-purple-900/30 border border-purple-500/30 rounded-full text-purple-400 text-xs font-bold mb-6">LIVE HIVE MIND</div>
-                            <h2 className="font-display text-4xl font-bold mb-6">Hive <br/><span className="text-blue-500">Intelligence.</span></h2>
-                            <p className="text-gray-400 mb-8 leading-relaxed">
-                                Jaringan node yang "bernapas" dan hidup. Struktur hexagon yang saling mengunci menjamin keamanan tanpa celah, beradaptasi secara otonom terhadap ancaman.
-                            </p>
-                            <div className="flex gap-4">
-                                <div className="px-4 py-2 bg-white/5 rounded border border-white/10 text-xs font-bold flex items-center gap-2"><div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div> Autonomous</div>
-                                <div className="px-4 py-2 bg-white/5 rounded border border-white/10 text-xs font-bold">Proximity Response</div>
+                <section id="network" className={`py-24 overflow-hidden relative transition-colors duration-500 ${theme === 'dark' ? 'bg-black' : 'bg-gray-900'}`} onMouseMove={handleMouseMove} ref={containerRef}>
+                    <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 items-center px-4 md:px-6 relative z-10">
+                        <div className="w-full md:w-1/3 text-center md:text-left">
+                            <div className="inline-block px-3 py-1 bg-purple-900/30 border border-purple-500/30 rounded-full text-purple-400 text-xs font-bold mb-6">{t.hive.tag}</div>
+                            <h2 className="font-display text-3xl md:text-4xl font-bold mb-6 text-white">{t.hive.title} <br/><span className="text-blue-500">{t.hive.hl}</span></h2>
+                            <p className="text-gray-400 mb-8 leading-relaxed text-sm md:text-base">{t.hive.desc}</p>
+                            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                                {t.hive.tags.map(tag => (
+                                    <div key={tag} className="px-4 py-2 bg-white/5 rounded border border-white/10 text-xs font-bold text-gray-300 flex items-center gap-2">
+                                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div> {tag}
+                                    </div>
+                                ))}
                             </div>
                         </div>
-                        <div className="w-full md:w-2/3 flex justify-center scale-90 md:scale-100 relative min-h-[500px]">
-                            {/* Layer 1: Base (Idle/Dead) */}
-                            <GridLayer isColored={false} />
-                            
-                            {/* Layer 2: Color (Revealed by Proximity) */}
-                            <GridLayer isColored={true} />
+                        <div className="w-full md:w-2/3 flex justify-center scale-90 md:scale-100 relative min-h-[400px]">
+                            {/* Rendering HexGrid twice for mask effect */}
+                            {[false, true].map((isColored) => (
+                                <div key={isColored} className="hex-container" style={isColored ? { 
+                                    position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 10,
+                                    maskImage: `radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black, transparent)`,
+                                    WebkitMaskImage: `radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black, transparent)`
+                                } : {}}>
+                                    {rows.map((row, r) => (
+                                        <div key={r} className="hex-row">
+                                            {row.map((item, i) => (
+                                                <div key={i} className={`hex animate-hex-mech ${isColored ? 'hex-scan' : ''}`} style={{ animationDelay: item.delay, animationDuration: item.duration }}>
+                                                    <img src={item.src} className={`w-full h-full object-cover transition duration-100 ${isColored ? 'opacity-100 brightness-110 saturate-150' : 'opacity-30 grayscale brightness-50'}`} />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ))}
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </section>
             );
         };
 
-        const VisualArchive = () => (
-            <section id="gallery" className="py-24 px-6 bg-[#050505]">
-                <div className="max-w-7xl mx-auto">
-                    <div className="flex justify-between items-end mb-12">
-                        <div><h2 className="font-display text-4xl font-bold mb-2">Visual Archive</h2><p className="text-gray-400">Environment & Documentation.</p></div>
-                        <button className="hidden md:block text-sm font-bold border-b border-white/20 pb-1">View Full Gallery</button>
-                    </div>
-                    <div className="masonry-grid">
-                        {galleryItems.map((item, i) => (
-                            <div key={i} className={`masonry-item ${item.height} group relative bg-gray-900`}>
-                                {item.type === 'video' ? (
-                                    <video autoPlay muted loop playsInline className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-500">
-                                        <source src={item.src} type="video/mp4" />
-                                    </video>
-                                ) : (
-                                    <img src={item.src} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-500 group-hover:scale-110" />
-                                )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-4">
-                                    <div className="p-2 bg-white/10 backdrop-blur-md rounded-full"><i data-lucide={item.type === 'video' ? 'play' : 'image'} width="14"></i></div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-        );
-
-        const ClientStories = () => (
-            <section className="py-24 px-6 border-t border-white/5">
-                <div className="max-w-6xl mx-auto">
-                    <h2 className="text-3xl font-display font-bold mb-12 text-center">Client Stories</h2>
-                    <div className="grid md:grid-cols-2 gap-8">
-                        {testimonials.map((t, i) => (
-                            <div key={i} className="glass-panel p-8 rounded-3xl relative">
-                                <i data-lucide="quote" className="text-blue-500 mb-4 opacity-50"></i>
-                                <p className="text-lg text-gray-300 italic mb-6 leading-relaxed">"{t.text}"</p>
-                                <div>
-                                    <h4 className="font-bold text-white">{t.name}</h4>
-                                    <span className="text-xs text-gray-500">{t.role}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-        );
-
-        const ScaleUp = () => (
-            <section className="py-24 px-6">
-                <div className="max-w-5xl mx-auto text-center glass-panel p-12 md:p-20 rounded-[3rem] relative overflow-hidden">
+        const ScaleUp = ({ theme, t }) => (
+            <section className={`py-24 px-4 md:px-6 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#020202]' : 'bg-gray-50'}`}>
+                <div className={`max-w-5xl mx-auto text-center p-8 md:p-20 rounded-[2rem] md:rounded-[3rem] relative overflow-hidden ${theme === 'dark' ? 'glass-panel-dark' : 'bg-white shadow-2xl'}`}>
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
-                    <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">Ready to Scale Up?</h2>
-                    <p className="text-gray-400 mb-10 text-lg max-w-2xl mx-auto">
-                        Jangan biarkan kompetitor mendahului Anda. Bangun sistem digital premium Anda sekarang bersama tim ahli kami.
-                    </p>
+                    <h2 className={`text-3xl md:text-6xl font-display font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>{t.scale.title}</h2>
+                    <p className={`mb-10 text-sm md:text-lg max-w-2xl mx-auto ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{t.scale.desc}</p>
                     <div className="flex flex-col md:flex-row justify-center gap-4">
-                        <a href="https://wa.me/6285157362339" className="px-8 py-4 bg-white text-black rounded-full font-bold hover:scale-105 transition shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center justify-center gap-2">
-                            Start Project <i data-lucide="arrow-right" width="18"></i>
+                        <a href="https://wa.me/6285157362339" className="px-8 py-4 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-700 transition flex items-center justify-center gap-2 shadow-lg">
+                            {t.scale.btn1} <Icon name="ArrowRight" size={18} />
                         </a>
-                        <a href="mailto:hello@zentara.com" className="px-8 py-4 glass-panel rounded-full font-bold hover:bg-white/10 transition flex items-center justify-center gap-2">
-                            Contact Sales
+                        <a href="mailto:hello@zentara.com" className={`px-8 py-4 rounded-full font-bold transition flex items-center justify-center gap-2 border 
+                            ${theme === 'dark' ? 'bg-white/5 border-white/10 hover:bg-white/10 text-white' : 'bg-gray-100 border-gray-200 text-black hover:bg-gray-200'}`}>
+                            {t.scale.btn2}
                         </a>
                     </div>
                 </div>
             </section>
         );
 
-        const Footer = () => (
-            <footer id="contact" className="py-20 px-6 bg-black border-t border-white/10">
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+        const Footer = ({ theme }) => (
+            <footer id="contact" className={`py-20 px-6 transition-colors duration-500 border-t ${theme === 'dark' ? 'bg-black border-white/10 text-white' : 'bg-white border-black/5 text-black'}`}>
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
                     <div>
                         <div className="font-display font-bold text-2xl">ZENTARA.</div>
                         <p className="text-gray-500 text-sm mt-2">Building the future, one node at a time.</p>
                     </div>
                     <div className="flex gap-6">
-                        {['Instagram', 'LinkedIn', 'Twitter'].map(s => <a key={s} href="#" className="text-gray-500 hover:text-white transition text-sm">{s}</a>)}
+                        {['Instagram', 'LinkedIn', 'Twitter'].map(s => <a key={s} href="#" className="text-gray-500 hover:text-blue-500 transition text-sm">{s}</a>)}
                     </div>
                 </div>
             </footer>
         );
 
         const App = () => {
-            useEffect(() => {
-                const interval = setInterval(() => { if (window.lucide) window.lucide.createIcons(); }, 1000);
-                return () => clearInterval(interval);
-            }, []);
+            const [theme, setTheme] = useState('dark');
+            const [lang, setLang] = useState('en'); 
+
+            // Initialize Icons
+            useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, []);
+            
+            // Re-render icons on theme change
+            useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [theme]);
+
+            const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+            const toggleLang = () => setLang(prev => prev === 'en' ? 'id' : 'en');
+
+            const t = translations[lang];
 
             return (
-                <div className="bg-[#020202] min-h-screen text-white">
-                    <Navbar />
-                    <Hero />
-                    <Stats />
-                    <Expertise />
-                    <NeuroCore />
-                    <SelectedWorks />
-                    <HexagonHive />
-                    <VisualArchive />
-                    <ClientStories />
-                    <ScaleUp />
-                    <Footer />
+                <div className={`min-h-screen transition-colors duration-500 ${theme === 'dark' ? 'bg-[#020202]' : 'bg-gray-50'}`}>
+                    <Navbar theme={theme} toggleTheme={toggleTheme} lang={lang} toggleLang={toggleLang} t={t} />
+                    <Hero theme={theme} t={t} />
+                    <Stats theme={theme} t={t} />
+                    <Expertise theme={theme} t={t} />
+                    <NeuroCore theme={theme} t={t} />
+                    <SelectedWorks theme={theme} t={t} />
+                    <HexagonHive theme={theme} t={t} />
+                    <ScaleUp theme={theme} t={t} />
+                    <Footer theme={theme} />
                 </div>
             );
         };
